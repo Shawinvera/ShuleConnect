@@ -1,0 +1,98 @@
+<app-toast [message]="toast.message" [type]="toast.type" [visible]="toast.visible" (dismissed)="toast.dismiss()"></app-toast>
+<div class="min-h-screen bg-[#F3F4F8] font-sans pt-2 px-[12px] md:pt-4 md:px-[40px] xl:px-[150px] pb-[80px] md:pb-10 text-slate-800">
+    <app-teacher-breadcrumb></app-teacher-breadcrumb>
+
+    <!-- Header & Action Button -->
+    <div class="flex flex-col md:flex-row md:items-end justify-between gap-6 mb-12">
+      <div>
+        <h1 class="font-[Fredoka] font-bold text-[30px] md:text-[50px] leading-[44px] md:leading-[64px] tracking-[-0.4px] text-[#374151] mb-3">{{ gradeName }} Subjects</h1>
+        <p class="font-[Fredoka] font-normal text-[14px] md:text-[24px] leading-[28px] md:leading-[39px] tracking-[-0.4px] text-[#374151]">Assign and manage subjects for this grade</p>
+      </div>
+
+      <button 
+        (click)="toggleForm()"
+        class="w-full md:w-[314px] text-white flex items-center justify-center gap-2 transform hover:-translate-y-0.5 transition-all duration-200"
+        style="height: 83px; padding: 20px 55px; gap: 10px; border-radius: 20px; background: linear-gradient(90deg, #4ADE80 0%, #687AE4 100%); font-family: Fredoka; font-weight: 600; font-size: 25px; line-height: 43px; letter-spacing: -0.4px; text-align: center; vertical-align: middle;"
+      >
+        <span class="text-xl leading-none mb-0.5" *ngIf="!isFormVisible">+</span> 
+        <span class="text-xl leading-none mb-0.5" *ngIf="isFormVisible">✕</span>
+        {{ isFormVisible ? 'Close Form' : 'Assign Subject' }}
+      </button>
+    </div>
+
+    <!-- Assign Subject Form -->
+    <div *ngIf="isFormVisible" class="bg-white border-4 border-[#5B7FFF] rounded-2xl p-8 mb-10 shadow-sm animate-fade-in">
+      <h2 class="font-[Fredoka] font-semibold text-[30px] md:text-[40px] leading-[35px] md:leading-[40px] tracking-[-0.4px] text-left text-[#374151] mb-6">Assign Subject to {{ gradeName }}</h2>
+      
+      <div class="mb-8">
+        <label class="block font-[Fredoka] font-semibold text-[25px] leading-[20px] tracking-[-0.4px] text-left text-[#374151] mb-2">Subject Name *</label>
+        <div class="relative">
+          <select 
+            [(ngModel)]="selectedSubjectId" 
+            class="mt-[10px] w-full h-[79px] bg-white border-gray-200 border-[2px] rounded-[20px] px-[20px] font-fredoka font-normal text-[23px] leading-[29px] tracking-[-0.4px] text-[#374151] appearance-none focus:outline-none focus:ring-2 focus:ring-blue-500 cursor-pointer"
+          >
+            <option value="" disabled selected>Choose a subject</option>
+            <option *ngFor="let subject of availableSubjects" [value]="subject.id" class="font-fredoka text-[23px]">{{ subject.name }}</option>
+          </select>
+          <!-- Dropdown Chevron -->
+          <div class="pointer-events-none absolute inset-y-0 right-0 flex items-center px-4 text-slate-500">
+            <svg class="fill-current h-5 w-5" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20">
+              <path d="M9.293 12.95l.707.707L15.657 8l-1.414-1.414L10 10.828 5.757 6.586 4.343 8z"/>
+            </svg>
+          </div>
+        </div>
+      </div>
+
+      <div class="flex flex-col md:flex-row gap-4">
+        <button 
+          (click)="assignSubject()"
+          [disabled]="!selectedSubjectId"
+          [class.opacity-50]="!selectedSubjectId"
+          class="w-full md:w-auto font-[Fredoka] bg-[#A855F7] hover:bg-purple-700 text-white font-semibold text-[23px] leading-[29px] tracking-[-0.4px] py-3 px-8 rounded-xl shadow-md transition-colors"
+        >
+          Assign subject
+        </button>
+        <button 
+          (click)="toggleForm()" 
+          class="w-full md:w-auto font-[Fredoka] bg-gray-200 hover:bg-gray-300 text-[#374151] font-semibold text-[23px] leading-[29px] tracking-[-0.4px] py-3 px-8 rounded-xl transition-colors"
+        >
+          Cancel
+        </button>
+      </div>
+    </div>
+
+    <!-- Cards Grid -->
+    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-[20px]">
+      <app-spinner-overlay *ngIf="isLoading" [inline]="true"></app-spinner-overlay>
+      <div *ngFor="let subject of subjects" 
+           (click)="navigateToSubject(subject)"
+           class="bg-white shadow-md rounded-[23px] p-[30px] hover:shadow-lg transition text-left flex flex-col gap-3 cursor-pointer">
+        
+        <!-- Icon -->
+        <div class="flex items-center gap-3 mb-1">
+          <div class="w-16 h-16 sm:w-20 sm:h-20 flex items-center justify-center">
+            <img [src]="getSubjectIcon(subject.iconName)" [alt]="subject.name" class="w-full h-full object-contain" />
+          </div>
+        </div>
+
+        <!-- Content -->
+        <h2 class="font-[Fredoka] font-bold text-[28px] leading-[34px] tracking-[-0.4px] text-[#374151] overflow-hidden text-ellipsis whitespace-nowrap">{{ subject.name }}</h2>
+        <p class="font-[Fredoka] font-normal text-[16px] leading-[24px] tracking-[-0.4px] text-[#374151] line-clamp-2">{{ subject.description }}</p>
+
+        <!-- Badges -->
+        <div class="flex flex-wrap gap-2">
+          <span *ngFor="let stat of subject.stats"
+            class="px-3 py-1 rounded-full font-[Fredoka] font-semibold text-[14px]"
+            [ngClass]="{
+              'bg-[#E0E7FF] text-[#4338CA]': stat.color === 'blue',
+              'bg-[#D1FAE5] text-[#059669]': stat.color === 'green'
+            }">
+            {{ stat.value }}
+          </span>
+        </div>
+
+      </div>
+
+    </div>
+
+</div>

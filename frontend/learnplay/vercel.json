@@ -1,0 +1,8 @@
+{
+  "buildCommand": "npm run build -- --configuration production",
+  "outputDirectory": "dist/learnplay/browser",
+  "rewrites": [
+    { "source": "/api/:path*", "destination": "https://kanisa.online/wazi/:path*" },
+    { "source": "/(.*)", "destination": "/index.html" }
+  ]
+}

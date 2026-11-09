@@ -1,0 +1,177 @@
+/* Using Tailwind CSS classes only */
+
+@keyframes navGuidePulse {
+  0%, 100% { box-shadow: 0 0 0 0 rgba(103, 126, 232, 0.45); }
+  70% { box-shadow: 0 0 0 12px rgba(103, 126, 232, 0); }
+}
+
+.nav-guide-highlight {
+  animation: navGuidePulse 2s infinite;
+}
+
+/* ================================
+   Bottom Navigation Bar — Parent
+   ================================ */
+
+.bottom-nav-bar {
+  background: rgba(255, 255, 255, 0.97);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border-top: 1px solid rgba(102, 125, 232, 0.12);
+  box-shadow: 0 -4px 24px rgba(102, 125, 232, 0.12);
+}
+
+/* Each tab button */
+.bottom-nav-item {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 3px;
+  padding: 6px 4px;
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  transition: opacity 0.15s ease;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.bottom-nav-item:active {
+  opacity: 0.7;
+}
+
+.bottom-nav-item--disabled {
+  opacity: 0.35;
+  pointer-events: none;
+}
+
+/* Icon container */
+.bottom-nav-icon-wrap {
+  width: 36px;
+  height: 36px;
+  border-radius: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: transparent;
+  transition: background 0.2s ease, transform 0.15s ease;
+}
+
+.bottom-nav-item:not(.bottom-nav-item--disabled):active .bottom-nav-icon-wrap {
+  transform: scale(0.9);
+}
+
+.bottom-nav-icon-wrap--active {
+  background: linear-gradient(135deg, rgba(102, 125, 232, 0.15), rgba(117, 77, 165, 0.15));
+}
+
+/* Label */
+.bottom-nav-label {
+  font-family: 'Fredoka', sans-serif;
+  font-size: 11px;
+  font-weight: 500;
+  color: #9CA3AF;
+  line-height: 1;
+  transition: color 0.2s ease;
+}
+
+.bottom-nav-item--active .bottom-nav-label {
+  color: #667DE8;
+  font-weight: 600;
+}
+
+/* ================================
+   Desktop Role Switcher Chip — Parent
+   ================================ */
+
+.parent-switcher-chip {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  background: rgba(255, 255, 255, 0.18);
+  border: 1.5px solid rgba(255, 255, 255, 0.28);
+  border-radius: 50px;
+  padding: 6px 14px 6px 6px;
+  cursor: pointer;
+  transition: background 0.2s ease, transform 0.15s ease, box-shadow 0.2s ease;
+  backdrop-filter: blur(8px);
+}
+
+.parent-switcher-chip:hover {
+  background: rgba(255, 255, 255, 0.28);
+  transform: scale(1.03);
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.15);
+}
+
+.parent-switcher-chip:active {
+  transform: scale(0.97);
+}
+
+.parent-switcher-avatar {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  overflow: hidden;
+  background: linear-gradient(135deg, #BAE8E8, #EEDAE4);
+  border: 2px solid rgba(255, 255, 255, 0.5);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+/* Dropdown panel */
+.parent-switcher-dropdown {
+  position: absolute;
+  top: calc(100% + 12px);
+  right: 0;
+  min-width: 230px;
+  background: #ffffff;
+  border-radius: 18px;
+  border: 1px solid rgba(102, 125, 232, 0.12);
+  box-shadow: 0 16px 48px rgba(74, 34, 122, 0.18), 0 4px 12px rgba(0, 0, 0, 0.08);
+  overflow: hidden;
+  z-index: 9995;
+  animation: switcherDropIn 0.18s ease-out forwards;
+}
+
+@keyframes switcherDropIn {
+  from { opacity: 0; transform: translateY(-8px) scale(0.97); }
+  to   { opacity: 1; transform: translateY(0)   scale(1);    }
+}
+
+.parent-switcher-option {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 13px 16px;
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  transition: background 0.15s ease;
+  text-align: left;
+}
+
+.parent-switcher-option:hover {
+  background: #F5F5FF;
+}
+
+.parent-switcher-option:active {
+  background: #EDE9FF;
+}
+
+.parent-switcher-option-icon {
+  width: 38px;
+  height: 38px;
+  border-radius: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.mobile-menu-dropdown {
+  animation: switcherDropIn 0.18s ease-out forwards;
+}

@@ -1,0 +1,16 @@
+<div *ngIf="visible && message"
+  class="fixed top-3 sm:top-5 left-1/2 z-[10000] w-[92vw] sm:w-[85vw] max-w-[480px]"
+  style="transform: translateX(-50%); animation: slideDown 0.3s ease-out;">
+  <div [class]="'flex items-start gap-2 sm:gap-3 px-3 sm:px-4 py-2.5 sm:py-3 rounded-xl sm:rounded-2xl border-2 shadow-[0_8px_30px_rgba(0,0,0,0.12)] ' + styles.bg + ' ' + styles.border">
+    <div [class]="'flex-shrink-0 w-6 h-6 sm:w-7 sm:h-7 rounded-full flex items-center justify-center text-white font-bold text-[11px] sm:text-[13px] mt-0.5 ' + styles.icon">
+      {{ icon }}
+    </div>
+    <p [class]="'flex-1 font-fredoka font-medium text-[13px] sm:text-[15px] md:text-[17px] leading-[18px] sm:leading-[22px] tracking-[-0.3px] ' + styles.text">
+      {{ message }}
+    </p>
+    <button (click)="dismiss()"
+      [class]="'flex-shrink-0 w-5 h-5 sm:w-6 sm:h-6 rounded-full flex items-center justify-center opacity-60 hover:opacity-100 transition-opacity font-bold text-[12px] sm:text-[14px] ' + styles.text">
+      ✕
+    </button>
+  </div>
+</div>

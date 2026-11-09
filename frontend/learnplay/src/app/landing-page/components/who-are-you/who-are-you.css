@@ -1,0 +1,14 @@
+@keyframes guidePulse {
+  0%, 100% {
+    box-shadow: 0 0 0 0 rgba(103, 126, 232, 0.4);
+  }
+  70% {
+    box-shadow: 0 0 0 14px rgba(103, 126, 232, 0);
+  }
+}
+
+.parent-guide-target {
+  position: relative;
+  animation: guidePulse 2s infinite;
+  border: 2px solid #687ae4;
+}

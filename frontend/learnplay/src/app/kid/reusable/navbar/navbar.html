@@ -1,0 +1,329 @@
+<mat-toolbar
+  class="w-full flex justify-between items-center !bg-gradient-to-r !from-[#667DE8] !to-[#754DA5] !h-[80px] lg:!h-[103px] !min-h-[80px] lg:!min-h-[103px] !px-[20px] sm:!px-[40px] lg:!px-[150px] "
+>
+  <!-- Left Logo + Title -->
+  <div class="flex items-center gap-2 sm:gap-[10px]">
+    <div>
+      <div
+        class="w-[45px] h-[45px] sm:w-[63px] sm:h-[63px] rounded-full bg-white flex items-center justify-center shadow-md"
+      >
+        <img
+          src="assets/icons/hat.png"
+          class="w-[24px] h-[22px] sm:w-[36px] sm:h-[32px]"
+          alt="logo"
+        />
+      </div>
+    </div>
+    <span
+      class="text-white font-fredoka font-bold text-[20px] sm:text-[30px] leading-tight tracking-[-0.4px]"
+    >
+      WaziLearn
+    </span>
+  </div>
+
+  <!-- Center Home Icon — hidden on mobile -->
+  <div class="hidden md:flex items-center justify-center">
+    <div class="relative group">
+      <button
+        (click)="onHomeClick()"
+        [class.nav-guide-highlight]="showNavGuide"
+        class="bg-white bg-opacity-20 hover:bg-opacity-30 rounded-full w-[45px] h-[45px] sm:w-[63px] sm:h-[63px] flex items-center justify-center cursor-pointer transition-all duration-200 hover:scale-105 hover:shadow-lg"
+      >
+        <img
+          src="assets/icons/home.png"
+          class="w-[20px] h-[20px] sm:w-[28px] sm:h-[28px]"
+          alt="home"
+        />
+      </button>
+      <span
+        class="absolute -bottom-7 left-1/2 -translate-x-1/2 whitespace-nowrap bg-white text-[#9333EA] font-fredoka font-semibold text-[11px] px-2 py-0.5 rounded-full shadow opacity-0 group-hover:opacity-100 transition-opacity duration-200 pointer-events-none"
+      >
+         Dashboard
+      </span>
+    </div>
+  </div>
+
+  <!-- Right Points + Switcher -->
+  <div class="flex gap-3 sm:gap-[20px] items-center">
+
+    <!-- Points Badge -->
+    <div
+      class="hidden md:flex items-center gap-[10px] bg-[#8F75BD] backdrop-blur-md px-4 lg:px-[31px] py-[8px] rounded-[60px] h-[50px] lg:h-[59px]"
+    >
+      <img src="assets/icons/star.png" class="w-[24px] h-[24px] lg:w-[32px] lg:h-[32px]" alt="star" />
+      <span class="text-white flex items-center justify-center font-fredoka font-bold text-[16px] lg:text-[25px] leading-none tracking-[-0.4px] whitespace-nowrap">
+        {{ userPoints | number }} Points
+      </span>
+    </div>
+
+    <!-- User Switcher Chip — all screen sizes -->
+    <div class="relative" (click)="$event.stopPropagation()">
+      <!-- Mobile: static avatar only (not clickable), matches left logo style -->
+      <div class="md:hidden w-[45px] h-[45px] rounded-full bg-white flex items-center justify-center shadow-md overflow-hidden">
+        <img
+          [src]="getAvatarPath(selectedLearner)"
+          [alt]="(selectedLearner?.firstName || 'Learner') + ' avatar'"
+          class="w-full h-full object-cover"
+        />
+      </div>
+      <!-- Desktop: full interactive chip -->
+      <div class="hidden md:block">
+        <button
+          (click)="toggleSwitcherDropdown()"
+          [class.nav-guide-highlight]="showNavGuide"
+          class="kid-switcher-chip"
+        >
+        <!-- Learner avatar -->
+        <div class="kid-switcher-avatar">
+          <img
+            [src]="getAvatarPath(selectedLearner)"
+            [alt]="(selectedLearner?.firstName || 'Learner') + ' avatar'"
+            class="w-full h-full object-cover"
+          />
+        </div>
+        <!-- Name + hint — hidden on smallest screens to save space -->
+        <div class="hidden sm:flex flex-col items-start leading-tight">
+          <span class="font-fredoka font-bold text-[14px] lg:text-[16px] text-white leading-none">
+            {{ selectedLearner?.firstName || 'Learner' }}
+          </span>
+          <span class="font-fredoka font-normal text-[11px] text-white/70 leading-none mt-0.5">Switch user</span>
+        </div>
+        <!-- Caret -->
+        <svg class="w-4 h-4 text-white/80 transition-transform duration-200" [class.rotate-180]="switcherOpen" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5">
+          <path stroke-linecap="round" stroke-linejoin="round" d="M19 9l-7 7-7-7" />
+        </svg>
+      </button>
+      </div>
+
+      <!-- Dropdown -->
+      <div *ngIf="switcherOpen" class="kid-switcher-dropdown">
+        <!-- Switch learner -->
+        <!-- <button (click)="onSelectLearnerClick(); switcherOpen = false" class="kid-switcher-option">
+          <div class="kid-switcher-option-icon" style="background: linear-gradient(135deg,#F8C96C,#FCA780)">
+            <img src="assets/icons/hat.png" class="w-[18px] h-[16px]" alt="learner" />
+          </div>
+          <div class="flex flex-col items-start">
+            <span class="font-fredoka font-semibold text-[15px] text-[#374151]">Switch Learner</span>
+            <span class="font-fredoka text-[12px] text-[#9CA3AF]">Change active learner</span>
+          </div>
+        </button> -->
+        <!-- Divider -->
+        <!-- <div class="kid-switcher-divider"></div> -->
+        <!-- Parent dashboard -->
+        <button (click)="onParentDashboardClick(); switcherOpen = false" class="kid-switcher-option">
+          <div class="kid-switcher-option-icon" style="background: linear-gradient(135deg,#BAE8E8,#EEDAE4)">
+            <img src="assets/icons/family.png" class="w-[18px] h-[18px]" alt="parent" />
+          </div>
+          <div class="flex flex-col items-start">
+            <span class="font-fredoka font-semibold text-[15px] text-[#374151]">Guardian Dashboard</span>
+            <span class="font-fredoka text-[12px] text-[#9CA3AF]">Monitor progress</span>
+          </div>
+        </button>
+        <!-- Divider -->
+        <div class="kid-switcher-divider"></div>
+        <!-- Logout -->
+        <button (click)="onLogout(); switcherOpen = false" class="kid-switcher-option">
+          <div class="kid-switcher-option-icon" style="background: linear-gradient(135deg,#FEE2E2,#FECACA)">
+            <img src="assets/icons/logout.png" class="w-[18px] h-[18px]" alt="logout" />
+          </div>
+          <div class="flex flex-col items-start">
+            <span class="font-fredoka font-semibold text-[15px] text-[#DC2626]">Logout</span>
+            <span class="font-fredoka text-[12px] text-[#9CA3AF]">Sign out of account</span>
+          </div>
+        </button>
+      </div>
+    </div>
+
+  </div>
+</mat-toolbar>
+
+<!-- Dropdown backdrop -->
+<div *ngIf="switcherOpen" class="fixed inset-0 z-[9990]" (click)="switcherOpen = false"></div>
+
+<div *ngIf="showNavGuide" class="fixed top-[95px] right-4 md:right-10 lg:right-[150px] z-[10020] max-w-[330px]">
+  <div class="rounded-[16px] border border-[#E8DDFB] bg-white shadow-[0_12px_34px_rgba(74,34,122,0.26)] overflow-hidden">
+    <div class="bg-[linear-gradient(90deg,#667DE8_0%,#754DA5_100%)] px-4 py-3">
+      <p class="font-fredoka font-bold text-[18px] text-white">Navbar Tips</p>
+    </div>
+    <div class="p-4">
+      <p class="font-fredoka text-[14px] text-[#374151] leading-6">
+        Use <span class="font-semibold text-[#667DE8]">Home</span> for dashboard and avatar to switch role.
+      </p>
+      <div class="flex justify-end mt-3">
+        <button
+          (click)="skipAllGuides()"
+          class="px-4 py-2 rounded-[10px] bg-[#EEF0F5] text-[#6B7280] font-fredoka font-semibold text-[14px] mr-2"
+        >
+          Skip
+        </button>
+        <button
+          (click)="dismissNavGuide()"
+          class="px-4 py-2 rounded-[10px] bg-[linear-gradient(90deg,#667DE8_0%,#754DA5_100%)] text-white font-fredoka font-semibold text-[14px]"
+        >
+          Next
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ============================================================ -->
+<!-- OLD Mobile FAB nav — commented out, replaced by bottom navbar -->
+<!-- ============================================================ -->
+<!--
+<ng-container *ngIf="true">
+  <div *ngIf="navOpen" class="md:hidden fixed inset-0 z-[9996]" (click)="navOpen = false; trackMobileMenuAction('backdrop_close')"></div>
+  <div
+    class="md:hidden fixed bottom-[72px] right-5 z-[9997] flex flex-col items-end gap-3 transition-all duration-300"
+    [class.opacity-0]="!navOpen"
+    [class.pointer-events-none]="!navOpen"
+    [class.translate-y-4]="!navOpen"
+  >
+    <button
+      (click)="!isHomePage && goBack(); navOpen = false; trackMobileMenuAction('back')"
+      [class.opacity-40]="isHomePage"
+      [class.cursor-not-allowed]="isHomePage"
+      [class.pointer-events-none]="isHomePage"
+      class="flex items-center gap-2 bg-white rounded-full pl-4 pr-3 py-2 shadow-[0_4px_20px_rgba(102,125,232,0.3)] active:scale-95 transition-transform"
+    >
+      <span class="font-fredoka font-semibold text-[15px] text-[#667DE8]">Back</span>
+      <div class="bg-gradient-to-r from-[#667DE8] to-[#754DA5] rounded-full w-[36px] h-[36px] flex items-center justify-center">
+        <img src="assets/icons/back.png" class="w-[18px] h-[18px]" alt="back" />
+      </div>
+    </button>
+    <button
+      (click)="onHomeClick(); navOpen = false; trackMobileMenuAction('home')"
+      class="flex items-center gap-2 bg-white rounded-full pl-4 pr-3 py-2 shadow-[0_4px_20px_rgba(102,125,232,0.3)] active:scale-95 transition-transform"
+    >
+      <span class="font-fredoka font-semibold text-[15px] text-[#667DE8]">Home</span>
+      <div class="bg-gradient-to-r from-[#667DE8] to-[#754DA5] rounded-full w-[36px] h-[36px] flex items-center justify-center">
+        <img src="assets/icons/home.png" class="w-[18px] h-[18px]" alt="home" />
+      </div>
+    </button>
+    <button
+      (click)="onWhoAreYouClick(); navOpen = false; trackMobileMenuAction('switch_user')"
+      class="flex items-center gap-2 bg-white rounded-full pl-4 pr-3 py-2 shadow-[0_4px_20px_rgba(102,125,232,0.3)] active:scale-95 transition-transform"
+    >
+      <span class="font-fredoka font-semibold text-[15px] text-[#667DE8]">Switch User</span>
+      <div class="bg-gradient-to-r from-[#667DE8] to-[#754DA5] rounded-full w-[36px] h-[36px] flex items-center justify-center">
+        <img src="assets/icons/who_are_you.png" class="w-[18px] h-[18px]" alt="switch user" />
+      </div>
+    </button>
+  </div>
+  <button
+    (click)="toggleNav()"
+    class="md:hidden fixed bottom-5 right-5 z-[9998] w-[52px] h-[52px] rounded-full bg-gradient-to-r from-[#667DE8] to-[#754DA5] shadow-[0_4px_20px_rgba(102,125,232,0.4)] flex items-center justify-center active:scale-95 transition-all duration-200"
+    [class.rotate-45]="navOpen"
+  >
+    <svg xmlns="http://www.w3.org/2000/svg" class="w-[22px] h-[22px] text-white transition-transform duration-200" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5">
+      <path stroke-linecap="round" stroke-linejoin="round" d="M4 6h16M4 12h16M4 18h16" />
+    </svg>
+  </button>
+</ng-container>
+-->
+
+<!-- ================================ -->
+<!-- Mobile Bottom Navigation Bar     -->
+<!-- ================================ -->
+<nav *ngIf="!isCameraOpen" class="md:hidden fixed bottom-0 left-0 right-0 z-[9998] bottom-nav-bar">
+  <div class="flex items-stretch h-[64px]">
+
+    <!-- Home -->
+    <button
+      (click)="onHomeClick(); trackMobileMenuAction('home')"
+      class="bottom-nav-item"
+      [class.bottom-nav-item--active]="isHomePage"
+    >
+      <div class="bottom-nav-icon-wrap" [class.bottom-nav-icon-wrap--active]="isHomePage">
+        <img src="assets/icons/home.png" class="w-[20px] h-[20px]" alt="home" />
+      </div>
+      <span class="bottom-nav-label">Home</span>
+    </button>
+
+    <!-- Activities -->
+    <button
+      (click)="onRecentActivitiesClick(); trackMobileMenuAction('recent_activities')"
+      class="bottom-nav-item"
+      [class.bottom-nav-item--active]="isActivitiesPage"
+    >
+      <div class="bottom-nav-icon-wrap" [class.bottom-nav-icon-wrap--active]="isActivitiesPage">
+        <img src="assets/icons/trophy.png" class="w-[20px] h-[20px]" alt="activities" />
+      </div>
+      <span class="bottom-nav-label">Activities</span>
+    </button>
+
+    <!-- Points (centre pill — decorative, not a nav action) -->
+    <div class="bottom-nav-points-slot">
+      <div class="bottom-nav-points-pill">
+        <img src="assets/icons/star.png" class="w-[16px] h-[16px]" alt="star" />
+        <span class="bottom-nav-points-text">{{ userPoints | number }}</span>
+      </div>
+    </div>
+
+    <!-- Parent Dashboard -->
+    <button
+      (click)="onParentDashboardClick(); trackMobileMenuAction('parent_dashboard')"
+      class="bottom-nav-item"
+    >
+      <div class="bottom-nav-icon-wrap">
+        <img src="assets/icons/family.png" class="w-[20px] h-[20px]" alt="parent" />
+      </div>
+      <span class="bottom-nav-label">Parent</span>
+    </button>
+
+    <!-- Hamburger Menu -->
+    <div class="relative flex-1" (click)="$event.stopPropagation()">
+      <button
+        (click)="toggleMobileMenu(); trackMobileMenuAction('menu')"
+        class="bottom-nav-item w-full h-full"
+        [class.bottom-nav-item--active]="mobileMenuOpen"
+      >
+        <div class="bottom-nav-icon-wrap" [class.bottom-nav-icon-wrap--active]="mobileMenuOpen">
+          <svg xmlns="http://www.w3.org/2000/svg" class="w-[22px] h-[22px]" [style.color]="mobileMenuOpen ? '#667DE8' : '#9CA3AF'" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M4 6h16M4 12h16M4 18h16" />
+          </svg>
+        </div>
+        <span class="bottom-nav-label">Menu</span>
+      </button>
+
+      <!-- Mobile Menu Dropdown (opens upward) -->
+      <div *ngIf="mobileMenuOpen" class="absolute bottom-[68px] right-0 w-[230px] bg-white rounded-[18px] border border-[rgba(102,125,232,0.12)] shadow-[0_16px_48px_rgba(74,34,122,0.18)] overflow-hidden z-[9999] kid-mobile-menu-dropdown">
+        <!-- Edit Learner -->
+        <button (click)="onEditLearnerClick(); mobileMenuOpen = false" class="kid-switcher-option">
+          <div class="kid-switcher-option-icon" style="background: linear-gradient(135deg,#F8C96C,#FCA780)">
+            <img src="assets/icons/edit_profile.png" class="w-[18px] h-[18px]" alt="edit learner" />
+          </div>
+          <div class="flex flex-col items-start">
+            <span class="font-fredoka font-semibold text-[15px] text-[#374151]">Edit Learner</span>
+            <span class="font-fredoka text-[12px] text-[#9CA3AF]">Update learner profile</span>
+          </div>
+        </button>
+        <div class="kid-switcher-divider"></div>
+        <!-- Parent Dashboard -->
+        <button (click)="onParentDashboardClick(); mobileMenuOpen = false" class="kid-switcher-option">
+          <div class="kid-switcher-option-icon" style="background: linear-gradient(135deg,#BAE8E8,#EEDAE4)">
+            <img src="assets/icons/family.png" class="w-[18px] h-[18px]" alt="parent" />
+          </div>
+          <div class="flex flex-col items-start">
+            <span class="font-fredoka font-semibold text-[15px] text-[#374151]">Guardian Dashboard</span>
+            <span class="font-fredoka text-[12px] text-[#9CA3AF]">Monitor progress</span>
+          </div>
+        </button>
+        <div class="kid-switcher-divider"></div>
+        <!-- Logout -->
+        <button (click)="onLogout(); mobileMenuOpen = false" class="kid-switcher-option">
+          <div class="kid-switcher-option-icon" style="background: linear-gradient(135deg,#FEE2E2,#FECACA)">
+            <img src="assets/icons/logout.png" class="w-[18px] h-[18px]" alt="logout" />
+          </div>
+          <div class="flex flex-col items-start">
+            <span class="font-fredoka font-semibold text-[15px] text-[#DC2626]">Logout</span>
+            <span class="font-fredoka text-[12px] text-[#9CA3AF]">Sign out of account</span>
+          </div>
+        </button>
+      </div>
+    </div>
+
+  </div>
+</nav>
+<!-- Kid mobile menu backdrop -->
+<div *ngIf="mobileMenuOpen" class="md:hidden fixed inset-0 z-[9997]" (click)="mobileMenuOpen = false"></div>

@@ -1,0 +1,86 @@
+<div class="min-h-screen bg-[#F8F7FF] px-[12px] sm:px-[40px] md:px-[40px] xl:px-[150px] pt-2 md:pt-4 font-sans pb-[80px] md:pb-6">
+
+    <!-- Header Section -->
+    <div class="mb-6">
+      <app-teacher-breadcrumb></app-teacher-breadcrumb>
+
+      <div class="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
+        <h1 class="font-[Fredoka] font-bold text-2xl sm:text-3xl lg:text-[40px] text-[#374151] leading-tight tracking-tight">
+          Manage Exams & Quizzes
+        </h1>
+
+        <!-- Create Button -->
+        <button class="w-full sm:w-auto bg-gradient-to-r from-green-400 to-blue-400 text-white font-bold rounded-lg px-6 py-3 shadow-lg hover:shadow-xl transition-all flex items-center justify-center gap-2">
+          + Create Exam
+        </button>
+      </div>
+    </div>
+
+    <!-- Existing Exams Section -->
+    <div class="bg-white rounded-[23px] shadow-[0px_6px_30px_0px_rgba(0,0,0,0.1)] p-6">
+      <h2 class="mb-6 font-[Fredoka] font-semibold text-xl sm:text-2xl lg:text-[30px] leading-tight tracking-tight text-[#374151]">
+        Existing Exams
+      </h2>
+
+      <!-- Mobile Card View -->
+      <div class="block md:hidden">
+        <div class="overflow-x-auto">
+          <table class="min-w-full table-auto border-collapse" style="min-width: 600px;">
+            <thead>
+              <tr class="font-[Fredoka] font-bold text-sm sm:text-base lg:text-[18px] leading-[40px] tracking-tight text-[#374151] border-b border-gray-200">
+                <th class="px-4 py-3 text-left">Exam Title</th>
+                <th class="px-4 py-3 text-left">Type</th>
+                <th class="px-4 py-3 text-left">Subject</th>
+                <th class="px-4 py-3 text-left">Questions</th>
+                <th class="px-4 py-3 text-left">Points</th>
+                <th class="px-4 py-3 text-left">Actions</th>
+              </tr>
+            </thead>
+            <tbody class="text-sm text-gray-700">
+              <tr class="border-b border-gray-100" *ngFor="let exam of dataSource">
+                <td class="px-4 py-4 font-medium text-[#374151]">{{ exam.title }}</td>
+                <td class="px-4 py-4">{{ exam.type }}</td>
+                <td class="px-4 py-4">{{ exam.subject }}</td>
+                <td class="px-4 py-4">{{ exam.questions }}</td>
+                <td class="px-4 py-4">{{ exam.points }}</td>
+                <td class="px-4 py-4 space-x-2">
+                  <button class="text-blue-600 hover:underline font-[Fredoka] font-semibold text-[20px] leading-[40px] tracking-[-0.4px] align-middle">Edit</button>
+                  <button class="text-red-600 hover:underline font-[Fredoka] font-semibold text-[20px] leading-[40px] tracking-[-0.4px] align-middle">Delete</button>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- Desktop Table View -->
+      <div class="hidden md:block overflow-x-auto">
+        <table class="min-w-full table-auto border-collapse">
+          <thead>
+            <tr class="font-[Fredoka] font-bold text-sm sm:text-base lg:text-[18px] leading-[40px] tracking-tight text-[#374151] border-b border-gray-200">
+              <th class="px-4 py-3 text-left">Exam Title</th>
+              <th class="px-4 py-3 text-left">Type</th>
+              <th class="px-4 py-3 text-left">Subject</th>
+              <th class="px-4 py-3 text-left">Questions</th>
+              <th class="px-4 py-3 text-left">Points</th>
+              <th class="px-4 py-3 text-left">Actions</th>
+            </tr>
+          </thead>
+          <tbody class="text-sm text-gray-700">
+            <tr class="border-b border-gray-100" *ngFor="let exam of dataSource">
+              <td class="px-4 py-4 font-medium text-[#374151]">{{ exam.title }}</td>
+              <td class="px-4 py-4">{{ exam.type }}</td>
+              <td class="px-4 py-4">{{ exam.subject }}</td>
+              <td class="px-4 py-4">{{ exam.questions }}</td>
+              <td class="px-4 py-4">{{ exam.points }}</td>
+              <td class="px-4 py-4 space-x-2">
+                <button class="text-blue-600 hover:underline font-[Fredoka] font-semibold text-[20px] leading-[40px] tracking-[-0.4px] align-middle">Edit</button>
+                <button class="text-red-600 hover:underline font-[Fredoka] font-semibold text-[20px] leading-[40px] tracking-[-0.4px] align-middle">Delete</button>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+</div>

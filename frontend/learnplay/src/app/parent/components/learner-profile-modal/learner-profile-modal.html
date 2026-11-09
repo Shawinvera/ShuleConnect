@@ -1,0 +1,255 @@
+<!-- Learner Profile Update Modal -->
+<div
+  *ngIf="isOpen"
+  class="fixed inset-0 z-[130] bg-black/50 backdrop-blur-[3px] flex items-center justify-center p-4"
+  (click)="onClose()"
+>
+  <div 
+    class="w-full max-w-[900px] max-h-[95vh] bg-white rounded-[20px] md:rounded-[28px] shadow-[0_25px_80px_0_rgba(74,34,122,0.4)] border border-[#EEE8F7] overflow-hidden flex flex-col"
+    (click)="$event.stopPropagation()"
+  >
+    <!-- Header -->
+    <div class="bg-[linear-gradient(90deg,#667DE8_0%,#754DA5_100%)] px-6 md:px-10 py-5 md:py-6 flex items-center justify-between">
+      <div class="flex items-center gap-4">
+        <div class="w-12 h-12 md:w-16 md:h-16 rounded-full bg-white/20 flex items-center justify-center overflow-hidden">
+          <img 
+            *ngIf="selectedAvatar" 
+            [src]="getSelectedAvatarPath()" 
+            class="w-full h-full object-cover"
+            alt="Learner avatar"
+          />
+          <mat-icon *ngIf="!selectedAvatar" class="text-white text-[28px] md:text-[36px]">person</mat-icon>
+        </div>
+        <div>
+          <h2 class="font-fredoka font-bold text-[22px] sm:text-[26px] md:text-[32px] leading-[1.1] text-white">
+            Update {{ learner?.firstName || 'Learner' }}'s Profile
+          </h2>
+          <p class="font-fredoka font-normal text-[13px] sm:text-[14px] md:text-[16px] text-white/90 mt-1">
+            Keep learner information up to date for personalized learning
+          </p>
+        </div>
+      </div>
+      <button
+        (click)="onClose()"
+        class="w-10 h-10 md:w-12 md:h-12 rounded-full bg-white/20 text-white text-[24px] md:text-[28px] leading-none cursor-pointer hover:bg-white/35 transition-colors flex items-center justify-center"
+        aria-label="Close modal"
+      >
+        ×
+      </button>
+    </div>
+
+    <!-- Content -->
+    <div class="flex-1 overflow-y-auto px-6 md:px-10 py-6 md:py-8">
+      <form class="space-y-6">
+        <!-- Names Grid -->
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-6">
+          <div>
+            <label class="block font-fredoka font-semibold text-[15px] text-[#4B5563] mb-2">
+              First Name <span class="text-red-500">*</span>
+            </label>
+            <input 
+              [(ngModel)]="firstName" 
+              name="firstName" 
+              type="text" 
+              class="w-full h-[52px] rounded-[14px] border border-[#D8DCE4] focus:border-[#7A5BC0] focus:ring-2 focus:ring-[#DCD2F0] outline-none px-4 font-fredoka text-[16px] text-[#374151] placeholder:text-[#9CA3AF]" 
+              placeholder="Enter first name" 
+            />
+          </div>
+          <div>
+            <label class="block font-fredoka font-semibold text-[15px] text-[#4B5563] mb-2">
+              Last Name <span class="text-red-500">*</span>
+            </label>
+            <input 
+              [(ngModel)]="lastName" 
+              name="lastName" 
+              type="text" 
+              class="w-full h-[52px] rounded-[14px] border border-[#D8DCE4] focus:border-[#7A5BC0] focus:ring-2 focus:ring-[#DCD2F0] outline-none px-4 font-fredoka text-[16px] text-[#374151] placeholder:text-[#9CA3AF]" 
+              placeholder="Enter last name" 
+            />
+          </div>
+        </div>
+
+        <div>
+          <label class="block font-fredoka font-semibold text-[15px] text-[#4B5563] mb-2">Preferred Name</label>
+          <input 
+            [(ngModel)]="username" 
+            name="username" 
+            type="text" 
+            class="w-full h-[52px] rounded-[14px] border border-[#D8DCE4] focus:border-[#7A5BC0] focus:ring-2 focus:ring-[#DCD2F0] outline-none px-4 font-fredoka text-[16px] text-[#374151] placeholder:text-[#9CA3AF]" 
+            placeholder="Enter preferred name" 
+          />
+        </div>
+
+        <!-- Date and Gender -->
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-6">
+          <div>
+            <label class="block font-fredoka font-semibold text-[15px] text-[#4B5563] mb-2">
+              Date of Birth <span class="text-red-500">*</span>
+            </label>
+            <mat-form-field class="w-full custom-date-field">
+              <input 
+                matInput 
+                [matDatepicker]="picker" 
+                [(ngModel)]="dateOfBirth" 
+                name="dob" 
+                [max]="maxDate" 
+                [min]="minDate" 
+                readonly 
+                (click)="picker.open()"
+                class="font-fredoka text-[16px]"
+              >
+              <mat-datepicker-toggle matSuffix [for]="picker" class="custom-calendar-icon">
+                <mat-icon matDatepickerToggleIcon>calendar_today</mat-icon>
+              </mat-datepicker-toggle>
+              <mat-datepicker #picker [startView]="'multi-year'"></mat-datepicker>
+            </mat-form-field>
+          </div>
+          <div>
+            <label class="block font-fredoka font-semibold text-[15px] text-[#4B5563] mb-2">
+              Gender <span class="text-red-500">*</span>
+            </label>
+            <mat-form-field class="w-full custom-select-field">
+              <mat-select 
+                [(ngModel)]="gender" 
+                name="gender" 
+                (selectionChange)="onGenderChange()"
+                class="font-fredoka text-[16px]"
+              >
+                <mat-option value="MALE">Male</mat-option>
+                <mat-option value="FEMALE">Female</mat-option>
+              </mat-select>
+            </mat-form-field>
+          </div>
+        </div>
+
+        <!-- Birth Certificate -->
+        <div>
+          <label class="block font-fredoka font-semibold text-[15px] text-[#4B5563] mb-2">Birth Certificate Number</label>
+          <input 
+            [(ngModel)]="birthCertNumber" 
+            name="birthCertNumber" 
+            type="text" 
+            class="w-full h-[52px] rounded-[14px] border border-[#D8DCE4] focus:border-[#7A5BC0] focus:ring-2 focus:ring-[#DCD2F0] outline-none px-4 font-fredoka text-[16px] text-[#374151] placeholder:text-[#9CA3AF]" 
+            placeholder="Enter birth certificate number" 
+          />
+        </div>
+
+        <!-- Course and Grade -->
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-6">
+          <div>
+            <label class="block font-fredoka font-semibold text-[15px] text-[#4B5563] mb-2">
+              Course <span class="text-red-500">*</span>
+            </label>
+            <mat-form-field class="w-full custom-select-field">
+              <mat-select 
+                [(ngModel)]="selectedCourseId" 
+                name="course" 
+                (selectionChange)="onCourseChange()"
+                class="font-fredoka text-[16px]"
+              >
+                <mat-option *ngFor="let course of courses" [value]="course.id">
+                  {{ course.title }}
+                </mat-option>
+              </mat-select>
+            </mat-form-field>
+          </div>
+          <div>
+            <label class="block font-fredoka font-semibold text-[15px] text-[#4B5563] mb-2">
+              Grade <span class="text-red-500">*</span>
+            </label>
+            <mat-form-field class="w-full custom-select-field">
+              <mat-select 
+                [(ngModel)]="selectedGradeId" 
+                name="grade"
+                class="font-fredoka text-[16px]"
+              >
+                <mat-option *ngFor="let grade of grades" [value]="grade.id">
+                  {{ grade.name }}
+                </mat-option>
+              </mat-select>
+            </mat-form-field>
+          </div>
+        </div>
+
+        <!-- Avatar Selection -->
+        <div class="flex flex-col items-center py-4">
+          <label class="block font-fredoka font-semibold text-[15px] text-[#4B5563] mb-4 text-center">Avatar</label>
+          <div 
+            (click)="openAvatarModal()" 
+            class="w-[100px] h-[100px] md:w-[120px] md:h-[120px] rounded-[20px] md:rounded-[25px] flex items-center justify-center cursor-pointer transition-all duration-200 overflow-hidden bg-gradient-to-br from-[#BAE8E8] to-[#EEDAE4] hover:scale-105 border-2 border-dashed border-[#9333EA] hover:border-solid"
+          >
+            <img 
+              *ngIf="selectedAvatar" 
+              [src]="getSelectedAvatarPath()" 
+              class="w-full h-full object-cover"
+              alt="Selected avatar"
+            >
+            <mat-icon *ngIf="!selectedAvatar" class="text-[#9333EA] text-[32px] md:text-[40px]">photo_camera</mat-icon>
+          </div>
+          <span class="mt-3 font-fredoka font-semibold text-[#9333EA] text-sm md:text-base">Change Avatar</span>
+        </div>
+      </form>
+    </div>
+
+    <!-- Footer -->
+    <div class="px-6 md:px-10 pb-6 md:pb-8 pt-4 flex gap-3 justify-end border-t border-[#F1EBFA]">
+      <button
+        (click)="onClose()"
+        [disabled]="isSubmitting"
+        class="h-[48px] md:h-[52px] px-6 md:px-8 rounded-[14px] bg-[#EEF0F5] text-[#6B7280] font-fredoka font-semibold text-[16px] md:text-[17px] hover:bg-[#E5E7EB] disabled:opacity-60 cursor-pointer transition-colors"
+      >
+        Cancel
+      </button>
+      <button
+        (click)="onUpdate()"
+        [disabled]="isSubmitting || isLoadingData"
+        class="h-[48px] md:h-[52px] px-6 md:px-8 rounded-[14px] bg-[linear-gradient(90deg,#667DE8_0%,#754DA5_100%)] text-white font-fredoka font-bold text-[16px] md:text-[17px] hover:shadow-[0_10px_28px_0_rgba(117,77,165,0.35)] disabled:opacity-60 cursor-pointer transition-all"
+      >
+        {{ isSubmitting ? 'Updating...' : 'Save Changes' }}
+      </button>
+    </div>
+  </div>
+
+  <!-- Avatar Selection Modal -->
+  <div 
+    *ngIf="isAvatarModalOpen" 
+    class="fixed inset-0 bg-black/60 backdrop-blur-sm flex items-center justify-center z-[140] p-4" 
+    (click)="closeAvatarModal()"
+  >
+    <div 
+      class="bg-white rounded-[25px] md:rounded-[30px] p-6 md:p-10 max-w-[600px] w-full max-h-[80vh] overflow-y-auto shadow-2xl border border-[#EEE8F7]" 
+      (click)="$event.stopPropagation()"
+    >
+      <div class="text-center mb-6">
+        <h3 class="font-fredoka font-bold text-[20px] md:text-[24px] text-[#374151] mb-2">Choose Avatar</h3>
+        <p class="font-fredoka text-[14px] md:text-[16px] text-[#6B7280]">Select an avatar for {{ learner?.firstName || 'the learner' }}</p>
+      </div>
+      
+      <div *ngIf="isLoadingAvatars" class="flex justify-center py-8">
+        <div class="animate-spin rounded-full h-8 w-8 border-b-2 border-[#9333EA]"></div>
+      </div>
+      
+      <div *ngIf="!isLoadingAvatars" class="grid grid-cols-3 sm:grid-cols-4 gap-4">
+        <div 
+          *ngFor="let avatar of avatars" 
+          (click)="selectAvatar(avatar)" 
+          class="aspect-square rounded-2xl overflow-hidden cursor-pointer border-4 transition-all hover:scale-105" 
+          [class.border-[#9333EA]]="selectedAvatar === avatar.filename"
+          [class.border-transparent]="selectedAvatar !== avatar.filename"
+          [class.shadow-lg]="selectedAvatar === avatar.filename"
+        >
+          <img [src]="avatar.path" class="w-full h-full object-cover" [alt]="avatar.filename">
+        </div>
+      </div>
+      
+      <div class="flex justify-center mt-6">
+        <button
+          (click)="closeAvatarModal()"
+          class="px-6 py-2 rounded-[12px] bg-[#EEF0F5] text-[#6B7280] font-fredoka font-semibold text-[14px] hover:bg-[#E5E7EB] transition-colors"
+        >
+          Close
+        </button>
+      </div>
+    </div>
+  </div>
+</div>

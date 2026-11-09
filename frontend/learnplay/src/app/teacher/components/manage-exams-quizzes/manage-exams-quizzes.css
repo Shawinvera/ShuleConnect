@@ -1,0 +1,24 @@
+/* 
+   Mat-Table Overrides to match the clean design 
+   Tailwind !important classes handle most, but these ensure 
+   Material specific behaviors are overridden 
+*/
+
+.mat-mdc-table {
+    background: transparent !important;
+}
+
+.mat-mdc-header-row {
+    background: transparent !important;
+}
+
+/* Add spacing between header and content */
+tr.mat-mdc-header-row {
+    height: 60px !important;
+}
+
+/* Remove default material dividers if desired, or keep them light */
+.mat-mdc-row {
+    border-bottom-color: #f3f4f6 !important; /* Tailwind gray-100 */
+}
+

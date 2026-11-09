@@ -1,0 +1,281 @@
+<div
+  class="min-h-screen px-4 md:px-8 lg:px-16 xl:px-[150px] !bg-gradient-to-b from-[#F5F5FF] to-[#FBF4FC] animate-fade-in"
+>
+  <app-toast
+    [message]="toast.message"
+    [type]="toast.type"
+    [visible]="toast.visible"
+    (dismissed)="toast.dismiss()"
+  >
+  </app-toast>
+
+  <!-- Back Button -->
+  <div class="mb-1 md:mb-2">
+    <app-kid-breadcrumb></app-kid-breadcrumb>
+  </div>
+
+  <!-- Greeting -->
+  <div
+    class="mb-1 md:mb-2 flex flex-col md:flex-row justify-between items-start md:items-center gap-6"
+  >
+    <!-- Greeting Block -->
+    <div class="flex flex-col gap-1 md:gap-2">
+      <h1
+        class="font-fredoka font-bold text-[#9333EA] text-2xl sm:text-3xl md:text-4xl lg:text-[65px] leading-tight tracking-[-0.4px]"
+      >
+        Hello, {{ userName }}! 👋
+      </h1>
+      <p
+        class="font-fredoka font-normal text-[#374151] text-base sm:text-lg md:text-[30px] leading-snug tracking-[-0.4px]"
+      >
+        What do you want to learn today?
+      </p>
+    </div>
+
+    <!-- SEARCH BAR CONTAINER -->
+    <div
+      #searchContainer
+      class="mb-2 md:mb-0 relative flex items-center bg-white rounded-2xl shadow-sm border-2 focus-within:border-[#9333EA] transition-all duration-500 ease-in-out h-[55px] md:h-[65px]"
+      [ngClass]="{
+        'w-full': true,
+        'md:w-[65px]': !isSearchExpanded,
+        'md:w-[400px]': isSearchExpanded,
+        'border-transparent': !isSearchExpanded,
+        'border-[#9333EA]/30': isSearchExpanded,
+      }"
+    >
+      <!-- Search Icon / Toggle Button -->
+      <button
+        (click)="toggleSearch()"
+        type="button"
+        class="absolute left-0 z-30 w-[55px] h-[55px] md:w-[65px] md:h-[65px] flex items-center justify-center rounded-2xl bg-transparent transition-all md:cursor-pointer outline-none"
+        [class.md:hover:bg-purple-50]="!isSearchExpanded"
+      >
+        <!-- Increased icon size slightly for better visuals -->
+        <mat-icon
+          [class.text-[#9333EA]]="isSearchExpanded"
+          class="text-gray-400 !w-6 !h-6 !text-[24px]"
+          >search</mat-icon
+        >
+      </button>
+
+      <!-- Input Field -->
+      <input
+        id="subjectSearch"
+        type="text"
+        [(ngModel)]="searchTerm"
+        (input)="applyFilter()"
+        placeholder="Search for a subject..."
+        class="w-full h-full pl-14 md:pl-20 pr-4 md:pr-12 bg-transparent rounded-2xl focus:outline-none font-fredoka text-base md:text-lg transition-all duration-500 ease-in-out"
+        [ngClass]="{
+          'opacity-100 pointer-events-auto': isSearchExpanded,
+          'md:opacity-0 md:pointer-events-none': !isSearchExpanded,
+        }"
+      />
+
+      <!-- Close Icon (Visible when expanded) -->
+      <button
+        *ngIf="isSearchExpanded"
+        (click)="isSearchExpanded = false; searchTerm = ''; applyFilter()"
+        class="hidden md:flex absolute right-4 z-30 text-gray-400 hover:text-red-500 transition-colors bg-transparent outline-none"
+      >
+        <mat-icon class="!text-[20px] !w-5 !h-5">close</mat-icon>
+      </button>
+    </div>
+  </div>
+
+  <!-- Subjects Grid -->
+  <div class="w-full">
+    <app-spinner-overlay *ngIf="isLoading" [inline]="true"></app-spinner-overlay>
+
+    <!-- 2. ERROR State (API Failed) -->
+    <div
+      *ngIf="!isLoading && loadError"
+      class="flex flex-col items-center justify-center py-12 px-6 bg-white rounded-[30px] shadow-sm border-2 border-dashed border-red-200 text-center animate-fade-in"
+    >
+      <div class="w-20 h-20 mb-4 bg-red-100 rounded-full flex items-center justify-center">
+        <mat-icon class="text-red-500 !w-10 !h-10 !text-[40px]">cloud_off</mat-icon>
+      </div>
+      <h2 class="font-fredoka font-bold text-2xl md:text-3xl text-[#374151] mb-2">
+        Connection Problem
+      </h2>
+      <p class="font-fredoka text-[#6B7280] text-lg max-w-md mb-6">
+        We're having trouble reaching the classroom. Please check your internet and try again!
+      </p>
+      <button
+        (click)="ngOnInit()"
+        class="px-8 py-3 bg-[#9333EA] text-white font-fredoka font-bold rounded-2xl hover:scale-105 transition-transform"
+      >
+        Try Again
+      </button>
+    </div>
+
+    <!-- 3. EMPTY State (No Subjects Found for this Grade) -->
+    <div
+      *ngIf="!isLoading && !loadError && allSubjects.length === 0"
+      class="flex flex-col items-center justify-center py-12 px-6 bg-white rounded-[30px] shadow-sm border-2 border-dashed border-purple-200 text-center animate-fade-in"
+    >
+      <div class="w-24 h-24 mb-4">
+        <img
+          src="assets/icons/clock.png"
+          class="w-full h-full object-contain opacity-50 grayscale"
+          alt="empty"
+        />
+      </div>
+      <h2 class="font-fredoka font-bold text-2xl md:text-3xl text-[#374151] mb-2">
+        No Lessons Yet!
+      </h2>
+      <p class="font-fredoka text-[#6B7280] text-lg max-w-md mb-6">
+        It looks like there aren't any subjects added for your grade yet. Check back soon for some
+        fun learning!
+      </p>
+      <button
+        (click)="onBackToSelectLearner()"
+        class="px-8 py-3 border-2 border-[#9333EA] text-[#9333EA] font-fredoka font-bold rounded-2xl hover:bg-purple-50 transition-colors"
+      >
+        Go Back
+      </button>
+    </div>
+
+    <!-- Search Empty State (Added this part) -->
+    <div
+      *ngIf="!isLoading && !loadError && filteredSubjects.length === 0 && allSubjects.length > 0"
+      class="flex flex-col items-center justify-center py-12 px-6 bg-white rounded-[30px] shadow-sm border-2 border-dashed border-purple-200 text-center animate-fade-in"
+    >
+      <div class="w-20 h-20 mb-4 bg-purple-50 rounded-full flex items-center justify-center">
+        <mat-icon class="text-[#9333EA] !w-10 !h-10 !text-[40px]">search_off</mat-icon>
+      </div>
+      <h2 class="font-fredoka font-bold text-2xl text-[#374151] mb-2">Subject not found</h2>
+      <p class="font-fredoka text-[#6B7280] text-lg">
+        We couldn't find anything matching "{{ searchTerm }}"
+      </p>
+      <button
+        (click)="searchTerm = ''; applyFilter()"
+        class="mt-4 text-[#9333EA] font-bold underline"
+      >
+        Clear search
+      </button>
+    </div>
+
+    <!-- 1. CHANGE: grid-cols-2 for mobile, lg:grid-cols-3 for desktop -->
+    <div
+      *ngIf="!isLoading && !loadError && allSubjects.length > 0"
+      class="grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-3 gap-3 md:gap-5"
+    >
+      @for (subject of filteredSubjects; track subject.id; let i = $index) {
+        <!-- 1. CHANGE: Changed min-h-[180px] to h-auto and justify-between to justify-start (mobile) -->
+        <mat-card
+          (click)="onSelectSubject(subject)"
+          [class.guide-highlight]="showSubjectGuide && i === 0"
+          class="!p-3 md:!p-6 !shadow-[0_6px_30px_0_rgba(0,0,0,0.1)] hover:!shadow-xl hover:scale-[1.01] transition-all !bg-[#FFFFFF] !rounded-[20px] md:!rounded-[23px] !cursor-pointer flex flex-col gap-3 md:gap-5 h-auto"
+        >
+          <!-- Main Header: Icon + (Title & Description) -->
+          <div class="flex flex-col md:flex-row items-start md:items-center gap-3 md:gap-6 w-full">
+            <!-- Top Row for Mobile: Icon + Points -->
+            <div class="flex flex-row items-center justify-between w-full md:w-auto shrink-0">
+              <!-- Icon Section -->
+              <div
+                class="w-12 h-12 md:w-[86px] md:h-[85px] flex items-center justify-center rounded-[12px] md:rounded-[18px] shrink-0"
+                [style.backgroundColor]="subject.bgColor"
+              >
+                <img
+                  [src]="subject.icon"
+                  class="w-7 h-7 md:w-[60px] md:h-[60px] object-contain"
+                  [alt]="subject.name"
+                />
+              </div>
+
+              <!-- Points Display for MOBILE (Only visible on mobile, positioned beside icon) -->
+              <div class="flex md:hidden items-center gap-1 shrink-0">
+                <img src="assets/icons/star.png" class="w-4 h-4" alt="star" />
+                <span class="font-fredoka font-bold text-sm text-[#E4B936]">
+                  {{ subject.points }}
+                </span>
+              </div>
+            </div>
+
+            <!-- Text Section (Title & Description) -->
+            <!-- On mobile, this will naturally wrap below the icon/points row -->
+            <div class="flex-1 min-w-0 flex flex-col w-full">
+              <h2
+                class="font-[Fredoka] font-bold text-base md:text-xl lg:text-[35px] leading-tight tracking-[-0.3px]"
+                [style.color]="subject.textColor"
+                [innerHTML]="subject.name | highlight: searchTerm"
+              >
+                <!-- Removed 'truncate' class -->
+                {{ subject.name }}
+              </h2>
+
+              <!-- Description with Ellipsis (Kept as requested) -->
+              <p
+                class="font-[Fredoka] font-normal text-xs md:text-sm lg:text-[20px] text-[#6B7280] leading-tight line-clamp-1 md:line-clamp-2 mt-0.5"
+              >
+                {{ subject.description }}
+              </p>
+            </div>
+          </div>
+
+          <!-- Progress Bar (Hidden on mobile) -->
+          <div class="hidden md:block w-full">
+            <div class="flex justify-between items-center mb-1.5">
+              <p class="font-[Fredoka] font-normal text-sm md:text-[18px] text-[#374151]">
+                Progress
+              </p>
+              <p class="font-[Fredoka] font-semibold text-sm md:text-[18px] text-[#374151]">
+                {{ subject.progress }}%
+              </p>
+            </div>
+            <div class="w-full h-[14px] md:h-[20px] rounded-full overflow-hidden">
+              <app-progress-bar
+                class="w-full h-full"
+                [value]="subject.progress"
+                [barColor]="subject.gradient"
+              >
+              </app-progress-bar>
+            </div>
+          </div>
+
+          <!-- Points Display for DESKTOP (Hidden on mobile) -->
+          <div class="hidden md:flex items-center gap-2">
+            <img src="assets/icons/star.png" class="w-5 h-5 md:w-[26px] md:h-[26px]" alt="star" />
+            <span class="font-[Fredoka] font-normal text-sm md:text-[18px] text-[#374151]">
+              {{ subject.points }} points earned
+            </span>
+          </div>
+        </mat-card>
+      }
+    </div>
+  </div>
+
+  <div
+    *ngIf="showSubjectGuide"
+    class="fixed left-3 right-3 bottom-[86px] md:left-auto md:right-8 md:bottom-8 z-[10030] max-w-none md:max-w-[360px]"
+  >
+    <div
+      class="rounded-[18px] border border-[#E8DDFB] bg-white shadow-[0_14px_40px_rgba(74,34,122,0.26)] overflow-hidden"
+    >
+      <div class="bg-[linear-gradient(90deg,#667DE8_0%,#754DA5_100%)] px-4 py-3">
+        <p class="font-fredoka font-bold text-[20px] text-white">Learning Guide</p>
+      </div>
+      <div class="p-4">
+        <p class="font-fredoka text-[15px] text-[#374151] leading-6">
+          Click a subject card to start learning that subject.
+        </p>
+        <div class="flex justify-end mt-3">
+          <button
+            (click)="skipAllGuides()"
+            class="px-4 py-2 rounded-[10px] bg-[#EEF0F5] text-[#6B7280] font-fredoka font-semibold text-[14px] mr-2"
+          >
+            Skip
+          </button>
+          <button
+            (click)="dismissSubjectGuide()"
+            class="px-4 py-2 rounded-[10px] bg-[linear-gradient(90deg,#667DE8_0%,#754DA5_100%)] text-white font-fredoka font-semibold text-[14px]"
+          >
+            Got it
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

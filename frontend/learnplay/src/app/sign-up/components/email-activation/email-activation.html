@@ -1,0 +1,41 @@
+<div class="h-screen overflow-hidden bg-gradient-to-b from-[#F5F5FF] to-[#FBF4FC] w-full flex items-center justify-center px-4 sm:px-8 md:px-12 lg:px-0">
+  <div class="w-full max-w-[520px] mx-auto">
+    <div class="w-full p-[16px] md:p-[30px] lg:pt-[50px] lg:pr-[40px] lg:pb-[50px] lg:pl-[40px] flex flex-col gap-[20px] md:gap-[30px] rounded-[15px] md:rounded-[20px] lg:rounded-[23px] bg-white shadow-[0px_6px_30px_0px_#0000001A] text-center">
+
+      <!-- Success -->
+      <ng-container *ngIf="success && !isLoading">
+        <div class="flex flex-col items-center gap-[12px]">
+          <div class="w-[70px] h-[70px] md:w-[100px] md:h-[100px] rounded-full bg-green-100 flex items-center justify-center">
+            <svg xmlns="http://www.w3.org/2000/svg" class="w-[36px] h-[36px] md:w-[52px] md:h-[52px] text-green-500" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7" />
+            </svg>
+          </div>
+          <span class="font-fredoka font-bold text-[26px] md:text-[38px] lg:text-[45px] text-[#9333EA]">Email Verified!</span>
+          <span class="font-fredoka font-normal text-[14px] md:text-[18px] lg:text-[20px] text-[#374151]">Your account has been activated. You can now sign in.</span>
+        </div>
+        <button (click)="onGoToSignIn()"
+          class="w-full h-[48px] md:h-[70px] lg:h-[83px] rounded-[15px] md:rounded-[18px] lg:rounded-[20px] bg-gradient-to-r from-[#687AE4] to-[#7452AC] flex items-center justify-center cursor-pointer">
+          <span class="font-fredoka font-bold text-[16px] md:text-[22px] lg:text-[25px] tracking-[-0.4px] text-white">Sign In</span>
+        </button>
+      </ng-container>
+
+      <!-- Failed -->
+      <ng-container *ngIf="!success && !isLoading">
+        <div class="flex flex-col items-center gap-[12px]">
+          <div class="w-[70px] h-[70px] md:w-[100px] md:h-[100px] rounded-full bg-red-100 flex items-center justify-center">
+            <svg xmlns="http://www.w3.org/2000/svg" class="w-[36px] h-[36px] md:w-[52px] md:h-[52px] text-red-500" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />
+            </svg>
+          </div>
+          <span class="font-fredoka font-bold text-[26px] md:text-[38px] lg:text-[45px] text-[#9333EA]">Activation Failed</span>
+          <span class="font-fredoka font-normal text-[14px] md:text-[18px] lg:text-[20px] text-[#374151]">The activation link is invalid or has expired. Please sign up again.</span>
+        </div>
+        <button (click)="onGoToSignUp()"
+          class="w-full h-[48px] md:h-[70px] lg:h-[83px] rounded-[15px] md:rounded-[18px] lg:rounded-[20px] bg-gradient-to-r from-[#687AE4] to-[#7452AC] flex items-center justify-center cursor-pointer">
+          <span class="font-fredoka font-bold text-[16px] md:text-[22px] lg:text-[25px] tracking-[-0.4px] text-white">Back to Sign Up</span>
+        </button>
+      </ng-container>
+
+    </div>
+  </div>
+</div>

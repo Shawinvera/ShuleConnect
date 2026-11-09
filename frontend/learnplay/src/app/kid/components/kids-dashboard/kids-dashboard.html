@@ -1,0 +1,81 @@
+<app-navbar></app-navbar>
+
+<!-- Fixed Floating Countdown -->
+<ng-container *ngIf="shouldShowTimer()">
+  <!-- 1. MOBILE TICKER (Visible only on mobile) -->
+  <div
+    class="md:hidden fixed bottom-[65px] left-0 w-full bg-red-500 text-white flex items-center h-10 z-[9999] shadow-[0_-4px_10px_rgba(0,0,0,0.1)] border-t border-red-600 font-fredoka animate-fade-in"
+  >
+    <div class="flex-1 overflow-hidden relative h-full flex items-center">
+      <div class="animate-marquee whitespace-nowrap">
+        <div class="flex items-center gap-2 h-full">
+          <div class="relative flex h-2 w-2 ml-4 shrink-0">
+            <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-white opacity-75"></span>
+            <span class="relative inline-flex rounded-full h-2 w-2 bg-white shrink-0"></span>
+          </div>
+          <span class="text-[13px] font-bold uppercase tracking-wider flex items-center gap-1">
+            Subscription Expires In 😱 <span class="tabular-nums ml-1">{{ getCountdown() }}</span>
+          </span>
+        </div>
+      </div>
+    </div>
+
+    @if (lastThresholdReached > 600000) {
+      <button
+        (click)="dismissTimer($event)"
+        class="px-4 bg-red-500 text-white hover:bg-red-600 h-full flex items-center justify-center shrink-0 z-10 shadow-[-8px_0_8px_-4px_rgba(239,68,68,1)] relative border-l border-red-400"
+      >
+        <mat-icon class="!w-5 !h-5 !text-[20px]">close</mat-icon>
+      </button>
+    }
+  </div>
+
+  <!-- 2. DESKTOP FLOATING CARD (Hidden on mobile) -->
+  <div class="hidden md:flex fixed top-[90px] right-4 md:right-12 lg:right-[150px] z-[9999] animate-fade-in">
+    <div class="group relative flex items-center gap-3 bg-white border-2 border-red-500 px-4 py-3 rounded-2xl shadow-[0_10px_25px_-5px_rgba(239,68,68,0.4)]">
+      <div class="relative flex h-3 w-3 shrink-0">
+        <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-red-400 opacity-75"></span>
+        <span class="relative inline-flex rounded-full h-3 w-3 bg-red-600"></span>
+      </div>
+
+      <div class="flex flex-col">
+        <span class="text-[10px] uppercase font-bold text-red-500 tracking-wider flex items-center gap-1">
+          Subscription Expires In <span class="text-base md:text-2xl leading-none">😱</span>
+        </span>
+        <span class="font-fredoka font-bold text-gray-800 text-sm md:text-lg tabular-nums">
+          {{ getCountdown() }}
+        </span>
+      </div>
+
+      @if (lastThresholdReached > 600000) {
+        <button
+          (click)="dismissTimer($event)"
+          class="ml-2 p-1 hover:bg-gray-100 rounded-full transition-colors text-gray-400 hover:text-red-500 shrink-0"
+        >
+          <mat-icon class="!w-5 !h-5 !text-[20px]">close</mat-icon>
+        </button>
+      }
+    </div>
+  </div>
+</ng-container>
+
+<div class="dashboard-content font-fredoka">
+  <!-- COMMENTED OUT RESTRICTIONS BELOW -->
+  <!-- 
+  @if (currentStep === 'plan-selection') {
+    <app-choose-plan (planSelected)="onPlanSelected($event)"></app-choose-plan>
+  } @else if (currentStep === 'payment' && selectedPlan) {
+    <app-payment-method
+      [plan]="selectedPlan"
+      (paymentComplete)="onPaymentSuccess()"
+      (backToPlans)="returnToPlans()"
+    >
+    </app-payment-method>
+  } @else {
+    <router-outlet></router-outlet>
+  } 
+  -->
+
+  <!-- DIRECT ACCESS TO DASHBOARD CONTENT -->
+  <router-outlet></router-outlet>
+</div>

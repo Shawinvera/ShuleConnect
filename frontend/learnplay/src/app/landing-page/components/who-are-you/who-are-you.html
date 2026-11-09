@@ -1,0 +1,114 @@
+<div class="min-h-screen flex items-center justify-center p-4 md:p-8 lg:p-[65px] 
+            bg-gradient-to-b from-[#F5F5FF] to-[#FBF4FC]">
+  <div class="text-center w-full max-w-[520px] md:max-w-[1449px] mx-auto flex flex-col gap-8 md:gap-12 lg:gap-[70px]">
+    <div class="w-full flex flex-col gap-2 md:gap-6 lg:gap-[27px]">
+      <h1 class="text-[44px] md:text-[55px] lg:text-[72px] font-[700] font-fredoka text-center tracking-[-0.4px] text-[#9333EA]">
+        Who Are You?
+      </h1>
+      <p class="text-[20px] md:text-[26px] lg:text-[33px] font-[400] font-fredoka text-center tracking-[-0.4px] leading-[24px] md:leading-[32px] lg:leading-[39px] text-[#374151]">
+        Choose your adventure!
+      </p>
+    </div>
+    
+    <div class="flex flex-col md:flex-row justify-center w-full gap-5 md:gap-8 lg:gap-[20px] px-0 md:px-0 lg:max-w-[900px] lg:mx-auto">
+      <!-- Kid Card -->
+      <div (click)="onSelectRole('kid')" 
+          [class.parent-guide-target]="showRoleGuide && roleGuideStep === 0"
+          class="w-full max-w-[453px] mx-auto bg-white rounded-[20px] md:rounded-[20px] lg:rounded-[23px] 
+                p-6 md:p-8 lg:pt-[50px] lg:pr-[40px] lg:pb-[50px] lg:pl-[40px] 
+                flex flex-col gap-3 md:gap-6 lg:gap-[10px] 
+                shadow-[0_6px_30px_0_rgba(0,0,0,0.1)] 
+                hover:shadow-[0_10px_40px_0_rgba(0,0,0,0.12)] 
+                hover:-translate-y-2 transition-all duration-300 cursor-pointer">
+        <div class="w-[110px] h-[110px] md:w-[100px] md:h-[100px] lg:w-[117px] lg:h-[117px] bg-custom-gradient 
+                    rounded-full flex items-center justify-center mx-auto mb-2 md:mb-6">
+          <img src="./assets/icons/male.png" alt="male" class="w-[60px] h-[60px] md:w-[50px] md:h-[50px] lg:w-[60px] lg:h-[60px]">
+        </div>
+        <div class="w-full flex flex-col gap-1 md:gap-2">
+          <h2 class="text-[34px] md:text-[32px] lg:text-[38px] font-[700] font-fredoka tracking-[-0.4px] leading-[36px] md:leading-[48px] lg:leading-[64px] text-[#CA8A04] text-left">
+            {{ showOnlyGuardianAndLearner ? "I'm a Learner" : "I'm a Kid!" }}
+          </h2>
+          <p class="text-[18px] md:text-[20px] lg:text-[25px] font-[400] font-fredoka tracking-[-0.4px] leading-[24px] md:leading-[28px] lg:leading-[39px] text-[#374151] text-left">
+            {{ showOnlyGuardianAndLearner ? 'Access learning content' : 'Learn and have fun!' }}
+          </p>
+        </div>
+      </div>
+
+      <!-- Parent Card -->
+      <div (click)="onSelectRole('parent')" 
+          [class.parent-guide-target]="showRoleGuide && roleGuideStep === 1"
+          class="w-full max-w-[453px] mx-auto bg-white rounded-[20px] md:rounded-[20px] lg:rounded-[23px] 
+                p-6 md:p-8 lg:pt-[50px] lg:pr-[40px] lg:pb-[50px] lg:pl-[40px] 
+                flex flex-col gap-3 md:gap-6 lg:gap-[10px] 
+                shadow-[0_6px_30px_0_rgba(0,0,0,0.1)] 
+                hover:shadow-[0_10px_40px_0_rgba(0,0,0,0.12)] 
+                hover:-translate-y-2 transition-all duration-300 cursor-pointer">
+        <div class="w-[110px] h-[110px] md:w-[100px] md:h-[100px] lg:w-[117px] lg:h-[117px] bg-gradient-to-br from-[#BAE8E8] via-[#BAE8E8] to-[#EEDAE4] 
+                    rounded-full flex items-center justify-center mx-auto mb-2 md:mb-6">
+          <img src="./assets/icons/family.png" alt="family" class="w-[60px] h-[60px] md:w-[50px] md:h-[50px] lg:w-[60px] lg:h-[60px]">
+        </div>
+        <div class="w-full flex flex-col gap-1 md:gap-2">
+          <h2 class="text-[34px] md:text-[32px] lg:text-[38px] font-[700] font-fredoka tracking-[-0.4px] leading-[36px] md:leading-[48px] lg:leading-[64px] text-[#3466EB] text-left">
+            {{ showOnlyGuardianAndLearner ? "I'm a Guardian" : "I'm a Parent" }}
+          </h2>
+          <p class="text-[18px] md:text-[20px] lg:text-[25px] font-[400] font-fredoka tracking-[-0.4px] leading-[24px] md:leading-[28px] lg:leading-[39px] text-[#374151] text-left">
+            Track my learner's progress
+          </p>
+        </div>
+      </div>
+
+      <!-- Teacher Card -->
+      <!-- <div *ngIf="!showOnlyGuardianAndLearner" (click)="onSelectRole('teacher')" 
+          class="w-full max-w-[453px] mx-auto bg-white rounded-[15px] md:rounded-[20px] lg:rounded-[23px] 
+                p-6 md:p-8 lg:pt-[50px] lg:pr-[40px] lg:pb-[50px] lg:pl-[40px] 
+                flex flex-col gap-4 md:gap-6 lg:gap-[10px] 
+                shadow-[0_6px_30px_0_rgba(0,0,0,0.1)] 
+                hover:shadow-[0_10px_40px_0_rgba(0,0,0,0.12)] 
+                hover:-translate-y-2 transition-all duration-300 cursor-pointer">
+        <div class="w-[80px] h-[80px] md:w-[100px] md:h-[100px] lg:w-[117px] lg:h-[117px] bg-gradient-to-br from-[#69EDA4] to-[#40D582]
+                    rounded-full flex items-center justify-center mx-auto mb-4 md:mb-6">
+                    <img src="./assets/icons/teacher.png" alt="teacher" class="w-[40px] h-[40px] md:w-[50px] md:h-[50px] lg:w-[60px] lg:h-[60px]">
+        </div>
+        <div class="w-full flex flex-col gap-1 md:gap-2">
+          <h2 class="text-[24px] md:text-[32px] lg:text-[38px] font-[700] font-fredoka tracking-[-0.4px] leading-[32px] md:leading-[48px] lg:leading-[64px] text-[#16A34A] text-center lg:text-left">
+            I'm a Teacher
+          </h2>
+          <p class="text-[16px] md:text-[20px] lg:text-[25px] font-[400] font-fredoka tracking-[-0.4px] leading-[22px] md:leading-[28px] lg:leading-[39px] text-[#374151] text-center lg:text-left">
+            Create amazing content
+          </p>
+        </div>
+      </div> -->
+    </div>
+  </div>
+
+  <div *ngIf="showRoleGuide" class="fixed bottom-4 right-4 md:bottom-8 md:right-8 z-[110] max-w-[340px]">
+    <div class="rounded-[18px] border border-[#E8DDFB] bg-white shadow-[0_14px_40px_rgba(74,34,122,0.26)] overflow-hidden">
+      <div class="bg-[linear-gradient(90deg,#667DE8_0%,#754DA5_100%)] px-4 py-3">
+        <p class="font-fredoka font-bold text-[20px] text-white">Quick Guide</p>
+      </div>
+      <div class="p-4">
+        <p class="font-fredoka text-[15px] text-[#374151] leading-6">
+          {{
+            roleGuideStep === 0
+              ? 'Tap Learner to pick a child and start learning courses.'
+              : 'Tap Guardian to open your parent dashboard and track your child progress.'
+          }}
+        </p>
+        <div class="flex justify-end mt-3">
+          <button
+            (click)="skipAllGuides()"
+            class="px-4 py-2 rounded-[10px] bg-[#EEF0F5] text-[#6B7280] font-fredoka font-semibold text-[14px] mr-2"
+          >
+            Skip
+          </button>
+          <button
+            (click)="nextRoleGuideStep()"
+            class="px-4 py-2 rounded-[10px] bg-[linear-gradient(90deg,#667DE8_0%,#754DA5_100%)] text-white font-fredoka font-semibold text-[14px]"
+          >
+            {{ roleGuideStep === 0 ? 'Next' : 'Got it' }}
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

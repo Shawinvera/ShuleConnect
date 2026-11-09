@@ -1,0 +1,62 @@
+/* Blinking cursor animation */
+@keyframes blink {
+  0%, 50% {
+    opacity: 1;
+  }
+  51%, 100% {
+    opacity: 0;
+  }
+}
+
+.animate-pulse {
+  animation: blink 1s infinite;
+}
+
+/* Loading spinner animation */
+@keyframes spin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.animate-spin {
+  animation: spin 1s linear infinite;
+}
+
+/* Button hover effects */
+button {
+  transition: all 0.3s ease-in-out;
+}
+
+button:hover:not(:disabled) {
+  transform: translateY(-1px);
+}
+
+button:active:not(:disabled) {
+  transform: translateY(0px);
+}
+
+/* Responsive button adjustments */
+@media (max-width: 768px) {
+  button {
+    font-size: 16px !important;
+    height: 48px !important;
+  }
+}
+
+@media (min-width: 769px) and (max-width: 1024px) {
+  button {
+    font-size: 18px !important;
+    height: 52px !important;
+  }
+}
+
+@media (min-width: 1025px) {
+  button {
+    font-size: 20px !important;
+    height: 56px !important;
+  }
+}

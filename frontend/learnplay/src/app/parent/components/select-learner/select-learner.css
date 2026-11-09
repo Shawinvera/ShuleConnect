@@ -1,0 +1,15 @@
+.bg-custom-gradient {
+  background: linear-gradient(135deg, #FAC815 0%, #F97616 100%);
+}
+
+@keyframes guidePulseSelectLearner {
+  0%, 100% { box-shadow: 0 0 0 0 rgba(103, 126, 232, 0.45); }
+  70% { box-shadow: 0 0 0 14px rgba(103, 126, 232, 0); }
+}
+
+.guide-highlight {
+  position: relative;
+  z-index: 3;
+  animation: guidePulseSelectLearner 2s infinite;
+  border: 2px solid #687ae4 !important;
+}

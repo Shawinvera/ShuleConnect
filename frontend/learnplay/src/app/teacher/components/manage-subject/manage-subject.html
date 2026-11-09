@@ -1,0 +1,197 @@
+<app-toast [message]="toast.message" [type]="toast.type" [visible]="toast.visible" (dismissed)="toast.dismiss()"></app-toast>
+<div class="min-h-screen bg-[#F3F4F8] font-sans pt-2 px-[12px] md:pt-4 md:px-[40px] xl:px-[150px] pb-[80px] md:pb-10 text-slate-800">
+    <app-teacher-breadcrumb></app-teacher-breadcrumb>
+
+    <!-- Header + Button -->
+    <div class="flex flex-col md:flex-row md:items-end justify-between gap-6 mb-12">
+      <div>
+        <h1 class="font-[Fredoka] font-bold text-[30px] md:text-[50px] leading-[44px] md:leading-[64px] tracking-[-0.4px] text-[#374151] mb-3">Manage Subjects</h1>
+        <p class="font-[Fredoka] font-normal text-[14px] md:text-[24px] leading-[28px] md:leading-[39px] tracking-[-0.4px] text-[#374151]">Create subjects that can be assigned to grades</p>
+      </div>
+      <button 
+        (click)="toggleForm()"
+        class="w-full md:w-[284px] h-[83px] text-white rounded-[20px] py-[20px] px-[55px] shadow-lg hover:shadow-xl transition-all duration-200 flex items-center justify-center gap-[10px] opacity-100"
+        style="background: linear-gradient(90deg, #4ADE80 0%, #687AE4 100%); font-family: 'Fredoka'; font-weight: 600; font-size: 25px; line-height: 43px; letter-spacing: -0.4px; text-align: center; vertical-align: middle;"
+      >
+        <span class="text-lg" *ngIf="!isFormVisible">+</span> 
+        <span class="text-lg" *ngIf="isFormVisible">×</span>
+        {{ isFormVisible ? 'Close Form' : 'Add Subject' }}
+      </button>
+    </div>
+
+    <!-- Add Subject Form -->
+    <div *ngIf="isFormVisible" class="bg-white shadow-sm px-4 sm:px-[30px] py-6 sm:py-[51px] mb-6 rounded-[23px] border-[5px] border-[#4C9AFC] space-y-6">
+      <h2 class="font-[Fredoka] font-semibold text-[40px] leading-[40px] tracking-[-0.4px] text-left text-[#374151]">{{ selectedSubjectId ? 'Edit Subject' : 'Add New Subject' }}</h2>
+      <form (ngSubmit)="onSubmit()">
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-6">
+          <div>
+            <label class="block text-sm font-bold text-[#374151] mb-2">Subject Name *</label>
+            <input type="text" [(ngModel)]="formData.name" name="subjectName" placeholder="e.g. Mathematics"
+              [style.color]="formData.colour || '#374151'"
+              class="mt-[10px] w-full h-[79px] bg-white border-gray-200 border-[2px] rounded-[20px] px-[20px] py-[25px] font-fredoka font-normal text-[23px] leading-[29px] tracking-[-0.4px] placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500" required />
+          </div>
+          <div>
+            <label class="block text-sm font-bold text-[#374151] mb-2">Icon</label>
+            <div class="mt-[10px] flex items-center gap-3">
+              <div class="w-[79px] h-[79px] rounded-[20px] border-[2px] border-gray-200 flex items-center justify-center bg-gray-50 overflow-hidden">
+                <img *ngIf="formData.icon" [src]="getIconPath(formData.icon)" class="w-14 h-14 object-contain" />
+                <span *ngIf="!formData.icon" class="text-gray-400 text-[30px]">🖼</span>
+              </div>
+              <button type="button" (click)="openIconPicker()"
+                class="h-[79px] px-6 bg-white border-[2px] border-gray-200 rounded-[20px] font-fredoka font-semibold text-[20px] text-[#374151] hover:border-blue-400 hover:text-blue-500 transition-colors">
+                Browse Icons
+              </button>
+            </div>
+          </div>
+          <div>
+            <label class="block text-sm font-bold text-[#374151] mb-2">Subject Colour</label>
+            <div class="mt-[10px] flex items-center gap-3">
+              <div class="w-[79px] h-[79px] rounded-[20px] border-[2px] border-gray-200 flex items-center justify-center"
+                [style.background]="formData.colour || '#F3F4F6'">
+                <span *ngIf="!formData.colour" class="text-gray-400 text-[24px]">🎨</span>
+              </div>
+              <button type="button" (click)="openColourPicker()"
+                class="h-[79px] px-6 bg-white border-[2px] border-gray-200 rounded-[20px] font-fredoka font-semibold text-[20px] text-[#374151] hover:border-purple-400 hover:text-purple-500 transition-colors">
+                Pick Colour
+              </button>
+            </div>
+          </div>
+        </div>
+        <div>
+          <label class="block text-sm font-bold text-[#374151] mb-2">Description</label>
+          <textarea placeholder="Brief description..." [(ngModel)]="formData.description" name="description"
+            class="mt-[10px] w-full bg-white border-gray-200 border-[2px] rounded-[20px] px-[20px] py-[25px] font-fredoka font-normal text-[23px] leading-[29px] tracking-[-0.4px] text-[#374151] placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500 min-h-[100px] resize-y"></textarea>
+        </div>
+        <div class="flex flex-col sm:flex-row gap-3 mt-4">
+          <button type="submit" [disabled]="!isFormChanged"
+            class="px-6 py-2.5 text-white font-semibold rounded-lg transition-colors"
+            [ngClass]="isFormChanged ? 'bg-[#4A90E2] hover:bg-blue-600 cursor-pointer' : 'bg-gray-300 cursor-not-allowed'">
+            {{ selectedSubjectId ? 'Update Subject' : 'Save Subject' }}
+          </button>
+          <button type="button" (click)="toggleForm()" class="px-6 py-2.5 bg-gray-200 hover:bg-gray-300 text-slate-700 font-semibold rounded-lg transition-colors">Cancel</button>
+        </div>
+      </form>
+    </div>
+
+    <!-- Subject Cards -->
+    <div class="space-y-4">
+      <app-spinner-overlay *ngIf="isLoading" [inline]="true"></app-spinner-overlay>
+      <!-- Mobile Layout -->
+      <div *ngIf="!isLoading" class="block sm:hidden space-y-4">
+        <div *ngFor="let subject of subjects" class="bg-white p-4 rounded-xl shadow-sm border border-slate-100 hover:shadow-md transition-shadow">
+          <div class="flex flex-col items-start text-left mb-4">
+            <div class="w-28 h-28 rounded-lg flex items-center justify-center overflow-hidden mb-3">
+              <img *ngIf="subject.icon" [src]="subject.icon" [alt]="subject.name" class="w-24 h-24 object-contain" />
+            </div>
+            <h3 class="font-[Fredoka] font-semibold text-[35px] leading-[40px] tracking-[-0.4px] text-[#374151] mb-1" [style.color]="subject.colour || '#374151'">{{ subject.name }}</h3>
+            <p class="font-[Fredoka] font-normal text-[22px] leading-[39px] tracking-[-0.4px] text-slate-500">{{ subject.description }}</p>
+          </div>
+          <div class="flex gap-2 justify-start">
+            <button (click)="handleEdit(subject.id)"
+              class="action-btn bg-[#8B5CF6] hover:bg-[#7C3AED] text-white p-2.5 rounded-lg transition-all duration-200 hover:scale-105 hover:shadow-lg flex items-center justify-center"
+              title="Edit Subject">
+              <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"></path>
+              </svg>
+            </button>
+            <button (click)="handleDelete(subject.id)"
+              class="action-btn bg-[#EF4444] hover:bg-[#DC2626] text-white p-2.5 rounded-lg transition-all duration-200 hover:scale-105 hover:shadow-lg flex items-center justify-center"
+              title="Delete Subject">
+              <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"></path>
+              </svg>
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Desktop Layout -->
+      <div *ngIf="!isLoading" class="hidden sm:block space-y-4">
+        <div *ngFor="let subject of subjects" class="bg-white p-4 rounded-xl shadow-sm border border-slate-100 flex items-center justify-between gap-4 hover:shadow-md transition-shadow">
+          <div class="flex items-center gap-4">
+            <div class="w-24 h-24 rounded-lg flex items-center justify-center overflow-hidden">
+              <img *ngIf="subject.icon" [src]="subject.icon" [alt]="subject.name" class="w-20 h-20 object-contain" />
+            </div>
+            <div>
+              <h3 class="font-[Fredoka] font-semibold text-[35px] leading-[40px] tracking-[-0.4px] text-left text-[#374151]" [style.color]="subject.colour || '#374151'">{{ subject.name }}</h3>
+              <p class="font-[Fredoka] font-normal text-[22px] leading-[39px] tracking-[-0.4px] text-left text-slate-500">{{ subject.description }}</p>
+            </div>
+          </div>
+          <div class="flex gap-2 sm:gap-3 justify-end">
+            <button (click)="handleEdit(subject.id)"
+              class="action-btn bg-[#8B5CF6] hover:bg-[#7C3AED] text-white p-2.5 rounded-lg transition-all duration-200 hover:scale-105 hover:shadow-lg flex items-center justify-center"
+              title="Edit Subject">
+              <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"></path>
+              </svg>
+            </button>
+            <button (click)="handleDelete(subject.id)"
+              class="action-btn bg-[#EF4444] hover:bg-[#DC2626] text-white p-2.5 rounded-lg transition-all duration-200 hover:scale-105 hover:shadow-lg flex items-center justify-center"
+              title="Delete Subject">
+              <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"></path>
+              </svg>
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Next Step CTA -->
+    <div class="mt-8 bg-blue-50/50 px-4 sm:px-[30px] py-6 sm:py-[35px] border border-[#BFDBFE] rounded-[23px] flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
+      <div>
+        <h3 class="font-[Fredoka] font-bold text-[35px] leading-[40px] tracking-[-0.4px] text-[#374151]">Next: Build Grade Structure</h3>
+        <p class="font-[Fredoka] font-normal text-[22px] leading-[39px] tracking-[-0.4px] text-[#374151] mt-1">Now assign subjects to grades and create the content hierarchy</p>
+      </div>
+      <button (click)="navigateToGradeStructure()" class="w-[225px] h-[83px] text-white rounded-[20px] shadow-lg transition-all flex items-center justify-center" style="background: linear-gradient(90deg, #4ADE80 0%, #687AE4 100%); padding: 20px 55px; gap: 10px; opacity: 1; font-family: 'Fredoka'; font-weight: 600; font-size: 25px; line-height: 43px; letter-spacing: -0.4px; text-align: center; vertical-align: middle;">Next Step</button>
+    </div>
+
+</div>
+
+<!-- Icon Picker Modal -->
+<div *ngIf="isIconPickerOpen" class="fixed inset-0 bg-black/50 z-50 flex items-center justify-center p-4">
+  <div class="bg-white rounded-[23px] w-full max-w-2xl max-h-[80vh] flex flex-col">
+    <div class="flex items-center justify-between p-6 border-b border-gray-200">
+      <h3 class="font-fredoka font-bold text-[30px] text-[#374151]">Choose an Icon</h3>
+      <span (click)="closeIconPicker()" class="text-[30px] text-gray-400 cursor-pointer hover:text-gray-600">&times;</span>
+    </div>
+    <div class="overflow-y-auto p-6 grid grid-cols-3 sm:grid-cols-4 gap-4">
+      <div *ngFor="let icon of assetIcons"
+        (click)="selectIcon(getIconPath(icon))"
+        class="flex flex-col items-center gap-1 cursor-pointer p-2 rounded-xl hover:bg-purple-50 border-2 transition-colors"
+        [class.border-purple-500]="formData.icon === icon"
+        [class.border-transparent]="formData.icon !== icon">
+        <div class="w-16 h-16 flex items-center justify-center">
+          <img [src]="getIconPath(icon)" class="w-16 h-16 object-contain" />
+        </div>
+        <span class="font-fredoka text-[11px] text-gray-500 text-center truncate w-full">{{ icon }}</span>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Colour Picker Modal -->
+<div *ngIf="isColourPickerOpen" class="fixed inset-0 bg-black/50 z-50 flex items-center justify-center p-4">
+  <div class="bg-white rounded-[23px] w-full max-w-md flex flex-col">
+    <div class="flex items-center justify-between p-6 border-b border-gray-200">
+      <h3 class="font-[Fredoka] font-bold text-[30px] text-[#374151]">Choose a Colour</h3>
+      <span (click)="closeColourPicker()" class="text-[30px] text-gray-400 cursor-pointer hover:text-gray-600">&times;</span>
+    </div>
+    <div class="p-6 grid grid-cols-6 gap-4">
+      <div *ngFor="let colour of subjectColours"
+        (click)="selectColour(colour)"
+        class="w-12 h-12 rounded-full cursor-pointer transition-transform hover:scale-110 border-4 flex items-center justify-center"
+        [style.background]="colour"
+        [class.border-gray-800]="formData.colour === colour"
+        [class.border-transparent]="formData.colour !== colour">
+        <svg *ngIf="formData.colour === colour" class="w-5 h-5 text-white drop-shadow" fill="none" stroke="currentColor" stroke-width="3" viewBox="0 0 24 24">
+          <polyline points="20 6 9 17 4 12"></polyline>
+        </svg>
+      </div>
+    </div>
+    <div class="px-6 pb-6 flex items-center gap-3">
+      <div class="w-10 h-10 rounded-full border-2 border-gray-200" [style.background]="formData.colour || '#F3F4F6'"></div>
+      <span class="font-[Fredoka] text-[18px]" [style.color]="formData.colour || '#6B7280'">{{ formData.colour || 'No colour selected' }}</span>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,33 @@
+<app-toast [message]="toast.message" [type]="toast.type" [visible]="toast.visible" (dismissed)="toast.dismiss()"></app-toast>
+
+<div class="min-h-screen bg-[#F3F4F8] font-sans pt-6 px-6 md:pt-10 md:px-10 pb-[65px] md:pb-10 text-slate-800">
+  <div class="max-w-6xl mx-auto">
+
+    <!-- Header -->
+    <div class="mb-8">
+      <h1 class="font-[Fredoka] font-bold text-[45px] md:text-[65px] leading-[44px] md:leading-[64px] tracking-[-0.4px] text-[#374151] mb-3">Analytics</h1>
+      <p class="font-[Fredoka] font-normal text-[20px] md:text-[30px] leading-[28px] md:leading-[39px] tracking-[-0.4px] text-[#374151]">Track performance across your course content</p>
+    </div>
+
+    <!-- Tabs -->
+    <div class="flex gap-2 mb-8 border-b border-gray-200">
+      <button *ngFor="let tab of tabs" (click)="setTab(tab.key)"
+        class="font-[Fredoka] font-semibold text-[16px] px-5 py-3 transition-all duration-200 border-b-2 -mb-[2px]"
+        [class.border-[#374151]]="activeTab === tab.key"
+        [class.text-[#374151]]="activeTab === tab.key"
+        [class.border-transparent]="activeTab !== tab.key"
+        [class.text-gray-400]="activeTab !== tab.key">
+        {{ tab.label }}
+      </button>
+    </div>
+
+    <!-- Tab Content -->
+    <ng-container *ngIf="courseId">
+      <app-course-analytics    *ngIf="activeTab === 'course'"    [courseId]="courseId"></app-course-analytics>
+      <app-topics-analytics    *ngIf="activeTab === 'topics'"    [courseId]="courseId"></app-topics-analytics>
+      <app-subtopics-analytics *ngIf="activeTab === 'subtopics'" [courseId]="courseId"></app-subtopics-analytics>
+      <app-lessons-analytics   *ngIf="activeTab === 'lessons'"   [courseId]="courseId"></app-lessons-analytics>
+    </ng-container>
+
+  </div>
+</div>

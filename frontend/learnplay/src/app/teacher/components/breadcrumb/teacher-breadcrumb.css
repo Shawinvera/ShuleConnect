@@ -1,0 +1,119 @@
+.breadcrumb-row {
+  display: flex;
+  align-items: center;
+  gap: 0;
+}
+
+.back-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  border: 1.5px solid #E5DAFB;
+  background: #FAFAFF;
+  color: #7C3AED;
+  cursor: pointer;
+  flex-shrink: 0;
+  transition: background 0.18s, border-color 0.18s, color 0.18s, transform 0.15s;
+  box-shadow: 0 2px 8px rgba(147, 51, 234, 0.12);
+}
+
+.back-btn span {
+  display: none;
+}
+
+.back-btn:active {
+  transform: scale(0.9);
+}
+
+@media (min-width: 1024px) {
+  .back-btn {
+    width: auto;
+    height: auto;
+    border-radius: 10px;
+    padding: 6px 14px 6px 10px;
+    gap: 5px;
+    font-family: 'Fredoka', sans-serif;
+    font-weight: 600;
+    font-size: 15px;
+    white-space: nowrap;
+    box-shadow: none;
+  }
+
+  .back-btn span {
+    display: inline;
+  }
+
+  .back-btn:hover {
+    background: #F3E8FF;
+    border-color: #9333EA;
+    color: #6D28D9;
+    transform: translateX(-2px);
+  }
+
+  .back-btn:active {
+    transform: translateX(-4px);
+  }
+}
+
+.breadcrumb-divider {
+  display: block;
+  width: 1px;
+  height: 20px;
+  background: #DDD6FE;
+  margin: 0 10px 0 12px;
+  flex-shrink: 0;
+}
+
+@media (min-width: 1024px) {
+  .breadcrumb-divider {
+    margin: 0 14px;
+  }
+}
+
+.teacher-breadcrumb-list {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 0;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.teacher-breadcrumb-item {
+  display: flex;
+  align-items: center;
+}
+
+.teacher-breadcrumb-link {
+  font-family: 'Fredoka', sans-serif;
+  font-weight: 500;
+  font-size: clamp(14px, 1.8vw, 18px);
+  color: #9333EA;
+  cursor: pointer;
+  transition: color 0.2s;
+  white-space: nowrap;
+}
+
+.teacher-breadcrumb-link:hover {
+  color: #7C3AED;
+  text-decoration: underline;
+}
+
+.teacher-breadcrumb-current {
+  font-family: 'Fredoka', sans-serif;
+  font-weight: 600;
+  font-size: clamp(14px, 1.8vw, 18px);
+  color: #374151;
+  white-space: nowrap;
+}
+
+.teacher-breadcrumb-sep {
+  font-size: clamp(14px, 2vw, 18px);
+  color: #BBC2CD;
+  margin: 0 clamp(4px, 0.8vw, 8px);
+  user-select: none;
+}

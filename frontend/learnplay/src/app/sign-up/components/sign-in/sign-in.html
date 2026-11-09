@@ -1,0 +1,303 @@
+<app-toast [message]="toast.message" [type]="toast.type" [visible]="toast.visible" (dismissed)="toast.dismiss()"></app-toast>
+<app-spinner-overlay *ngIf="isSubmitting"></app-spinner-overlay>
+<div class="min-h-screen bg-gradient-to-b from-[#F5F5FF] to-[#FBF4FC] w-full flex items-center justify-center px-4 sm:px-8 md:px-12 lg:px-0 py-8">
+    <div class="w-full max-w-[520px] mx-auto flex flex-col gap-[20px] md:gap-[30px] lg:gap-[25px] h-full">
+
+
+
+        <div class="w-full p-[16px] md:p-[30px] lg:pt-[40px] lg:pr-[40px] lg:pb-[40px] lg:pl-[40px] flex flex-col gap-[12px] md:gap-[25px] lg:gap-[22px] rounded-[15px] md:rounded-[20px] lg:rounded-[23px] bg-white shadow-[0px_6px_30px_0px_#0000001A] flex-1 justify-center">
+
+            <!-- Header -->
+            <div class="w-full flex items-center flex-col gap-[6px] md:gap-[10px]">
+                <div class="w-[75px] h-[75px] md:w-[105px] md:h-[105px] lg:w-[115px] lg:h-[115px] rounded-full bg-gradient-to-b from-[#FAB315] to-[#F98816] shadow-[0px_10px_25px_0px_#00000026] overflow-hidden">
+                    <img src="./assets/icons/logo.png" class="w-full h-full object-cover">
+                </div>
+                <div class="w-full flex flex-col gap-[2px] text-center">
+                    <span class="font-fredoka font-bold text-[26px] md:text-[38px] lg:text-[45px] leading-[30px] md:leading-[50px] lg:leading-[64px] tracking-[-0.4px] text-[#9333EA]">Sign in!</span>
+                    <div class="flex items-center justify-center gap-[5px] flex-wrap">
+                        <span class="font-fredoka font-normal text-[14px] md:text-[18px] lg:text-[20px] leading-[18px] md:leading-[32px] lg:leading-[39px] tracking-[-0.4px] text-[#374151]">Welcome back. Sign in to continue</span>
+                        <img src="./assets/icons/smile.png" alt="smile" class="w-[14px] h-[14px] md:w-[18px] md:h-[18px] lg:w-[20px] lg:h-[20px]">
+                    </div>
+                </div>
+            </div>
+
+            <!-- Error -->
+            <div *ngIf="errorMessage" class="w-full px-[16px] py-[10px] bg-red-50 border-[2px] border-red-300 rounded-[12px]">
+                <span class="font-fredoka font-medium text-[14px] md:text-[18px] leading-[18px] text-red-600">{{ errorMessage }}</span>
+            </div>
+
+            <div class="w-full flex flex-col gap-[12px] md:gap-[20px]">
+
+                <!-- Single option button -->
+                <ng-container *ngIf="!activeForm">
+
+                    <!-- Saved accounts -->
+                    <ng-container *ngIf="savedAccounts.length > 0">
+                        <div class="w-full flex flex-col gap-[8px]">
+                            <span class="font-fredoka font-semibold text-[13px] md:text-[16px] text-[#9CA3AF] tracking-[-0.3px]">Continue as</span>
+                            <div *ngFor="let account of savedAccounts"
+                                (click)="selectSavedAccount(account)"
+                                class="w-full flex items-center justify-between px-[14px] py-[10px] md:px-[18px] md:py-[14px] bg-white border-[2px] border-[#E5E7EB] hover:border-[#9333EA] rounded-[12px] md:rounded-[16px] cursor-pointer transition-colors">
+                                <div class="flex items-center gap-[10px]">
+                                    <div class="w-[34px] h-[34px] md:w-[42px] md:h-[42px] rounded-full bg-gradient-to-br from-[#687AE4] to-[#9333EA] flex items-center justify-center text-white font-fredoka font-bold text-[14px] md:text-[18px] shrink-0">
+                                        {{ getAccountDisplayName(account).charAt(0).toUpperCase() }}
+                                    </div>
+                                    <div class="flex flex-col">
+                                        <span class="font-fredoka font-semibold text-[14px] md:text-[17px] text-[#374151] leading-tight">
+                                            {{ getAccountDisplayName(account) }}
+                                        </span>
+                                        <div class="flex items-center gap-2">
+                                            <span class="font-fredoka text-[11px] md:text-[13px] text-[#9CA3AF]">
+                                                {{ account.fullName ? getFormattedUsername(account) : (account.type === 'phone' ? 'Phone' : 'Email') }}
+                                            </span>
+                                            <span *ngIf="account.password" class="font-fredoka text-[11px] md:text-[13px] text-green-600 flex items-center gap-1">
+                                                <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round">
+                                                    <rect x="3" y="11" width="18" height="11" rx="2" ry="2"/>
+                                                    <circle cx="12" cy="16" r="1"/>
+                                                    <path d="M7 11V7a5 5 0 0 1 10 0v4"/>
+                                                </svg>
+                                                Password saved
+                                            </span>
+                                        </div>
+                                    </div>
+                                </div>
+                                <button type="button" (click)="removeAccount(account, $event)"
+                                    class="w-[26px] h-[26px] rounded-full flex items-center justify-center text-[#BBC2CD] hover:text-red-400 hover:bg-red-50 transition-colors shrink-0">
+                                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+                                </button>
+                            </div>
+                        </div>
+
+                        <!-- Divider -->
+                        <div class="w-full flex items-center gap-[10px]">
+                            <div class="flex-1 h-[1px] border-[2px] border-[#BBC2CD80]"></div>
+                            <span class="font-fredoka font-medium text-[14px] md:text-[18px] leading-[20px] tracking-[-0.4px] text-[#BBC2CD]">Or</span>
+                            <div class="flex-1 h-[1px] border-[2px] border-[#BBC2CD80]"></div>
+                        </div>
+                    </ng-container>
+
+                    <!-- Google SSO Button -->
+                    <div [class.opacity-60]="isSubmitting" [class.pointer-events-none]="isSubmitting"
+                        class="w-full h-[48px] md:h-[70px] lg:h-[83px] rounded-[15px] md:rounded-[18px] lg:rounded-[20px] bg-white border-[1px] border-[#E5E7EB] flex items-center justify-center cursor-pointer" (click)="onGoogleSignIn()">
+                        <img src="./assets/icons/google.png" alt="google" class="w-[22px] h-[22px] md:w-[28px] md:h-[28px] lg:w-[32px] lg:h-[32px]">
+                        <span class="font-fredoka font-bold text-[16px] md:text-[22px] lg:text-[25px] tracking-[-0.4px] text-[#374151] ml-2">Sign in with Google</span>
+                    </div>
+
+                    <!-- Divider -->
+                    <div class="w-full flex items-center gap-[10px]">
+                        <div class="flex-1 h-[1px] border-[2px] border-[#BBC2CD80]"></div>
+                        <span class="font-fredoka font-medium text-[16px] md:text-[20px] lg:text-[23px] leading-[20px] tracking-[-0.4px] text-[#BBC2CD]">Or</span>
+                        <div class="flex-1 h-[1px] border-[2px] border-[#BBC2CD80]"></div>
+                    </div>
+
+                    <!-- Email/Phone Button -->
+                    <button class="w-full h-[48px] md:h-[70px] lg:h-[83px] rounded-[15px] md:rounded-[18px] lg:rounded-[20px] bg-gradient-to-r from-[#687AE4] to-[#7452AC] flex items-center justify-center cursor-pointer" (click)="activeForm = 'phone'">
+                        <span class="font-fredoka font-bold text-[16px] md:text-[22px] lg:text-[25px] tracking-[-0.4px] text-[#FFFFFF]">{{ savedAccounts.length > 0 ? 'Sign in with Email / Phone' : 'Sign in with Email / Phone' }}</span>
+                    </button>
+                </ng-container>
+
+                <!-- Email form -->
+                <div *ngIf="activeForm === 'email' || activeForm === 'phone'" class="w-full flex flex-col gap-[10px] md:gap-[20px]">
+                    <!-- Tab switcher -->
+                    <div class="flex rounded-[12px] border-[2px] border-[#E5E7EB] overflow-hidden">
+                        <button (click)="activeForm = 'phone'; password = ''"
+                            class="flex-1 h-[40px] md:h-[50px] font-fredoka font-semibold text-[14px] md:text-[18px] transition-colors cursor-pointer"
+                            [class.bg-gradient-to-r]="activeForm === 'phone'"
+                            [class.from-[#9333EA]]="activeForm === 'phone'"
+                            [class.to-[#687AE4]]="activeForm === 'phone'"
+                            [class.text-white]="activeForm === 'phone'"
+                            [class.text-[#BBC2CD]]="activeForm !== 'phone'">
+                            Phone
+                        </button>
+                        <button (click)="activeForm = 'email'; password = ''"
+                            class="flex-1 h-[40px] md:h-[50px] font-fredoka font-semibold text-[14px] md:text-[18px] transition-colors cursor-pointer"
+                            [class.bg-gradient-to-r]="activeForm === 'email'"
+                            [class.from-[#687AE4]]="activeForm === 'email'"
+                            [class.to-[#7452AC]]="activeForm === 'email'"
+                            [class.text-white]="activeForm === 'email'"
+                            [class.text-[#BBC2CD]]="activeForm !== 'email'">
+                            Email
+                        </button>
+                    </div>
+
+                    <!-- Email fields -->
+                    <ng-container *ngIf="activeForm === 'email'">
+                        <div class="w-full flex flex-col gap-[6px] md:gap-[12px]">
+                            <label class="font-fredoka text-[#374151] font-semibold text-[15px] md:text-[22px] lg:text-[25px] leading-[18px] tracking-[-0.4px]">Email</label>
+                            <input type="email" [(ngModel)]="email" placeholder="your@email.com"
+                                (blur)="onEmailBlur()" [class.border-red-400]="emailError"
+                                class="w-full h-[44px] md:h-[70px] lg:h-[79px] px-[14px] md:px-[18px] lg:px-[20px] bg-white border-[2px] border-[#E5E7EB] rounded-[12px] md:rounded-[18px] lg:rounded-[20px] focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent font-fredoka font-medium text-[15px] md:text-[20px] lg:text-[23px] tracking-[-0.4px] text-[#374151] placeholder:text-[#BBC2CD]" />
+                            <span *ngIf="emailError" class="font-fredoka text-red-500 text-[12px] md:text-[15px]">{{ emailError }}</span>
+                        </div>
+                    </ng-container>
+
+                    <!-- Phone fields -->
+                    <ng-container *ngIf="activeForm === 'phone'">
+                        <div class="w-full flex flex-col gap-[6px] md:gap-[12px]">
+                            <label class="font-fredoka text-[#374151] font-semibold text-[15px] md:text-[22px] lg:text-[25px] leading-[18px] tracking-[-0.4px]">Phone Number</label>
+                            <app-phone-input [initialPhone]="fullPhone" (phoneChange)="onPhoneChange($event)"></app-phone-input>
+                        </div>
+                    </ng-container>
+
+                    <!-- Password -->
+                    <div class="w-full flex flex-col gap-[6px] md:gap-[12px]">
+                        <label class="font-fredoka text-[#374151] font-semibold text-[15px] md:text-[22px] lg:text-[25px] leading-[18px] tracking-[-0.4px]">Password</label>
+                        <div class="relative w-full">
+                            <input [type]="showPassword ? 'text' : 'password'" [(ngModel)]="password" placeholder="Enter password"
+                                class="w-full h-[44px] md:h-[70px] lg:h-[79px] px-[14px] pr-[42px] md:px-[18px] md:pr-[52px] lg:px-[20px] lg:pr-[56px] bg-white border-[2px] border-[#E5E7EB] rounded-[12px] md:rounded-[18px] lg:rounded-[20px] focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent font-fredoka font-medium text-[15px] md:text-[20px] lg:text-[23px] tracking-[-0.4px] text-[#374151] placeholder:text-[#BBC2CD]" />
+                            <button type="button" (click)="showPassword = !showPassword" class="absolute right-[12px] top-1/2 -translate-y-1/2 text-[#BBC2CD] hover:text-[#9333EA] transition-colors">
+                                <svg *ngIf="!showPassword" xmlns="http://www.w3.org/2000/svg" class="w-[18px] h-[18px] md:w-[22px] md:h-[22px]" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/><path stroke-linecap="round" stroke-linejoin="round" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.477 0 8.268 2.943 9.542 7-1.274 4.057-5.065 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"/></svg>
+                                <svg *ngIf="showPassword" xmlns="http://www.w3.org/2000/svg" class="w-[18px] h-[18px] md:w-[22px] md:h-[22px]" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M13.875 18.825A10.05 10.05 0 0112 19c-4.477 0-8.268-2.943-9.542-7a9.97 9.97 0 012.163-3.592M6.228 6.228A9.97 9.97 0 0112 5c4.477 0 8.268 2.943 9.542 7a9.97 9.97 0 01-4.255 5.197M3 3l18 18"/></svg>
+                            </button>
+                        </div>
+                    </div>
+                    
+                    <!-- Save Password Checkbox -->
+                    <div class="flex items-center gap-2">
+                        <input type="checkbox" id="savePassword" [(ngModel)]="savePassword" 
+                            class="w-4 h-4 text-[#9333EA] bg-white border-2 border-[#E5E7EB] rounded focus:ring-[#9333EA] focus:ring-2">
+                        <label for="savePassword" class="font-fredoka text-[13px] md:text-[15px] text-[#374151] cursor-pointer">
+                            Save password for quick sign-in
+                        </label>
+                    </div>
+                    
+                    <!-- Forgot password -->
+                    <div class="flex justify-end">
+                      <button type="button" (click)="openForgotPassword()" class="font-fredoka font-semibold text-[13px] md:text-[16px] text-[#9333EA] hover:text-[#7C3AED] cursor-pointer transition-colors">
+                        Forgot password?
+                      </button>
+                    </div>
+                    <button [disabled]="isSubmitting" class="w-full h-[48px] md:h-[70px] lg:h-[83px] rounded-[15px] md:rounded-[18px] lg:rounded-[20px] bg-gradient-to-r from-[#687AE4] to-[#7452AC] flex items-center justify-center cursor-pointer disabled:opacity-60 disabled:cursor-not-allowed" (click)="onSignIn()">
+                        <span class="font-fredoka font-bold text-[16px] md:text-[22px] lg:text-[25px] tracking-[-0.4px] text-[#FFFFFF]">Login</span>
+                        <img src="./assets/icons/start.png" alt="start" class="w-[24px] h-[24px] md:w-[34px] md:h-[34px] lg:w-[40px] lg:h-[40px] ml-2">
+                    </button>
+                    <!-- Or divider -->
+                    <div class="w-full flex items-center gap-[10px]">
+                        <div class="flex-1 h-[1px] border-[2px] border-[#BBC2CD80]"></div>
+                        <span class="font-fredoka font-medium text-[16px] md:text-[20px] lg:text-[23px] leading-[20px] tracking-[-0.4px] text-[#BBC2CD]">Or</span>
+                        <div class="flex-1 h-[1px] border-[2px] border-[#BBC2CD80]"></div>
+                    </div>
+                    <!-- Google SSO -->
+                    <div [class.opacity-60]="isSubmitting" [class.pointer-events-none]="isSubmitting"
+                        class="w-full h-[48px] md:h-[70px] lg:h-[83px] rounded-[15px] md:rounded-[18px] lg:rounded-[20px] bg-white border-[1px] border-[#E5E7EB] flex items-center justify-center cursor-pointer" (click)="onGoogleSignIn()">
+                        <img src="./assets/icons/google.png" alt="google" class="w-[22px] h-[22px] md:w-[28px] md:h-[28px] lg:w-[32px] lg:h-[32px]">
+                        <span class="font-fredoka font-bold text-[16px] md:text-[22px] lg:text-[25px] tracking-[-0.4px] text-[#374151] ml-2">Sign in with Google</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Footer -->
+            <div class="flex justify-center flex-wrap gap-1">
+                <span class="font-fredoka font-normal text-[14px] md:text-[18px] lg:text-[20px] leading-[18px] md:leading-[32px] tracking-[-0.4px] text-[#374151]">Don't have an account?</span>
+                <span class="font-fredoka font-semibold text-[14px] md:text-[18px] lg:text-[20px] leading-[18px] md:leading-[32px] tracking-[-0.4px] text-[#9333EA] cursor-pointer" (click)="navigateToSignUp()">Sign up</span>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- ── Forgot Password Modal ─────────────────────────────────────────────── -->
+<div *ngIf="forgotStep" class="fixed inset-0 z-[200] bg-black/45 backdrop-blur-[2px] flex items-center justify-center p-4">
+  <div class="w-full max-w-[480px] bg-white rounded-[20px] md:rounded-[28px] shadow-[0_20px_70px_0_rgba(74,34,122,0.35)] border border-[#EEE8F7] flex flex-col">
+
+    <!-- Header -->
+    <div class="bg-[linear-gradient(90deg,#667DE8_0%,#754DA5_100%)] rounded-t-[20px] md:rounded-t-[28px] px-6 md:px-10 py-5 flex items-center justify-between">
+      <div class="flex items-center gap-3">
+        <img src="./assets/icons/password_reset.png" alt="reset" class="w-8 h-8 object-contain" style="filter:brightness(0) invert(1)" />
+        <div>
+          <h2 class="font-fredoka font-bold text-[20px] md:text-[26px] text-white leading-tight">
+            {{ forgotStep === 'request' ? 'Forgot Password' : 'Reset Password' }}
+          </h2>
+          <p class="font-fredoka text-[12px] md:text-[14px] text-white/90 mt-0.5">
+            {{ forgotStep === 'request' ? 'We will send a reset code to you.' : 'Enter the OTP and your new password.' }}
+          </p>
+        </div>
+      </div>
+      <button (click)="closeForgotPassword()" class="w-9 h-9 rounded-full bg-white/20 text-white text-[22px] leading-none cursor-pointer hover:bg-white/35 transition-colors flex items-center justify-center">&times;</button>
+    </div>
+
+    <!-- Step 1: Request -->
+    <div *ngIf="forgotStep === 'request'" class="px-6 md:px-10 py-5 space-y-4">
+      <div>
+        <label class="block font-fredoka font-semibold text-[15px] text-[#4B5563] mb-1.5">
+          {{ activeForm === 'phone' ? 'Phone Number' : 'Email Address' }}
+        </label>
+        <!-- Phone input with country code selector -->
+        <ng-container *ngIf="activeForm === 'phone'">
+          <app-phone-input (phoneChange)="forgotFullPhone = $event"></app-phone-input>
+        </ng-container>
+        <!-- Email input with validation -->
+        <ng-container *ngIf="activeForm !== 'phone'">
+          <input
+            [(ngModel)]="forgotUsername"
+            type="email"
+            placeholder="your@email.com"
+            (blur)="onForgotEmailBlur()"
+            [class.border-red-400]="forgotEmailError"
+            class="w-full h-[52px] rounded-[14px] border border-[#D8DCE4] focus:border-[#7A5BC0] focus:ring-2 focus:ring-[#DCD2F0] outline-none px-4 font-fredoka text-[16px] text-[#374151] placeholder:text-[#BBC2CD]"
+          />
+          <span *ngIf="forgotEmailError" class="font-fredoka text-red-500 text-[12px] mt-1 block">{{ forgotEmailError }}</span>
+        </ng-container>
+      </div>
+    </div>
+
+    <!-- Step 2: Reset -->
+    <div *ngIf="forgotStep === 'reset'" class="px-6 md:px-10 py-5 space-y-4">
+      <!-- OTP -->
+      <div>
+        <label class="block font-fredoka font-semibold text-[15px] text-[#4B5563] mb-1.5">OTP Code</label>
+        <input [(ngModel)]="resetForm.otp" type="text" placeholder="Enter OTP sent to you"
+          class="w-full h-[52px] rounded-[14px] border border-[#D8DCE4] focus:border-[#7A5BC0] focus:ring-2 focus:ring-[#DCD2F0] outline-none px-4 font-fredoka text-[16px] text-[#374151] placeholder:text-[#BBC2CD] tracking-[4px]" />
+      </div>
+      <!-- New Password -->
+      <div>
+        <label class="block font-fredoka font-semibold text-[15px] text-[#4B5563] mb-1.5">New Password</label>
+        <div class="relative">
+          <input [(ngModel)]="resetForm.newPassword" [type]="showResetPassword ? 'text' : 'password'" placeholder="Enter new password"
+            class="w-full h-[52px] rounded-[14px] border border-[#D8DCE4] focus:border-[#7A5BC0] focus:ring-2 focus:ring-[#DCD2F0] outline-none px-4 pr-12 font-fredoka text-[16px] text-[#374151] placeholder:text-[#BBC2CD]" />
+          <button type="button" (click)="showResetPassword = !showResetPassword" class="absolute right-4 top-1/2 -translate-y-1/2 text-[#9CA3AF] hover:text-[#6B7280] cursor-pointer">
+            <svg *ngIf="!showResetPassword" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
+            <svg *ngIf="showResetPassword" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19m-6.72-1.07a3 3 0 1 1-4.24-4.24"/><line x1="1" y1="1" x2="23" y2="23"/></svg>
+          </button>
+        </div>
+        <div *ngIf="resetForm.newPassword.length > 0" class="mt-1.5 flex items-center gap-1">
+          <span [class]="resetPasswordRules.minLength ? 'text-green-500' : 'text-red-400'" class="font-fredoka text-[12px] flex items-center gap-1">
+            <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round">
+              <ng-container *ngIf="resetPasswordRules.minLength"><polyline points="20 6 9 17 4 12"/></ng-container>
+              <ng-container *ngIf="!resetPasswordRules.minLength"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></ng-container>
+            </svg>
+            At least 6 characters
+          </span>
+        </div>
+      </div>
+      <!-- Confirm Password -->
+      <div>
+        <label class="block font-fredoka font-semibold text-[15px] text-[#4B5563] mb-1.5">Confirm New Password</label>
+        <div class="relative">
+          <input [(ngModel)]="resetForm.newPasswordConfirmation" [type]="showResetConfirm ? 'text' : 'password'" placeholder="Confirm new password"
+            class="w-full h-[52px] rounded-[14px] border border-[#D8DCE4] focus:border-[#7A5BC0] focus:ring-2 focus:ring-[#DCD2F0] outline-none px-4 pr-12 font-fredoka text-[16px] text-[#374151] placeholder:text-[#BBC2CD]" />
+          <button type="button" (click)="showResetConfirm = !showResetConfirm" class="absolute right-4 top-1/2 -translate-y-1/2 text-[#9CA3AF] hover:text-[#6B7280] cursor-pointer">
+            <svg *ngIf="!showResetConfirm" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
+            <svg *ngIf="showResetConfirm" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19m-6.72-1.07a3 3 0 1 1-4.24-4.24"/><line x1="1" y1="1" x2="23" y2="23"/></svg>
+          </button>
+        </div>
+        <p *ngIf="resetForm.newPasswordConfirmation.length > 0 && !resetPasswordsMatch" class="mt-1 font-fredoka text-[12px] text-red-500">Passwords do not match</p>
+        <p *ngIf="resetPasswordsMatch" class="mt-1 font-fredoka text-[12px] text-green-500 flex items-center gap-1">
+          <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round"><polyline points="20 6 9 17 4 12"/></svg>
+          Passwords match
+        </p>
+      </div>
+    </div>
+
+    <!-- Footer buttons -->
+    <div class="px-6 md:px-10 pb-6 pt-2 flex gap-3 justify-end border-t border-[#F1EBFA]">
+      <button (click)="closeForgotPassword()" [disabled]="forgotIsSubmitting"
+        class="h-[46px] px-5 rounded-[14px] bg-[#EEF0F5] text-[#6B7280] font-fredoka font-semibold text-[15px] hover:bg-[#E5E7EB] disabled:opacity-60 cursor-pointer">
+        Cancel
+      </button>
+      <button (click)="forgotStep === 'request' ? submitForgotRequest() : submitPasswordReset()" [disabled]="forgotIsSubmitting"
+        class="h-[46px] px-6 rounded-[14px] bg-[linear-gradient(90deg,#667DE8_0%,#754DA5_100%)] text-white font-fredoka font-bold text-[15px] hover:shadow-[0_8px_24px_0_rgba(117,77,165,0.35)] disabled:opacity-60 cursor-pointer">
+        {{ forgotIsSubmitting ? 'Please wait...' : (forgotStep === 'request' ? 'Send Reset Code' : 'Reset Password') }}
+      </button>
+    </div>
+  </div>
+</div>

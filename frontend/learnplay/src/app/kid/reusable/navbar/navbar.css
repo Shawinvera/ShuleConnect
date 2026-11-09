@@ -1,0 +1,223 @@
+@keyframes navGuidePulseKid {
+  0%, 100% { box-shadow: 0 0 0 0 rgba(103, 126, 232, 0.45); }
+  70% { box-shadow: 0 0 0 12px rgba(103, 126, 232, 0); }
+}
+
+.nav-guide-highlight {
+  animation: navGuidePulseKid 2s infinite;
+}
+
+/* ================================
+   Bottom Navigation Bar — Kid
+   ================================ */
+
+.bottom-nav-bar {
+  background: rgba(255, 255, 255, 0.97);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border-top: 1px solid rgba(102, 125, 232, 0.12);
+  box-shadow: 0 -4px 24px rgba(102, 125, 232, 0.12);
+}
+
+/* Each tab button */
+.bottom-nav-item {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 3px;
+  padding: 6px 4px;
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  transition: opacity 0.15s ease;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.bottom-nav-item:active {
+  opacity: 0.7;
+}
+
+.bottom-nav-item--disabled {
+  opacity: 0.35;
+  pointer-events: none;
+}
+
+/* Icon container */
+.bottom-nav-icon-wrap {
+  width: 36px;
+  height: 36px;
+  border-radius: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: transparent;
+  transition: background 0.2s ease, transform 0.15s ease;
+}
+
+.bottom-nav-item:not(.bottom-nav-item--disabled):active .bottom-nav-icon-wrap {
+  transform: scale(0.9);
+}
+
+.bottom-nav-icon-wrap--active {
+  background: linear-gradient(135deg, rgba(102, 125, 232, 0.15), rgba(117, 77, 165, 0.15));
+}
+
+/* Label */
+.bottom-nav-label {
+  font-family: 'Fredoka', sans-serif;
+  font-size: 11px;
+  font-weight: 500;
+  color: #9CA3AF;
+  line-height: 1;
+  transition: color 0.2s ease;
+}
+
+.bottom-nav-item--active .bottom-nav-label {
+  color: #667DE8;
+  font-weight: 600;
+}
+
+/* Centre points pill slot */
+.bottom-nav-points-slot {
+  flex: 1.2;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 3px;
+  padding: 6px 4px;
+}
+
+.bottom-nav-points-pill {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  background: linear-gradient(135deg, #667DE8, #754DA5);
+  border-radius: 20px;
+  padding: 5px 10px;
+  box-shadow: 0 2px 10px rgba(102, 125, 232, 0.35);
+}
+
+.bottom-nav-points-text {
+  font-family: 'Fredoka', sans-serif;
+  font-size: 13px;
+  font-weight: 700;
+  color: #ffffff;
+  line-height: 1;
+  white-space: nowrap;
+}
+
+/* Learner avatar button */
+.bottom-nav-avatar {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  overflow: hidden;
+  border: 2px solid rgba(102, 125, 232, 0.3);
+  background: linear-gradient(135deg, #F8C96C, #FCA780);
+  transition: border-color 0.2s ease, transform 0.15s ease;
+}
+
+.bottom-nav-item:active .bottom-nav-avatar {
+  transform: scale(0.9);
+}
+
+/* ================================
+   Desktop User Switcher Chip — Kid
+   ================================ */
+
+.kid-switcher-chip {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  background: rgba(255, 255, 255, 0.18);
+  border: 1.5px solid rgba(255, 255, 255, 0.28);
+  border-radius: 50px;
+  padding: 6px 14px 6px 6px;
+  cursor: pointer;
+  transition: background 0.2s ease, transform 0.15s ease, box-shadow 0.2s ease;
+  backdrop-filter: blur(8px);
+}
+
+.kid-switcher-chip:hover {
+  background: rgba(255, 255, 255, 0.28);
+  transform: scale(1.03);
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.15);
+}
+
+.kid-switcher-chip:active {
+  transform: scale(0.97);
+}
+
+.kid-switcher-avatar {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  overflow: hidden;
+  background: linear-gradient(135deg, #F8C96C, #FCA780);
+  border: 2px solid rgba(255, 255, 255, 0.5);
+  flex-shrink: 0;
+}
+
+/* Dropdown panel */
+.kid-switcher-dropdown {
+  position: absolute;
+  top: calc(100% + 12px);
+  right: 0;
+  min-width: 230px;
+  background: #ffffff;
+  border-radius: 18px;
+  border: 1px solid rgba(102, 125, 232, 0.12);
+  box-shadow: 0 16px 48px rgba(74, 34, 122, 0.18), 0 4px 12px rgba(0, 0, 0, 0.08);
+  overflow: hidden;
+  z-index: 9995;
+  animation: switcherDropIn 0.18s ease-out forwards;
+}
+
+@keyframes switcherDropIn {
+  from { opacity: 0; transform: translateY(-8px) scale(0.97); }
+  to   { opacity: 1; transform: translateY(0)   scale(1);    }
+}
+
+.kid-switcher-option {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 13px 16px;
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  transition: background 0.15s ease;
+  text-align: left;
+}
+
+.kid-switcher-option:hover {
+  background: #F5F5FF;
+}
+
+.kid-switcher-option:active {
+  background: #EDE9FF;
+}
+
+.kid-switcher-option-icon {
+  width: 38px;
+  height: 38px;
+  border-radius: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.kid-switcher-divider {
+  height: 1px;
+  background: rgba(102, 125, 232, 0.1);
+  margin: 0 16px;
+}
+
+.kid-mobile-menu-dropdown {
+  animation: switcherDropIn 0.18s ease-out forwards;
+}

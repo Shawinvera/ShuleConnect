@@ -1,0 +1,487 @@
+<main class="bg-[linear-gradient(180deg,#F5F5FF_0%,#FBF4FC_100%)] min-h-screen pb-[65px] md:pb-0">
+  <app-toast [message]="toast.message" [type]="toast.type" [visible]="toast.visible"
+    (dismissed)="toast.dismiss()"></app-toast>
+
+
+  <div
+    class="flex flex-col md:flex-row justify-between items-start md:items-center px-[16px] sm:px-[24px] md:px-[40px] xl:px-[150px] py-[20px] md:pb-[20px] pt-[10px] md:pt-[10px] md:gap-0">
+    <div>
+      <h1
+        class="font-fredoka font-bold text-[32px] md:text-[50px] lg:text-[65px] leading-[36px] md:leading-[54px] lg:leading-[64px] tracking-[-0.4px] text-[#374151] mb-2 md:mb-4">
+        My Learners
+      </h1>
+
+    </div>
+    <div class="flex items-center gap-3 w-full md:w-auto justify-between md:justify-end">
+      <button (click)="onAddChild()" [class.guide-highlight]="guideStep === 0"
+        class="bg-gradient-to-r from-[#667DE8] to-[#754DA5] cursor-pointer px-[22px] md:px-[40px] lg:px-[55px] py-[12px] md:py-[16px] lg:py-[20px] rounded-[15px] md:rounded-[20px] flex items-center justify-center gap-2 hover:scale-[1.03] transition-all duration-300 ease-in-out w-full md:flex-none md:w-auto">
+        <span class="font-fredoka font-bold text-[18px] md:text-[22px] lg:text-[25px] text-white whitespace-nowrap">
+          + Add Learner
+        </span>
+      </button>
+    </div>
+  </div>
+
+  <div *ngIf="guideStep >= 0"
+    class="fixed left-3 right-3 bottom-[86px] md:left-auto md:right-8 md:bottom-8 z-[10030] max-w-none md:max-w-[360px]">
+    <div
+      class="rounded-[18px] border border-[#E8DDFB] bg-white shadow-[0_14px_40px_rgba(74,34,122,0.26)] overflow-hidden">
+      <div class="bg-[linear-gradient(90deg,#667DE8_0%,#754DA5_100%)] px-4 py-3">
+        <p class="font-fredoka font-bold text-[20px] text-white">Navigation Guide</p>
+      </div>
+      <div class="p-4">
+        <p class="font-fredoka text-[15px] text-[#374151] leading-6">
+          Use + Add Learner to register a learner before tracking progress.
+        </p>
+        <div class="flex justify-between items-center mt-3">
+          <button (click)="skipGuide()"
+            class="px-4 py-2 rounded-[10px] bg-[#EEF0F5] text-[#6B7280] font-fredoka font-semibold text-[14px]">
+            Skip
+          </button>
+          <button (click)="nextGuideStep()"
+            class="px-4 py-2 rounded-[10px] bg-[linear-gradient(90deg,#667DE8_0%,#754DA5_100%)] text-white font-fredoka font-semibold text-[14px]">
+            Done
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Edit Profile Modal -->
+  <div *ngIf="showProfileModal"
+    class="fixed inset-0 z-[120] bg-black/45 backdrop-blur-[2px] flex items-center justify-center p-4">
+    <div
+      class="w-full max-w-[720px] max-h-[92vh] md:max-h-none bg-white rounded-[20px] md:rounded-[28px] shadow-[0_20px_70px_0_rgba(74,34,122,0.35)] border border-[#EEE8F7] overflow-visible flex flex-col">
+      <div
+        class="bg-[linear-gradient(90deg,#667DE8_0%,#754DA5_100%)] rounded-t-[20px] md:rounded-t-[28px] px-6 md:px-10 py-5 md:py-6 flex items-center justify-between">
+        <div>
+          <h2 class="font-fredoka font-bold text-[22px] sm:text-[26px] md:text-[34px] leading-[1.1] text-white">
+            Update Profile
+          </h2>
+          <p class="font-fredoka font-normal text-[13px] sm:text-[14px] md:text-[18px] text-white/90 mt-1">
+            Keep your details up to date for a personalized dashboard.
+          </p>
+        </div>
+        <button (click)="closeProfileModal()"
+          class="w-10 h-10 rounded-full bg-white/20 text-white text-[24px] leading-none cursor-pointer hover:bg-white/35 transition-colors"
+          aria-label="Close profile modal">
+          ×
+        </button>
+      </div>
+
+      <div class="px-5 sm:px-6 md:px-10 py-5 md:py-8 overflow-visible">
+        <form class="grid grid-cols-1 md:grid-cols-2 gap-5 md:gap-6">
+          <div>
+            <label class="block font-fredoka font-semibold text-[15px] text-[#4B5563] mb-1.5">First Name</label>
+            <input [(ngModel)]="profileForm.firstName" [ngModelOptions]="{ standalone: true }"
+              class="w-full h-[52px] rounded-[14px] border border-[#D8DCE4] focus:border-[#7A5BC0] focus:ring-2 focus:ring-[#DCD2F0] outline-none px-4 font-fredoka text-[16px] text-[#374151]"
+              placeholder="First name" />
+          </div>
+
+          <div>
+            <label class="block font-fredoka font-semibold text-[15px] text-[#4B5563] mb-1.5">Last Name</label>
+            <input [(ngModel)]="profileForm.lastName" [ngModelOptions]="{ standalone: true }"
+              class="w-full h-[52px] rounded-[14px] border border-[#D8DCE4] focus:border-[#7A5BC0] focus:ring-2 focus:ring-[#DCD2F0] outline-none px-4 font-fredoka text-[16px] text-[#374151]"
+              placeholder="Last name" />
+          </div>
+
+          <div class="relative country-code-wrapper">
+            <label class="block font-fredoka font-semibold text-[15px] text-[#4B5563] mb-1.5">Country Code</label>
+            <button type="button" (click)="toggleCountryDropdown($event)"
+              class="w-full h-[52px] rounded-[14px] border border-[#D8DCE4] bg-white px-4 font-fredoka text-[16px] text-[#374151] flex items-center justify-between gap-2 cursor-pointer focus:outline-none focus:ring-2 focus:ring-[#DCD2F0] focus:border-[#7A5BC0]"
+              [class.border-[#7A5BC0]]="countryDropdownOpen" [class.ring-2]="countryDropdownOpen"
+              [class.ring-[#DCD2F0]]="countryDropdownOpen">
+              <span class="truncate text-left">
+                {{ selectedCountry ? selectedCountry.iso : 'Select country code' }}
+              </span>
+              <svg class="w-4 h-4 text-[#9CA3AF] shrink-0 transition-transform duration-200"
+                [class.rotate-180]="countryDropdownOpen" fill="none" viewBox="0 0 24 24" stroke="currentColor"
+                stroke-width="2.5">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M19 9l-7 7-7-7" />
+              </svg>
+            </button>
+
+            <div *ngIf="countryDropdownOpen"
+              class="absolute left-0 bottom-full mb-2 md:bottom-auto md:top-full md:mb-0 md:mt-2 w-full z-[220] bg-white rounded-[14px] shadow-[0_12px_34px_rgba(0,0,0,0.14)] border border-[#E5E7EB] overflow-hidden">
+              <div class="p-2.5 border-b border-[#E5E7EB]">
+                <div class="relative">
+                  <svg class="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-[#BBC2CD]" fill="none"
+                    viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                    <path stroke-linecap="round" stroke-linejoin="round"
+                      d="M21 21l-4.35-4.35M17 11A6 6 0 1 1 5 11a6 6 0 0 1 12 0z" />
+                  </svg>
+                  <input type="text" [(ngModel)]="countrySearch" [ngModelOptions]="{ standalone: true }"
+                    (ngModelChange)="filterCountries()" placeholder="Search country..."
+                    class="w-full h-[38px] pl-9 pr-3 bg-[#F5F5FF] border border-transparent rounded-[10px] focus:outline-none focus:border-[#9333EA] font-fredoka font-medium text-[14px] text-[#374151] placeholder:text-[#BBC2CD]" />
+                </div>
+              </div>
+
+              <div class="max-h-[170px] md:max-h-[220px] overflow-y-auto">
+                <div *ngIf="filteredCountries.length === 0"
+                  class="px-4 py-5 text-center font-fredoka text-[14px] text-[#9CA3AF]">
+                  No countries found
+                </div>
+                <button *ngFor="let c of filteredCountries" type="button" (click)="selectCountry(c)"
+                  class="w-full flex items-center gap-3 px-4 py-2.5 hover:bg-[#F5F5FF] transition-colors text-left"
+                  [class.bg-[#F1E2FB]]="selectedCountry?.iso === c.iso">
+                  <span class="font-fredoka font-bold text-[14px] text-[#9333EA] w-[34px] shrink-0">{{ c.iso }}</span>
+                  <span class="font-fredoka font-medium text-[14px] text-[#374151] flex-1 truncate">{{ c.name }}</span>
+                </button>
+              </div>
+            </div>
+          </div>
+
+          <div>
+            <label class="block font-fredoka font-semibold text-[15px] text-[#4B5563] mb-1.5">Timezone</label>
+            <input [(ngModel)]="profileForm.userTimezone" [ngModelOptions]="{ standalone: true }"
+              class="w-full h-[52px] rounded-[14px] border border-[#D8DCE4] focus:border-[#7A5BC0] focus:ring-2 focus:ring-[#DCD2F0] outline-none px-4 font-fredoka text-[16px] text-[#374151]"
+              placeholder="e.g. Africa/Nairobi" />
+          </div>
+        </form>
+      </div>
+
+      <div class="px-5 sm:px-6 md:px-10 pb-5 md:pb-8 pt-2 flex gap-3 justify-end border-t border-[#F1EBFA]">
+        <button (click)="closeProfileModal()" [disabled]="isSavingProfile"
+          class="h-[46px] md:h-[50px] px-5 md:px-6 rounded-[14px] bg-[#EEF0F5] text-[#6B7280] font-fredoka font-semibold text-[16px] md:text-[17px] hover:bg-[#E5E7EB] disabled:opacity-60 cursor-pointer">
+          Cancel
+        </button>
+        <button (click)="saveProfile()" [disabled]="isSavingProfile"
+          class="h-[46px] md:h-[50px] px-6 md:px-7 rounded-[14px] bg-[linear-gradient(90deg,#667DE8_0%,#754DA5_100%)] text-white font-fredoka font-bold text-[16px] md:text-[17px] hover:shadow-[0_10px_28px_0_rgba(117,77,165,0.35)] disabled:opacity-60 cursor-pointer">
+          {{ isSavingProfile ? 'Saving...' : 'Save Changes' }}
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Edit Phone Number Modal -->
+  <div *ngIf="showPhoneModal"
+    class="fixed inset-0 z-[120] bg-black/45 backdrop-blur-[2px] flex items-center justify-center p-4">
+    <div
+      class="w-full max-w-[520px] bg-white rounded-[20px] md:rounded-[28px] shadow-[0_20px_70px_0_rgba(74,34,122,0.35)] border border-[#EEE8F7] overflow-visible flex flex-col">
+      <div
+        class="bg-[linear-gradient(90deg,#667DE8_0%,#754DA5_100%)] rounded-t-[20px] md:rounded-t-[28px] px-6 md:px-10 py-5 md:py-6 flex items-center justify-between">
+        <div>
+          <h2 class="font-fredoka font-bold text-[22px] sm:text-[26px] md:text-[34px] leading-[1.1] text-white">
+            Update Phone Number
+          </h2>
+          <p class="font-fredoka font-normal text-[13px] sm:text-[14px] md:text-[18px] text-white/90 mt-1">
+            Keep your contact information up to date.
+          </p>
+        </div>
+        <button (click)="closePhoneModal()"
+          class="w-10 h-10 rounded-full bg-white/20 text-white text-[24px] leading-none cursor-pointer hover:bg-white/35 transition-colors"
+          aria-label="Close phone modal">
+          ×
+        </button>
+      </div>
+
+      <div class="px-5 sm:px-6 md:px-10 py-5 md:py-8">
+        <form class="space-y-5">
+          <div>
+            <label class="block font-fredoka font-semibold text-[15px] text-[#4B5563] mb-1.5">Phone Number</label>
+            <app-phone-input [initialPhone]="phoneForm.phoneNumber" (phoneChange)="phoneForm.fullPhone = $event"
+              (validityChange)="phoneForm.isValid = $event"></app-phone-input>
+          </div>
+        </form>
+      </div>
+
+      <div class="px-5 sm:px-6 md:px-10 pb-5 md:pb-8 pt-2 flex gap-3 justify-end border-t border-[#F1EBFA]">
+        <button (click)="closePhoneModal()" [disabled]="isSavingPhone"
+          class="h-[46px] md:h-[50px] px-5 md:px-6 rounded-[14px] bg-[#EEF0F5] text-[#6B7280] font-fredoka font-semibold text-[16px] md:text-[17px] hover:bg-[#E5E7EB] disabled:opacity-60 cursor-pointer">
+          Cancel
+        </button>
+        <button (click)="savePhoneNumber()" [disabled]="isSavingPhone"
+          class="h-[46px] md:h-[50px] px-6 md:px-7 rounded-[14px] bg-[linear-gradient(90deg,#667DE8_0%,#754DA5_100%)] text-white font-fredoka font-bold text-[16px] md:text-[17px] hover:shadow-[0_10px_28px_0_rgba(117,77,165,0.35)] disabled:opacity-60 cursor-pointer">
+          {{ isSavingPhone ? 'Updating...' : 'Update Phone Number' }}
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Change Password Modal -->
+  <div *ngIf="showPasswordModal"
+    class="fixed inset-0 z-[120] bg-black/45 backdrop-blur-[2px] flex items-center justify-center p-4">
+    <div
+      class="w-full max-w-[520px] bg-white rounded-[20px] md:rounded-[28px] shadow-[0_20px_70px_0_rgba(74,34,122,0.35)] border border-[#EEE8F7] flex flex-col">
+      <!-- Header -->
+      <div
+        class="bg-[linear-gradient(90deg,#667DE8_0%,#754DA5_100%)] rounded-t-[20px] md:rounded-t-[28px] px-6 md:px-10 py-5 md:py-6 flex items-center justify-between">
+        <div class="flex items-center gap-3">
+          <img src="assets/icons/password_reset.png" alt="password" class="w-8 h-8 object-contain"
+            style="filter:brightness(0) invert(1)" />
+          <div>
+            <h2 class="font-fredoka font-bold text-[22px] sm:text-[26px] md:text-[30px] leading-[1.1] text-white">Change
+              Password</h2>
+            <p class="font-fredoka font-normal text-[13px] md:text-[16px] text-white/90 mt-0.5">Keep your account
+              secure.</p>
+          </div>
+        </div>
+        <button (click)="closePasswordModal()"
+          class="w-10 h-10 rounded-full bg-white/20 text-white text-[24px] leading-none cursor-pointer hover:bg-white/35 transition-colors">×</button>
+      </div>
+
+      <!-- Body -->
+      <div class="px-5 sm:px-6 md:px-10 py-5 md:py-7 space-y-4">
+        <!-- Current Password -->
+        <div>
+          <label class="block font-fredoka font-semibold text-[15px] text-[#4B5563] mb-1.5">Current Password</label>
+          <div class="relative">
+            <input [(ngModel)]="passwordForm.currentPassword" [ngModelOptions]="{ standalone: true }"
+              [type]="showCurrentPassword ? 'text' : 'password'"
+              class="w-full h-[52px] rounded-[14px] border border-[#D8DCE4] focus:border-[#7A5BC0] focus:ring-2 focus:ring-[#DCD2F0] outline-none px-4 pr-12 font-fredoka text-[16px] text-[#374151]"
+              placeholder="Enter current password" />
+            <button type="button" (click)="showCurrentPassword = !showCurrentPassword"
+              class="absolute right-4 top-1/2 -translate-y-1/2 text-[#9CA3AF] hover:text-[#6B7280] cursor-pointer">
+              <svg *ngIf="!showCurrentPassword" width="20" height="20" viewBox="0 0 24 24" fill="none"
+                stroke="currentColor" stroke-width="2" stroke-linecap="round">
+                <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z" />
+                <circle cx="12" cy="12" r="3" />
+              </svg>
+              <svg *ngIf="showCurrentPassword" width="20" height="20" viewBox="0 0 24 24" fill="none"
+                stroke="currentColor" stroke-width="2" stroke-linecap="round">
+                <path
+                  d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19m-6.72-1.07a3 3 0 1 1-4.24-4.24" />
+                <line x1="1" y1="1" x2="23" y2="23" />
+              </svg>
+            </button>
+          </div>
+        </div>
+
+        <!-- New Password -->
+        <div>
+          <label class="block font-fredoka font-semibold text-[15px] text-[#4B5563] mb-1.5">New Password</label>
+          <div class="relative">
+            <input [(ngModel)]="passwordForm.newPassword" [ngModelOptions]="{ standalone: true }"
+              [type]="showNewPassword ? 'text' : 'password'"
+              class="w-full h-[52px] rounded-[14px] border border-[#D8DCE4] focus:border-[#7A5BC0] focus:ring-2 focus:ring-[#DCD2F0] outline-none px-4 pr-12 font-fredoka text-[16px] text-[#374151]"
+              placeholder="Enter new password" />
+            <button type="button" (click)="showNewPassword = !showNewPassword"
+              class="absolute right-4 top-1/2 -translate-y-1/2 text-[#9CA3AF] hover:text-[#6B7280] cursor-pointer">
+              <svg *ngIf="!showNewPassword" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                stroke-width="2" stroke-linecap="round">
+                <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z" />
+                <circle cx="12" cy="12" r="3" />
+              </svg>
+              <svg *ngIf="showNewPassword" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                stroke-width="2" stroke-linecap="round">
+                <path
+                  d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19m-6.72-1.07a3 3 0 1 1-4.24-4.24" />
+                <line x1="1" y1="1" x2="23" y2="23" />
+              </svg>
+            </button>
+          </div>
+          <!-- Password rules -->
+          <div *ngIf="passwordForm.newPassword.length > 0" class="mt-2 flex items-center gap-2">
+            <span [class]="newPasswordRules.minLength ? 'text-green-500' : 'text-red-400'"
+              class="font-fredoka text-[13px] flex items-center gap-1">
+              <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"
+                stroke-linecap="round">
+                <ng-container *ngIf="newPasswordRules.minLength">
+                  <polyline points="20 6 9 17 4 12" />
+                </ng-container>
+                <ng-container *ngIf="!newPasswordRules.minLength">
+                  <line x1="18" y1="6" x2="6" y2="18" />
+                  <line x1="6" y1="6" x2="18" y2="18" />
+                </ng-container>
+              </svg>
+              At least 6 characters
+            </span>
+          </div>
+        </div>
+
+        <!-- Confirm New Password -->
+        <div>
+          <label class="block font-fredoka font-semibold text-[15px] text-[#4B5563] mb-1.5">Confirm New Password</label>
+          <div class="relative">
+            <input [(ngModel)]="passwordForm.newPasswordConfirmation" [ngModelOptions]="{ standalone: true }"
+              [type]="showConfirmPassword ? 'text' : 'password'"
+              class="w-full h-[52px] rounded-[14px] border border-[#D8DCE4] focus:border-[#7A5BC0] focus:ring-2 focus:ring-[#DCD2F0] outline-none px-4 pr-12 font-fredoka text-[16px] text-[#374151]"
+              placeholder="Confirm new password" />
+            <button type="button" (click)="showConfirmPassword = !showConfirmPassword"
+              class="absolute right-4 top-1/2 -translate-y-1/2 text-[#9CA3AF] hover:text-[#6B7280] cursor-pointer">
+              <svg *ngIf="!showConfirmPassword" width="20" height="20" viewBox="0 0 24 24" fill="none"
+                stroke="currentColor" stroke-width="2" stroke-linecap="round">
+                <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z" />
+                <circle cx="12" cy="12" r="3" />
+              </svg>
+              <svg *ngIf="showConfirmPassword" width="20" height="20" viewBox="0 0 24 24" fill="none"
+                stroke="currentColor" stroke-width="2" stroke-linecap="round">
+                <path
+                  d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19m-6.72-1.07a3 3 0 1 1-4.24-4.24" />
+                <line x1="1" y1="1" x2="23" y2="23" />
+              </svg>
+            </button>
+          </div>
+          <p *ngIf="passwordForm.newPasswordConfirmation.length > 0 && !passwordsMatch"
+            class="mt-1.5 font-fredoka text-[13px] text-red-500">Passwords do not match</p>
+          <p *ngIf="passwordsMatch" class="mt-1.5 font-fredoka text-[13px] text-green-500 flex items-center gap-1">
+            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"
+              stroke-linecap="round">
+              <polyline points="20 6 9 17 4 12" />
+            </svg>
+            Passwords match
+          </p>
+        </div>
+      </div>
+
+      <!-- Footer -->
+      <div class="px-5 sm:px-6 md:px-10 pb-5 md:pb-8 pt-2 flex gap-3 justify-end border-t border-[#F1EBFA]">
+        <button (click)="closePasswordModal()" [disabled]="isSavingPassword"
+          class="h-[46px] md:h-[50px] px-5 md:px-6 rounded-[14px] bg-[#EEF0F5] text-[#6B7280] font-fredoka font-semibold text-[16px] md:text-[17px] hover:bg-[#E5E7EB] disabled:opacity-60 cursor-pointer">
+          Cancel
+        </button>
+        <button (click)="savePassword()" [disabled]="isSavingPassword"
+          class="h-[46px] md:h-[50px] px-6 md:px-7 rounded-[14px] bg-[linear-gradient(90deg,#667DE8_0%,#754DA5_100%)] text-white font-fredoka font-bold text-[16px] md:text-[17px] hover:shadow-[0_10px_28px_0_rgba(117,77,165,0.35)] disabled:opacity-60 cursor-pointer">
+          {{ isSavingPassword ? 'Updating...' : 'Update Password' }}
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Loading State -->
+  <div *ngIf="isLoading" class="px-[16px] sm:px-[24px] md:px-[40px] xl:px-[150px]">
+    <app-spinner-overlay [inline]="true"></app-spinner-overlay>
+  </div>
+
+  <!-- Error State -->
+  <div *ngIf="errorMessage && !isLoading"
+    class="flex justify-center items-center min-h-[400px] px-[16px] sm:px-[24px] md:px-[40px] xl:px-[150px]">
+    <div class="text-center">
+      <p class="font-fredoka font-semibold text-[20px] md:text-[25px] text-red-500 mb-4">
+        {{ errorMessage }}
+      </p>
+      <button (click)="fetchChildren()"
+        class="bg-gradient-to-r from-[#667DE8] to-[#754DA5] px-6 py-3 rounded-lg text-white font-fredoka font-bold">
+        Try Again
+      </button>
+    </div>
+  </div>
+
+  <!-- Empty State -->
+  <div *ngIf="!isLoading && !errorMessage && children.length === 0"
+    class="flex justify-center items-center min-h-[400px] px-[16px] sm:px-[24px] md:px-[40px] xl:px-[150px]">
+    <div class="text-center">
+      <p class="font-fredoka font-semibold text-[20px] md:text-[25px] text-[#374151] mb-4">
+        No learners added yet
+      </p>
+      <!-- <button (click)="onAddChild()" class="bg-gradient-to-r from-[#667DE8] to-[#754DA5] px-6 py-3 rounded-lg text-white font-fredoka font-bold">
+          Add Your First Child
+        </button> -->
+    </div>
+  </div>
+
+  <!-- Learner cards -->
+  <div *ngIf="!isLoading && !errorMessage && children.length > 0"
+    class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-4 md:gap-6 lg:gap-8 px-[16px] sm:px-[24px] md:px-[40px] xl:px-[150px] pb-8">
+    <div *ngFor="let child of children" (click)="onChildClick(child)"
+      class="relative overflow-hidden bg-[#FFFFFF] rounded-[15px] md:rounded-[20px] lg:rounded-[23px] p-[16px] md:p-[24px] lg:p-[30px] w-full mx-auto md:mx-0 shadow-[0px_6px_30px_0px_#0000001A] cursor-pointer hover:-translate-y-2 transition-all duration-300 ease-in-out">
+      <!-- SUBSCRIPTION RIBBON -->
+      <div class="absolute top-[22px] right-[-42px] w-[160px] py-1 rotate-[45deg] text-center shadow-lg z-10"
+        [ngClass]="isSubscribed(child.subscriptionExpiryDate) ? 'bg-green-500' : 'bg-red-500'">
+        <span
+          class="text-white font-fredoka font-bold text-[11px] md:text-[13px] uppercase tracking-[1.5px] block w-full">
+          {{ isSubscribed(child.subscriptionExpiryDate) ? 'Active' : 'Inactive' }}
+        </span>
+      </div>
+
+      <div class="flex items-center gap-3 md:gap-4 mb-3 md:mb-4">
+        <div
+          class="w-[50px] h-[50px] md:w-[65px] md:h-[65px] lg:w-[79px] lg:h-[79px] bg-custom-gradient rounded-full flex items-center justify-center overflow-hidden">
+          <img [src]="getAvatarPath(child)" class="w-full h-full object-cover rounded-full"
+            [alt]="child.name + ' avatar'" />
+        </div>
+        <div>
+          <h3
+            class="font-fredoka font-semibold text-[24px] md:text-[30px] lg:text-[35px] leading-[28px] md:leading-[34px] lg:leading-[38px] tracking-[-0.4px] text-[#374151]">
+            {{ child.name }}
+          </h3>
+          <div class="flex items-center gap-2">
+            <p
+              class="font-fredoka font-normal text-[16px] md:text-[18px] lg:text-[20px] leading-[20px] md:leading-[28px] lg:leading-[34px] tracking-[-0.4px] text-[#374151]">
+              Age {{ child.age }}
+            </p>
+            <span *ngIf="child.gradeName"
+              class="font-fredoka font-normal text-[14px] md:text-[16px] lg:text-[18px] text-[#9CA3AF]">
+              •
+            </span>
+            <p *ngIf="child.gradeName"
+              class="font-fredoka font-normal text-[16px] md:text-[18px] lg:text-[20px] leading-[20px] md:leading-[28px] lg:leading-[34px] tracking-[-0.4px] text-[#374151]">
+              {{ child.gradeName }}
+            </p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Course Name -->
+      <div class="mb-3 md:mb-4">
+        <p
+          class="font-fredoka font-normal text-[16px] md:text-[18px] lg:text-[20px] leading-[20px] md:leading-[28px] lg:leading-[34px] tracking-[-0.4px] text-[#374151]">
+          {{ formatCourseName(child.courseName) }}
+        </p>
+      </div>
+
+      <div class="space-y-3 md:space-y-4">
+        <div>
+          <div class="flex justify-between items-center mb-2">
+            <span
+              class="font-fredoka font-normal text-[14px] md:text-[16px] lg:text-[18px] leading-[18px] md:leading-[24px] lg:leading-[29px] tracking-[-0.4px] text-[#374151]">
+              Overall Progress
+            </span>
+            <span
+              class="font-fredoka font-semibold text-[14px] md:text-[16px] lg:text-[18px] leading-[18px] md:leading-[24px] lg:leading-[29px] tracking-[-0.4px] text-[#374151]">
+              {{ child.progress }}%
+            </span>
+          </div>
+          <div class="w-full h-[16px] md:h-[18px] lg:h-[21px] rounded-[20px] bg-[#E5E7EB]">
+            <div
+              class="h-[16px] md:h-[18px] lg:h-[21px] rounded-[20px] bg-[linear-gradient(90deg,#FAC815_0%,#F97616_100%)]"
+              [style.width.%]="child.progress"></div>
+          </div>
+        </div>
+
+        <div class="flex justify-between items-center">
+          <span
+            class="font-fredoka font-normal text-[14px] md:text-[16px] lg:text-[18px] leading-[18px] md:leading-[24px] lg:leading-[29px] tracking-[-0.4px] text-[#374151]">
+            Total Points
+          </span>
+          <div class="flex items-center gap-1">
+            <img src="./assets/icons/star_parent_dashboard.png"
+              class="w-[20px] h-[20px] md:w-[24px] md:h-[24px] lg:w-[26px] lg:h-[26px]" />
+            <span
+              class="font-fredoka font-semibold text-[14px] md:text-[16px] lg:text-[18px] leading-[18px] md:leading-[24px] lg:leading-[29px] tracking-[-0.4px] text-[#E4B936]">
+              {{ child.totalPoints }}
+            </span>
+          </div>
+        </div>
+
+        <div class="flex justify-between items-center">
+          <span
+            class="font-fredoka font-normal text-[14px] md:text-[16px] lg:text-[18px] leading-[18px] md:leading-[24px] lg:leading-[29px] tracking-[-0.4px] text-[#374151]">
+            Active Subjects
+          </span>
+          <span
+            class="font-fredoka font-semibold text-[14px] md:text-[16px] lg:text-[18px] leading-[18px] md:leading-[24px] lg:leading-[29px] tracking-[-0.4px] text-[#374151]">
+            {{ child.activeSubjects }}
+          </span>
+        </div>
+
+        <!-- Subscription countdown -->
+        <div class="pt-3 mt-1 border-t border-gray-100">
+          <div class="flex items-center gap-2 py-1.5 px-3 rounded-xl bg-gray-50 border border-gray-100 justify-center">
+            <div class="w-2 h-2 rounded-full animate-pulse flex-shrink-0"
+              [ngClass]="isSubscribed(child.subscriptionExpiryDate) ? 'bg-green-500' : 'bg-red-500'"></div>
+            <span class="font-fredoka font-medium text-[12px] md:text-[14px] lg:text-[15px] tracking-[-0.2px] tabular-nums"
+              [ngClass]="isSubscribed(child.subscriptionExpiryDate) ? 'text-gray-600' : 'text-red-500'">
+              {{ getCountdown(child.subscriptionExpiryDate) }}
+            </span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Learner Profile Modal -->
+  <app-learner-profile-modal [isOpen]="showLearnerProfileModal" [learner]="selectedLearnerForEdit"
+    (closeModal)="closeLearnerProfileModal()"
+    (profileUpdated)="onLearnerProfileUpdated($event)"></app-learner-profile-modal>
+</main>

@@ -1,0 +1,45 @@
+@keyframes bounce-subtle {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-5px); }
+}
+
+.animate-bounce-subtle {
+  animation: bounce-subtle 3s infinite ease-in-out;
+}
+/* In subject-lessons.ts styles or subject-lessons.css */
+.line-clamp-2 {
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;  
+  overflow: hidden;
+}
+@media (max-width: 768px) {
+  /* Ensure the grid container doesn't have too much padding */
+  .grid-cols-2 {
+    gap: 10px !important; /* Tighten the gap so cards have more room */
+    display: grid !important;
+  }
+
+  /* Ensure Unit Cards (Topics) are also uniform */
+  .unit-card-mobile {
+    height: 140px !important;
+    padding: 10px !important;
+  }
+
+  .unit-card-mobile .flex-row {
+    flex-direction: column !important;
+    align-items: center !important;
+    text-align: center !important;
+    gap: 4px !important;
+  }
+
+  .unit-card-mobile h2 {
+    font-size: 14px !important;
+  }
+
+  /* Hide metadata on the Topic cards too */
+  .unit-card-mobile p, 
+  .unit-card-mobile .shrink-0.ml-auto {
+    display: none !important;
+  }
+}

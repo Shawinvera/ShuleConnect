@@ -1,0 +1,50 @@
+<app-toast [message]="toast.message" [type]="toast.type" [visible]="toast.visible" (dismissed)="toast.dismiss()"></app-toast>
+
+<div class="min-h-screen bg-[#F3F4F8] font-sans pt-2 px-[12px] md:pt-4 md:px-[40px] xl:px-[150px] pb-[80px] md:pb-10 text-slate-800">
+
+  <app-teacher-breadcrumb></app-teacher-breadcrumb>
+
+  <!-- Header -->
+  <div class="mb-10">
+    <h1 class="font-[Fredoka] font-bold text-[48px] leading-[65px] tracking-[-0.4px] text-[#374151] mb-3">{{ subjectName }} Analytics</h1>
+    <p class="font-[Fredoka] font-normal text-[24px] leading-[39px] tracking-[-0.4px] text-[#374151]">Topic performance overview for this subject</p>
+  </div>
+
+  <!-- Spinner -->
+  <app-spinner-overlay *ngIf="isLoading" [inline]="true"></app-spinner-overlay>
+
+  <!-- Summary Badge -->
+  <div *ngIf="!isLoading && analytics" class="mb-8">
+    <span class="inline-block bg-[#DBEAFE] text-[#1E40AF] font-[Fredoka] font-semibold text-[18px] px-4 py-2 rounded-full">
+      {{ analytics.totalTopics }} Topics Total
+    </span>
+  </div>
+
+  <!-- Cards -->
+  <div *ngIf="!isLoading && analytics?.topicStats?.length" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+    <div *ngFor="let topic of analytics!.topicStats" class="bg-white shadow-md rounded-[23px] p-6">
+      <h3 class="font-[Fredoka] font-bold text-[22px] text-[#374151] mb-4">{{ topic.topicName | titlecase }}</h3>
+      <div class="flex flex-col gap-2">
+        <div class="flex justify-between">
+          <span class="font-[Fredoka] text-[15px] text-[#6B7280]">Access Count</span>
+          <span class="font-[Fredoka] font-semibold text-[15px] text-[#374151]">{{ topic.accessCount | number }}</span>
+        </div>
+        <div class="flex justify-between">
+          <span class="font-[Fredoka] text-[15px] text-[#6B7280]">Access Share</span>
+          <span class="font-[Fredoka] font-semibold text-[15px] text-[#374151]">{{ topic.accessPercentage | number:'1.1-1' }}%</span>
+        </div>
+        <div class="w-full bg-gray-100 rounded-full h-2 mt-1">
+          <div class="bg-blue-500 h-2 rounded-full transition-all duration-500" [style.width.%]="topic.accessPercentage"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- No Data -->
+  <div *ngIf="!isLoading && !analytics?.topicStats?.length" class="text-center py-20">
+    <div class="text-gray-400 text-6xl mb-4">📚</div>
+    <h3 class="font-[Fredoka] font-semibold text-[30px] text-gray-500 mb-2">No analytics available yet</h3>
+    <p class="font-[Fredoka] text-[20px] text-gray-400">Data will appear here once learners start engaging with topics</p>
+  </div>
+
+</div>

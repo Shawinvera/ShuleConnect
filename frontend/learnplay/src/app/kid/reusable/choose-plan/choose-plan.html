@@ -1,0 +1,87 @@
+<div
+  class="min-h-screen flex justify-center font-fredoka px-6 pt-10 md:px-12 lg:px-[150px] !bg-gradient-to-b from-[#F5F5FF] to-[#FBF4FC] animate-fade-in pb-[90px] md:py-10"
+>
+  <app-toast [message]="toast.message" [type]="toast.type" [visible]="toast.visible" (dismissed)="toast.dismiss()"></app-toast>
+  <div class="max-w-xl w-full flex flex-col items-center">
+    <!-- Header Section -->
+    <div class="text-center mb-8">
+      <h1
+        class="font-bold text-[#9333EA] mb-2 text-3xl sm:text-4xl md:text-[55px] md:leading-[64px] tracking-[-0.4px] flex items-center justify-center gap-2"
+      >
+        Choose Your Plan
+        <!-- Decorative Credit Card Icon -->
+        <div class="hidden sm:block w-[60px] md:w-[114px] h-auto">
+          <img
+            src="assets/icons/credit-card.png"
+            alt="Credit Card Decor"
+            class="w-full h-full object-contain"
+          />
+        </div>
+      </h1>
+      <p
+        class="text-[#374151] font-normal text-lg sm:text-xl md:text-[26px] md:leading-[39px] tracking-[-0.4px] flex items-center justify-center px-2"
+      >
+        Select the plan that works best for you!
+      </p>
+    </div>
+
+    <div class="w-full flex flex-col gap-4 mb-8">
+      <div *ngIf="isLoading" class="text-center py-10 font-fredoka text-[#9333EA]">
+        Fetching the best plans for you...
+      </div>
+
+      <div *ngIf="!isLoading && loadError" class="flex flex-col items-center justify-center py-16 gap-4 text-center">
+        <div class="w-[70px] h-[70px] rounded-full bg-red-100 flex items-center justify-center">
+          <span class="text-red-500 text-[32px] font-bold">!</span>
+        </div>
+        <p class="font-fredoka font-semibold text-[18px] md:text-[22px] text-[#374151]">Couldn't load plans</p>
+        <p class="font-fredoka font-normal text-[14px] md:text-[18px] text-[#6B7280]">Please check your connection and try again.</p>
+        <button (click)="fetchPlans(null!)" class="px-8 py-3 bg-gradient-to-r from-[#667DE8] to-[#754DA5] text-white font-fredoka font-bold text-[16px] rounded-[15px] hover:scale-105 transition-all duration-200">Try Again</button>
+      </div>
+
+      <!-- Dynamic Plans List -->
+      <div
+        *ngFor="let plan of plans"
+        (click)="selectPlan(plan.id)"
+        matRipple
+        class="bg-white rounded-2xl p-4 sm:p-6 md:p-[30px] flex items-center justify-between cursor-pointer transition-all duration-200 border-2 shadow-sm hover:shadow-md select-none"
+        [ngClass]="{
+          'border-[#3466EB] !border-[4px] md:border-[5px] ring-1 ring-[#3466EB]':
+            selectedPlanId === plan.id,
+          'border-transparent': selectedPlanId !== plan.id,
+        }"
+      >
+        <!-- Left Side: Icon & Text -->
+        <div class="flex items-center gap-3 sm:gap-4">
+          <div
+            [class]="
+              'w-14 h-14 sm:w-[86px] sm:h-[85px] rounded-xl flex items-center justify-center text-white ' +
+              plan.iconBg
+            "
+          >
+            <img [src]="plan.icon" class="w-8 h-8 sm:w-[50px] sm:h-[50px] object-contain" />
+          </div>
+
+          <div class="text-left">
+            <h3 class="text-[#374151] font-bold text-lg sm:text-xl md:text-[30px] leading-tight">
+              {{ plan.title }}
+            </h3>
+            <p class="font-normal text-xs sm:text-sm md:text-[18px] text-[#374151]">
+              {{ plan.subtitle }}
+            </p>
+          </div>
+        </div>
+
+        <!-- Right Side: Price -->
+        <div class="text-right">
+          <div [class]="'text-xl sm:text-2xl md:text-[35px] font-bold ' + plan.textColor">
+            {{ plan.price }} {{ plan.currency }}
+          </div>
+          <p class="font-normal text-xs sm:text-sm md:text-[18px] text-gray-500">
+            {{ plan.period }}
+          </p>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

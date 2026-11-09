@@ -1,0 +1,65 @@
+/* Ensure smooth transitions and proper z-indexing */
+.group:hover .group-hover\:opacity-100 {
+  opacity: 1;
+}
+
+/* Custom scrollbar for progress bar on hover */
+.group\/progress:hover {
+  height: 6px;
+}
+
+.group\/progress {
+  transition: height 0.2s ease;
+}
+
+/* Ensure video container maintains aspect ratio */
+.aspect-video {
+  aspect-ratio: 16 / 9;
+}
+
+/* Smooth fullscreen transitions */
+:fullscreen {
+  background: black;
+}
+
+/* Hide YouTube branding that might still appear */
+.ytp-chrome-top,
+.ytp-chrome-bottom,
+.ytp-gradient-top,
+.ytp-gradient-bottom,
+.ytp-title,
+.ytp-title-channel,
+.ytp-watermark,
+.ytp-chrome-controls,
+.ytp-pause-overlay,
+.ytp-share-button-visible,
+.ytp-watch-later-button,
+.ytp-copylink-button {
+  display: none !important;
+}
+
+/* Ensure clean video appearance */
+iframe {
+  border: none;
+  outline: none;
+}
+
+/* Add to custom-video-player.component.css */
+
+.group\/volume:hover .group-hover\/volume\:w-20 {
+  width: 5rem; /* 80px */
+}
+
+input[type='range'].accent-white {
+  accent-color: white;
+}
+
+/* Ensure the control bar container doesn't block mouse events for the seeker */
+.pointer-events-auto {
+  pointer-events: auto;
+}
+
+/* Add extra padding to the hit area of the bottom controls */
+.z-50 {
+  padding-top: 20px; /* Makes it easier to catch the mouse without it disappearing */
+}

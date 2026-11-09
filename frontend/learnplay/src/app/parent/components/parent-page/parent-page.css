@@ -1,0 +1,14 @@
+@keyframes guidePulseParent {
+  0%, 100% {
+    box-shadow: 0 0 0 0 rgba(103, 126, 232, 0.45);
+  }
+  70% {
+    box-shadow: 0 0 0 14px rgba(103, 126, 232, 0);
+  }
+}
+
+.guide-highlight {
+  position: relative;
+  z-index: 121;
+  animation: guidePulseParent 2s infinite;
+}

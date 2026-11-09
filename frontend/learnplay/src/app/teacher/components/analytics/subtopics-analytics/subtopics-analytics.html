@@ -1,0 +1,36 @@
+<!-- Skeleton -->
+<div *ngIf="isLoading" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+  <div *ngFor="let i of [1,2,3]" class="bg-white shadow-md rounded-[23px] p-6 animate-pulse">
+    <div class="h-5 bg-gray-200 rounded w-3/4 mb-4"></div>
+    <div class="h-4 bg-gray-200 rounded w-full mb-2"></div>
+    <div class="h-4 bg-gray-200 rounded w-full mb-3"></div>
+    <div class="h-2 bg-gray-200 rounded-full w-full"></div>
+  </div>
+</div>
+
+<!-- Cards -->
+<div *ngIf="!isLoading && data.length" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+  <div *ngFor="let subtopic of data" class="bg-white shadow-md rounded-[23px] p-6">
+    <h3 class="font-[Fredoka] font-bold text-[20px] text-[#374151] mb-4">{{ subtopic.name }}</h3>
+    <div class="flex flex-col gap-2">
+      <div class="flex justify-between">
+        <span class="font-[Fredoka] text-[15px] text-[#6B7280]">Learners</span>
+        <span class="font-[Fredoka] font-semibold text-[15px] text-[#374151]">{{ subtopic.learnerCount | number }}</span>
+      </div>
+      <div class="flex justify-between">
+        <span class="font-[Fredoka] text-[15px] text-[#6B7280]">Completion Rate</span>
+        <span class="font-[Fredoka] font-semibold text-[15px] text-[#374151]">{{ subtopic.completionRate | number:'1.1-1' }}%</span>
+      </div>
+      <div class="w-full bg-gray-100 rounded-full h-2 mt-1">
+        <div class="bg-green-500 h-2 rounded-full transition-all duration-500" [style.width.%]="subtopic.completionRate"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- No Data -->
+<div *ngIf="!isLoading && !data.length" class="text-center py-20">
+  <div class="text-gray-400 text-6xl mb-4">📂</div>
+  <h3 class="font-[Fredoka] font-semibold text-[30px] text-gray-500 mb-2">No subtopics analytics available</h3>
+  <p class="font-[Fredoka] text-[20px] text-gray-400">Data will appear here once available</p>
+</div>

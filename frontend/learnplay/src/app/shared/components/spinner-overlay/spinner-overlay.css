@@ -1,0 +1,50 @@
+.spinner-overlay {
+  position: fixed;
+  inset: 0;
+  background: transparent;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 9999;
+  pointer-events: none;
+}
+
+.inline-spinner {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  padding: clamp(30px, 6vw, 80px) 0;
+}
+
+.spinner-card {
+  background: rgba(255, 255, 255, 0.92);
+  border-radius: 16px;
+  padding: 20px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.spinner-ring {
+  width: clamp(40px, 8vw, 80px);
+  height: clamp(40px, 8vw, 80px);
+  border-radius: 50%;
+  background: conic-gradient(from 0deg, transparent 0%, #c084fc 50%, #9333EA 100%);
+  -webkit-mask: radial-gradient(
+    farthest-side,
+    transparent calc(100% - clamp(5px, 1vw, 8px)),
+    #000 calc(100% - clamp(5px, 1vw, 8px))
+  );
+  mask: radial-gradient(
+    farthest-side,
+    transparent calc(100% - clamp(5px, 1vw, 8px)),
+    #000 calc(100% - clamp(5px, 1vw, 8px))
+  );
+  animation: spin 0.9s linear infinite;
+}
+
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}

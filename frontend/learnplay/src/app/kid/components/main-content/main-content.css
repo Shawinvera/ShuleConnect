@@ -1,0 +1,46 @@
+
+@keyframes guidePulseKid {
+  0%, 100% { box-shadow: 0 0 0 0 rgba(103, 126, 232, 0.45); }
+  70% { box-shadow: 0 0 0 14px rgba(103, 126, 232, 0); }
+}
+
+.guide-highlight {
+  position: relative;
+  z-index: 3;
+  animation: guidePulseKid 2s infinite;
+  border: 2px solid #687ae4 !important;
+}
+
+/* Ensure the input doesn't wrap or look weird during width transition */
+input#subjectSearch {
+  white-space: nowrap;
+  overflow: hidden;
+}
+
+/* For browsers that don't support Tailwind's transition-all perfectly */
+.transition-all {
+  transition-property: all;
+  transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+  transition-duration: 500ms;
+}
+
+/* Optional: Add a slight scale effect when the icon is clicked */
+button:active {
+  transform: scale(0.95);
+}
+
+input#subjectSearch::placeholder {
+  transition: opacity 0.3s ease;
+  /* Adds a tiny bit of extra indent to the placeholder itself */
+  text-indent: 2px; 
+}
+
+/* Prevents the 'X' button from jumping during the slide */
+.animate-fade-in {
+  animation: fadeIn 0.5s ease-in-out;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}

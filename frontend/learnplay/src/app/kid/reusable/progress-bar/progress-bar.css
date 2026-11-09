@@ -1,0 +1,45 @@
+/* 1. Component Setup */
+:host {
+  display: block;
+  width: 100%;
+}
+
+.progress-bar-container {
+  width: 100%;
+  /* Adjust this height to match your design exactly (e.g., 20px or 24px) */
+  height: 20px; 
+  border-radius: 9999px;
+  overflow: hidden; 
+  position: relative;
+  /* Ensure the background matches the "empty" part color here or in the buffer below */
+  background-color: #e5e7eb; 
+}
+
+/* 2. Main Material Component Override */
+:host ::ng-deep .mat-mdc-progress-bar {
+  height: 100% !important; 
+  border-radius: inherit !important;
+  background-color: transparent !important; /* Let container bg show */
+}
+
+/* 3. The Gray Track (Buffer) */
+:host ::ng-deep .mat-mdc-progress-bar .mdc-linear-progress__buffer {
+  height: 100% !important;
+  background-color: #e5e7eb !important; 
+  border-top-width: 0 !important;
+}
+
+/* 4. THE FIX: The Wrapper for the colored bar */
+/* This element usually defaults to 4px. We must force it to 100% */
+:host ::ng-deep .mat-mdc-progress-bar .mdc-linear-progress__bar {
+  height: 100% !important;
+  transform-origin: top left !important; /* Keeps alignment crisp */
+}
+
+/* 5. The Colored Bar Itself */
+:host ::ng-deep .mat-mdc-progress-bar .mdc-linear-progress__bar-inner {
+  border: none !important; 
+  height: 100% !important;
+  background: var(--bar-color) !important;
+  border-radius: 99999px;
+}

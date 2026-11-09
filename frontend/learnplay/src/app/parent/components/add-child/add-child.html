@@ -1,0 +1,279 @@
+<main
+  class="bg-[linear-gradient(180deg,#F5F5FF_0%,#FBF4FC_100%)] min-h-screen p-3 md:p-6 lg:p-8 overflow-x-hidden pb-[75px] md:pb-6 lg:pb-8">
+  <app-toast [message]="toast.message" [type]="toast.type" [visible]="toast.visible"
+    (dismissed)="toast.dismiss()"></app-toast>
+  <div
+    class="w-full max-w-[800px] pt-[15px] md:pt-[35px] lg:pt-[50px] pb-[15px] md:pb-[35px] lg:pb-[50px] gap-[15px] md:gap-[25px] lg:gap-[35px] mx-auto px-2 md:px-0">
+    <div class="mb-3 md:mb-6 lg:mb-8">
+      <app-breadcrumb></app-breadcrumb>
+    </div>
+
+    <!-- Welcome message for first-time users -->
+    <div *ngIf="isFirstLearner"
+      class="w-full max-w-full lg:w-[800px] p-4 md:p-6 lg:p-8 mb-4 md:mb-6 lg:mb-8 rounded-[12px] md:rounded-[18px] lg:rounded-[23px] bg-gradient-to-r from-[#E0F2FE] to-[#F0F9FF] border-l-4 border-[#0EA5E9]">
+      <div class="flex items-start gap-3 md:gap-4">
+        <div class="flex-shrink-0">
+          <div class="w-8 h-8 md:w-10 md:h-10 rounded-full bg-[#0EA5E9] flex items-center justify-center">
+            <svg class="w-4 h-4 md:w-5 md:h-5 text-white" fill="currentColor" viewBox="0 0 20 20">
+              <path fill-rule="evenodd"
+                d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7-4a1 1 0 11-2 0 1 1 0 012 0zM9 9a1 1 0 000 2v3a1 1 0 001 1h1a1 1 0 100-2v-3a1 1 0 00-1-1H9z"
+                clip-rule="evenodd"></path>
+            </svg>
+          </div>
+        </div>
+        <div class="flex-1">
+          <h3
+            class="text-[#0F172A] font-fredoka font-bold text-[16px] md:text-[20px] lg:text-[24px] leading-[20px] md:leading-[24px] lg:leading-[28px] tracking-[-0.4px] mb-2">
+            Welcome! Let's create your first learner account
+          </h3>
+          <p
+            class="hidden md:block text-[#475569] font-fredoka font-normal text-[14px] md:text-[16px] lg:text-[18px] leading-[18px] md:leading-[20px] lg:leading-[22px] tracking-[-0.4px]">
+            You don't have any learners registered yet. Please create a learner profile to get started with WaziLearn.
+          </p>
+        </div>
+      </div>
+    </div>
+
+
+    <div
+      class="w-full max-w-full lg:w-[800px] pt-[25px] md:pt-[40px] lg:pt-[50px] pr-[16px] md:pr-[16px] lg:pr-[40px] pb-[25px] md:pb-[40px] lg:pb-[50px] pl-[16px] md:pl-[16px] lg:pl-[40px] gap-[15px] md:gap-[22px] lg:gap-[30px] 
+                rounded-[12px] md:rounded-[18px] lg:rounded-[23px] bg-white shadow-[0_6px_30px_0_rgba(0,0,0,0.1)] overflow-hidden">
+      <div class="text-center mb-5 md:mb-7 lg:mb-8">
+        <div
+          class="w-[70px] h-[70px] md:w-[95px] md:h-[95px] lg:w-[117px] lg:h-[117px] rounded-[45px] md:rounded-[65px] lg:rounded-[82px] flex items-center justify-center mx-auto mb-3 bg-gradient-to-br from-[#BAE8E8] via-[#BAE8E8] to-[#EEDAE4]">
+          <img src="./assets/icons/family.png"
+            class="w-[40px] h-[40px] md:w-[55px] md:h-[55px] lg:w-[69px] lg:h-[69px]">
+        </div>
+        <h1
+          class="text-[#9333EA] font-fredoka font-bold text-[24px] md:text-[35px] lg:text-[45px] leading-[28px] md:leading-[45px] lg:leading-[64px] tracking-[-0.4px] text-center align-middle mx-auto mb-1">
+          Add new learner
+        </h1>
+        <p
+          class="text-[#374151] font-fredoka font-normal text-[14px] md:text-[17px] lg:text-[20px] leading-[20px] md:leading-[28px] lg:leading-[39px] tracking-[-0.4px] text-center align-middle mx-auto">
+          Create a learning profile
+        </p>
+      </div>
+
+      <form class="space-y-4 md:space-y-5 lg:space-y-6">
+        <div>
+          <label
+            class="block text-[#374151] font-fredoka font-semibold text-[14px] md:text-[19px] lg:text-[25px] leading-[18px] tracking-[-0.4px] align-middle mb-2">
+            First Name <span class="text-red-500">*</span>
+          </label>
+          <input [(ngModel)]="firstName" name="firstName" type="text" placeholder="Enter first name"
+            class="w-full max-w-full lg:w-[720px] h-[50px] md:h-[65px] lg:h-[79px] px-[12px] md:px-[16px] lg:px-[20px] py-[15px] md:py-[20px] lg:py-[25px] gap-[10px] bg-white border-[2px] border-[#E5E7EB] rounded-[12px] md:rounded-[16px] lg:rounded-[20px] focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent placeholder:font-fredoka placeholder:font-medium placeholder:text-[14px] md:placeholder:text-[18px] lg:placeholder:text-[23px] placeholder:leading-[18px] md:placeholder:leading-[24px] lg:placeholder:leading-[29px] placeholder:tracking-[-0.4px] placeholder:text-[#BBC2CD]" />
+        </div>
+
+        <div>
+          <label
+            class="block text-[#374151] font-fredoka font-semibold text-[14px] md:text-[19px] lg:text-[25px] leading-[18px] tracking-[-0.4px] align-middle mb-2">
+            Last Name <span class="text-red-500">*</span>
+          </label>
+          <input [(ngModel)]="lastName" name="lastName" type="text" placeholder="Enter last name"
+            class="w-full max-w-full lg:w-[720px] h-[50px] md:h-[65px] lg:h-[79px] px-[12px] md:px-[16px] lg:px-[20px] py-[15px] md:py-[20px] lg:py-[25px] gap-[10px] bg-white border-[2px] border-[#E5E7EB] rounded-[12px] md:rounded-[16px] lg:rounded-[20px] focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent placeholder:font-fredoka placeholder:font-medium placeholder:text-[14px] md:placeholder:text-[18px] lg:placeholder:text-[23px] placeholder:leading-[18px] md:placeholder:leading-[24px] lg:placeholder:leading-[29px] placeholder:tracking-[-0.4px] placeholder:text-[#BBC2CD]" />
+        </div>
+
+        <div>
+          <label
+            class="block text-[#374151] font-fredoka font-semibold text-[14px] md:text-[19px] lg:text-[25px] leading-[18px] tracking-[-0.4px] align-middle mb-2">
+            Preferred Name
+          </label>
+          <input [(ngModel)]="username" name="username" type="text" placeholder="Enter preferred name"
+            class="w-full max-w-full lg:w-[720px] h-[50px] md:h-[65px] lg:h-[79px] px-[12px] md:px-[16px] lg:px-[20px] py-[15px] md:py-[20px] lg:py-[25px] gap-[10px] bg-white border-[2px] border-[#E5E7EB] rounded-[12px] md:rounded-[16px] lg:rounded-[20px] focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent placeholder:font-fredoka placeholder:font-medium placeholder:text-[14px] md:placeholder:text-[18px] lg:placeholder:text-[23px] placeholder:leading-[18px] md:placeholder:leading-[24px] lg:placeholder:leading-[29px] placeholder:tracking-[-0.4px] placeholder:text-[#BBC2CD]" />
+        </div>
+
+        <div>
+          <label
+            class="block text-[#374151] font-fredoka font-semibold text-[14px] md:text-[19px] lg:text-[25px] leading-[18px] tracking-[-0.4px] align-middle mb-2">
+            Date of Birth <span class="text-red-500">*</span>
+          </label>
+          <mat-form-field class="w-full custom-date-field">
+            <input matInput [matDatepicker]="picker" [(ngModel)]="dateOfBirth" name="dateOfBirth"
+              placeholder="Select date of birth" [max]="maxDate" [min]="minDate" readonly class="cursor-pointer"
+              (click)="picker.open()">
+            <mat-datepicker-toggle matSuffix [for]="picker" class="custom-calendar-icon">
+              <mat-icon matDatepickerToggleIcon>calendar_today</mat-icon>
+            </mat-datepicker-toggle>
+            <mat-datepicker #picker [startView]="'multi-year'" [touchUi]="false"></mat-datepicker>
+          </mat-form-field>
+        </div>
+
+        <div>
+          <label
+            class="block text-[#374151] font-fredoka font-semibold text-[14px] md:text-[19px] lg:text-[25px] leading-[18px] tracking-[-0.4px] align-middle mb-2">
+            Birth Certificate Number
+          </label>
+          <input [(ngModel)]="birthCertNumber" name="birthCertNumber" type="text"
+            placeholder="Enter birth certificate number"
+            class="w-full max-w-full lg:w-[720px] h-[50px] md:h-[65px] lg:h-[79px] px-[12px] md:px-[16px] lg:px-[20px] py-[15px] md:py-[20px] lg:py-[25px] gap-[10px] bg-white border-[2px] border-[#E5E7EB] rounded-[12px] md:rounded-[16px] lg:rounded-[20px] focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent placeholder:font-fredoka placeholder:font-medium placeholder:text-[14px] md:placeholder:text-[18px] lg:placeholder:text-[23px] placeholder:leading-[18px] md:placeholder:leading-[24px] lg:placeholder:leading-[29px] placeholder:tracking-[-0.4px] placeholder:text-[#BBC2CD]" />
+        </div>
+
+        <div>
+          <label
+            class="block text-[#374151] font-fredoka font-semibold text-[14px] md:text-[19px] lg:text-[25px] leading-[18px] tracking-[-0.4px] align-middle mb-2">
+            Gender <span class="text-red-500">*</span>
+          </label>
+          <mat-form-field class="w-full custom-select-field">
+            <mat-select [(ngModel)]="gender" name="gender" (selectionChange)="onGenderChange()" class="custom-select"
+              placeholder="Select gender">
+              <mat-option value="MALE" class="custom-option">Male</mat-option>
+              <mat-option value="FEMALE" class="custom-option">Female</mat-option>
+            </mat-select>
+          </mat-form-field>
+        </div>
+
+        <div>
+          <label
+            class="block text-[#374151] font-fredoka font-semibold text-[14px] md:text-[19px] lg:text-[25px] leading-[18px] tracking-[-0.4px] align-middle mb-2">
+            Course <span class="text-red-500">*</span>
+          </label>
+          <div *ngIf="isLoadingCourses" class="py-2">
+            <app-spinner-overlay [inline]="true"></app-spinner-overlay>
+          </div>
+          <mat-form-field *ngIf="!isLoadingCourses" class="w-full custom-select-field">
+            <mat-select [(ngModel)]="selectedCourseId" name="selectedCourseId" (selectionChange)="onCourseChange()"
+              class="custom-select" placeholder="Select course">
+              <mat-option *ngFor="let course of courses" [value]="course.id" class="custom-option">
+                {{ course.title }}
+              </mat-option>
+            </mat-select>
+          </mat-form-field>
+        </div>
+
+        <div>
+          <label
+            class="block text-[#374151] font-fredoka font-semibold text-[14px] md:text-[19px] lg:text-[25px] leading-[18px] tracking-[-0.4px] align-middle mb-2">
+            Current Grade <span class="text-red-500">*</span>
+          </label>
+          <mat-form-field class="w-full custom-select-field">
+            <mat-select [(ngModel)]="selectedGradeId" name="selectedGradeId"
+              [disabled]="!selectedCourseId || grades.length === 0" class="custom-select"
+              [placeholder]="!selectedCourseId ? 'Select course first' : 'Select grade'">
+              <mat-option *ngFor="let grade of grades" [value]="grade.id" class="custom-option">
+                {{ grade.name }}
+              </mat-option>
+            </mat-select>
+          </mat-form-field>
+        </div>
+
+        <div>
+          <label
+            class="block text-[#374151] font-fredoka font-semibold text-[14px] md:text-[19px] lg:text-[25px] leading-[18px] tracking-[-0.4px] align-middle mb-2">
+            Profile Picture <span class="text-red-500">*</span>
+          </label>
+
+          <!-- Toggle: Avatar vs Own Photo -->
+          <div class="flex gap-2 mb-4 p-1 bg-[#F3F4F6] rounded-[12px] w-full max-w-full lg:w-[720px]">
+            <button type="button" (click)="setPhotoSource('avatar')"
+              class="flex-1 py-2 rounded-[10px] font-fredoka font-semibold text-[13px] md:text-[15px] lg:text-[17px] transition-all duration-200 text-center cursor-pointer"
+              [class]="photoSourceType === 'avatar' ? 'bg-gradient-to-r from-[#687AE4] to-[#7452AC] text-white shadow-sm' : 'text-[#6B7280] hover:text-[#374151]'">
+              🎭 Avatar
+            </button>
+            <button type="button" (click)="setPhotoSource('photo')"
+              class="flex-1 py-2 rounded-[10px] font-fredoka font-semibold text-[13px] md:text-[15px] lg:text-[17px] transition-all duration-200 text-center cursor-pointer"
+              [class]="photoSourceType === 'photo' ? 'bg-gradient-to-r from-[#687AE4] to-[#7452AC] text-white shadow-sm' : 'text-[#6B7280] hover:text-[#374151]'">
+              📷 My Photo
+            </button>
+          </div>
+
+          <!-- Avatar Selection -->
+          <div *ngIf="photoSourceType === 'avatar'" class="flex flex-col items-center gap-4">
+            <div (click)="openAvatarModal()"
+              class="w-[80px] h-[80px] md:w-[100px] md:h-[100px] lg:w-[120px] lg:h-[120px] rounded-[20px] md:rounded-[25px] lg:rounded-[30px] flex items-center justify-center cursor-pointer transition-all duration-200 overflow-hidden bg-gradient-to-br from-[#BAE8E8] via-[#BAE8E8] to-[#EEDAE4] hover:scale-105 hover:shadow-lg border-2 border-dashed border-[#9333EA]"
+              [class]="selectedAvatar ? 'border-solid border-[#9333EA] shadow-md' : ''">
+              <img *ngIf="selectedAvatar; else placeholderIcon" [src]="getSelectedAvatarPath()"
+                [alt]="'Selected avatar'"
+                class="w-full h-full object-cover rounded-[18px] md:rounded-[23px] lg:rounded-[28px]">
+              <ng-template #placeholderIcon>
+                <mat-icon class="text-[#9333EA] text-[32px] md:text-[40px] lg:text-[48px]">person_add</mat-icon>
+              </ng-template>
+            </div>
+            <p class="text-[#6B7280] font-fredoka text-[12px] md:text-[14px]">Tap to choose an avatar</p>
+          </div>
+
+          <!-- Own Photo Upload -->
+          <div *ngIf="photoSourceType === 'photo'">
+            <app-photo-upload [gender]="gender" [currentPhotoUrl]="profilePhotoUrl" [isUploading]="isUploadingPhoto"
+              (photoUploaded)="onPhotoUploaded($event)" (uploadingChange)="onUploadingChange($event)">
+            </app-photo-upload>
+          </div>
+        </div>
+
+        <div class="pt-1">
+          <button (click)="onCreateProfile()" type="button" [disabled]="isSubmitting" class="w-full max-w-full lg:w-[720px] h-[50px] md:h-[65px] lg:h-[83px] px-[25px] md:px-[40px] lg:px-[55px] py-[12px] md:py-[16px] lg:py-[20px] gap-[10px] rounded-[12px] md:rounded-[16px] lg:rounded-[20px] 
+                  bg-gradient-to-r from-[#687AE4] to-[#7452AC] 
+                  text-white font-bold text-[16px] md:text-[22px] lg:text-[30px] leading-[22px] md:leading-[30px] lg:leading-[43px] tracking-[-0.4px] 
+                  font-fredoka text-center align-middle 
+                  transition-all cursor-pointer duration-200 hover:scale-105
+                  disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:scale-100">
+            {{ isSubmitting ? 'Creating...' : 'Create Profile' }}
+          </button>
+        </div>
+
+      </form>
+    </div>
+  </div>
+
+  <!-- Avatar Selection Modal -->
+  <div *ngIf="isAvatarModalOpen" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4"
+    (click)="closeAvatarModal()">
+    <div
+      class="bg-white rounded-[20px] md:rounded-[25px] lg:rounded-[30px] p-6 md:p-8 lg:p-10 max-w-[90vw] max-h-[90vh] overflow-y-auto shadow-2xl"
+      (click)="$event.stopPropagation()">
+
+      <!-- Modal Header -->
+      <div class="text-center mb-6">
+        <h2
+          class="text-[#9333EA] font-fredoka font-bold text-[20px] md:text-[28px] lg:text-[35px] leading-[24px] md:leading-[32px] lg:leading-[40px] tracking-[-0.4px] mb-2">
+          Choose Your Avatar
+        </h2>
+        <p
+          class="text-[#374151] font-fredoka font-normal text-[12px] md:text-[16px] lg:text-[18px] leading-[16px] md:leading-[22px] lg:leading-[26px] tracking-[-0.4px]">
+          Select an avatar that represents you
+        </p>
+      </div>
+
+      <!-- Avatar Grid -->
+      <div class="mb-6">
+        <!-- Loading State -->
+        <div *ngIf="isLoadingAvatars" class="flex justify-center items-center py-8">
+          <app-spinner-overlay [inline]="true"></app-spinner-overlay>
+        </div>
+
+        <!-- Error State -->
+        <div *ngIf="avatarLoadError && !isLoadingAvatars" class="text-center py-8">
+          <mat-icon class="text-red-500 text-[48px] mb-2">error_outline</mat-icon>
+          <p class="text-red-600 font-fredoka font-medium text-[14px] md:text-[16px] mb-4">Failed to load avatars</p>
+          <button type="button" (click)="loadAvatars()"
+            class="px-4 py-2 bg-[#9333EA] text-white font-fredoka font-semibold text-[12px] md:text-[14px] rounded-[8px] hover:bg-[#7C3AED] transition-all duration-200">
+            Try Again
+          </button>
+        </div>
+
+        <!-- Avatar Grid -->
+        <div *ngIf="!isLoadingAvatars && !avatarLoadError"
+          class="grid grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-3 md:gap-4 lg:gap-6">
+          <div *ngFor="let avatar of avatars; trackBy: trackByAvatarFilename" (click)="selectAvatar(avatar)"
+            class="w-[70px] h-[70px] md:w-[90px] md:h-[90px] lg:w-[110px] lg:h-[110px] rounded-[15px] md:rounded-[20px] lg:rounded-[25px] flex items-center justify-center cursor-pointer transition-all duration-200 overflow-hidden bg-gradient-to-br from-[#BAE8E8] via-[#BAE8E8] to-[#EEDAE4] hover:scale-110 hover:shadow-lg border-2 border-transparent"
+            [class]="selectedAvatar === avatar.filename ? 'ring-4 ring-purple-500 ring-offset-2 transform scale-110 shadow-lg border-[#9333EA]' : 'hover:border-[#9333EA]'">
+            <img [src]="avatar.path" [alt]="'Avatar option'"
+              class="w-full h-full object-cover rounded-[13px] md:rounded-[18px] lg:rounded-[23px]" loading="lazy"
+              (error)="onAvatarImageError($event)">
+          </div>
+        </div>
+      </div>
+
+      <!-- Modal Actions -->
+      <div class="flex gap-3 md:gap-4 justify-center">
+        <button type="button" (click)="closeAvatarModal()"
+          class="px-6 py-3 md:px-8 md:py-4 lg:px-10 lg:py-5 bg-gray-200 text-gray-700 font-fredoka font-semibold text-[14px] md:text-[16px] lg:text-[18px] rounded-[10px] md:rounded-[12px] lg:rounded-[15px] hover:bg-gray-300 transition-all duration-200">
+          Cancel
+        </button>
+        <button type="button" (click)="closeAvatarModal()" [disabled]="!selectedAvatar"
+          class="px-6 py-3 md:px-8 md:py-4 lg:px-10 lg:py-5 bg-gradient-to-r from-[#687AE4] to-[#7452AC] text-white font-fredoka font-semibold text-[14px] md:text-[16px] lg:text-[18px] rounded-[10px] md:rounded-[12px] lg:rounded-[15px] hover:shadow-lg transition-all duration-200 hover:scale-105 disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:scale-100">
+          Confirm Selection
+        </button>
+      </div>
+    </div>
+  </div>
+</main>

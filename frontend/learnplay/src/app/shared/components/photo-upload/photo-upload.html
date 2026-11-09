@@ -1,0 +1,202 @@
+<!-- Hidden file input -->
+<input #fileInput type="file" accept="image/*" class="hidden" (change)="onFileSelected($event)" />
+
+<!-- Photo preview card (shown after crop, before and after upload) -->
+<div *ngIf="croppedPreviewUrl" class="relative w-full rounded-[16px] overflow-hidden border-2 mb-3"
+     [class]="currentPhotoUrl ? 'border-green-400' : 'border-[#9333EA]'">
+  <!-- Preview image -->
+  <img [src]="croppedPreviewUrl" alt="Photo preview"
+       class="w-full h-[180px] md:h-[220px] object-cover" />
+
+  <!-- Uploading overlay -->
+  <div *ngIf="isUploading"
+       class="absolute inset-0 bg-black bg-opacity-50 flex flex-col items-center justify-center gap-2">
+    <div class="w-8 h-8 border-[3px] border-white border-t-transparent rounded-full animate-spin"></div>
+    <span class="text-white font-fredoka font-semibold text-[13px] md:text-[15px]">Uploading...</span>
+  </div>
+
+  <!-- Success badge -->
+  <div *ngIf="currentPhotoUrl && !isUploading"
+       class="absolute top-2 right-2 flex items-center gap-1 bg-green-500 text-white px-2 py-1 rounded-full">
+    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+    <span class="font-fredoka font-semibold text-[11px] md:text-[13px]">Uploaded</span>
+  </div>
+
+  <!-- Change photo button -->
+  <button *ngIf="!isUploading"
+    type="button"
+    (click)="clearPhoto()"
+    class="absolute bottom-2 right-2 flex items-center gap-1 bg-white bg-opacity-90 text-[#374151] px-3 py-1.5 rounded-full font-fredoka font-semibold text-[11px] md:text-[13px] hover:bg-opacity-100 transition-all cursor-pointer shadow">
+    <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg>
+    Change Photo
+  </button>
+</div>
+
+<!-- Action buttons (hidden while preview is showing) -->
+<div *ngIf="!croppedPreviewUrl" class="flex flex-col sm:flex-row gap-3">
+  <button
+    type="button"
+    (click)="openCamera()"
+    [disabled]="isUploading"
+    class="flex-1 flex items-center justify-center gap-2 h-[50px] md:h-[60px] lg:h-[70px] px-4 rounded-[12px] md:rounded-[16px] border-2 border-solid border-[#9333EA] bg-[#F5F3FF] text-[#9333EA] font-fredoka font-semibold text-[14px] md:text-[17px] lg:text-[20px] transition-all duration-200 hover:bg-[#EDE9FE] disabled:opacity-50 disabled:cursor-not-allowed cursor-pointer">
+    <mat-icon class="text-[20px] md:text-[24px]">photo_camera</mat-icon>
+    Take Photo
+  </button>
+
+  <button
+    type="button"
+    (click)="triggerFileInput()"
+    [disabled]="isUploading"
+    class="flex-1 flex items-center justify-center gap-2 h-[50px] md:h-[60px] lg:h-[70px] px-4 rounded-[12px] md:rounded-[16px] border-2 border-dashed border-[#687AE4] bg-[#EEF2FF] text-[#687AE4] font-fredoka font-semibold text-[14px] md:text-[17px] lg:text-[20px] transition-all duration-200 hover:bg-[#E0E7FF] hover:border-solid disabled:opacity-50 disabled:cursor-not-allowed cursor-pointer">
+    <mat-icon class="text-[20px] md:text-[24px]">upload</mat-icon>
+    Upload Photo
+  </button>
+</div>
+
+<!-- ═══════════════════════════════════════════════════════════════════════════ -->
+<!-- In-app Camera Modal                                                        -->
+<!-- ═══════════════════════════════════════════════════════════════════════════ -->
+<div *ngIf="showCameraModal" class="fixed inset-0 bg-black z-[60] flex flex-col select-none">
+
+  <!-- Top bar -->
+  <div class="flex items-center justify-between px-4 py-3 flex-shrink-0" style="background:rgba(0,0,0,0.75)">
+    <button
+      type="button"
+      (click)="closeCameraModal()"
+      class="flex flex-col items-center gap-1 w-14 active:scale-95 transition-all cursor-pointer">
+      <img src="assets/icons/cancel.png" alt="Cancel" class="w-8 h-8 object-contain" />
+      <span class="text-white font-fredoka font-semibold text-[11px] md:text-[13px]">Cancel</span>
+    </button>
+
+    <span class="text-white font-fredoka font-bold text-[16px] md:text-[18px] tracking-wide">Take Photo</span>
+
+    <button
+      type="button"
+      (click)="flipCamera()"
+      [disabled]="!isCameraReady"
+      class="flex flex-col items-center gap-1 w-14 active:scale-95 transition-all disabled:opacity-40 disabled:cursor-not-allowed cursor-pointer">
+      <img src="assets/icons/flip.png" alt="Flip camera" class="w-8 h-8 object-contain" style="filter: brightness(0) invert(1)" />
+      <span class="text-white font-fredoka font-semibold text-[11px] md:text-[13px]">Flip</span>
+    </button>
+  </div>
+
+  <!-- Viewfinder -->
+  <div class="flex-1 relative overflow-hidden bg-black">
+    <video
+      #videoEl
+      autoplay
+      playsinline
+      muted
+      class="absolute inset-0 w-full h-full object-cover"
+      [class.opacity-0]="!isCameraReady || !!cameraError">
+    </video>
+
+    <!-- Square frame guide (shown when camera is ready) -->
+    <div *ngIf="isCameraReady && !cameraError" class="absolute inset-0 flex flex-col items-center justify-center pointer-events-none">
+      <!-- Dim the area outside the square -->
+      <div class="absolute inset-0" style="background:rgba(0,0,0,0.45)"></div>
+
+      <!-- The square cutout — achieved with box-shadow spread -->
+      <div
+        class="relative z-10"
+        style="
+          width: min(72vw, 300px);
+          height: min(72vw, 300px);
+          box-shadow: 0 0 0 9999px rgba(0,0,0,0.45);
+          border-radius: 4px;
+        ">
+        <!-- Corner brackets -->
+        <span class="absolute top-0 left-0 w-7 h-7 border-t-[3px] border-l-[3px] border-white rounded-tl-[4px]"></span>
+        <span class="absolute top-0 right-0 w-7 h-7 border-t-[3px] border-r-[3px] border-white rounded-tr-[4px]"></span>
+        <span class="absolute bottom-0 left-0 w-7 h-7 border-b-[3px] border-l-[3px] border-white rounded-bl-[4px]"></span>
+        <span class="absolute bottom-0 right-0 w-7 h-7 border-b-[3px] border-r-[3px] border-white rounded-br-[4px]"></span>
+      </div>
+
+      <!-- Hint text below the frame -->
+      <p class="relative z-10 mt-4 text-white font-fredoka font-medium text-[14px] md:text-[16px] text-center px-4"
+         style="text-shadow: 0 1px 4px rgba(0,0,0,0.8)">
+        Position face inside the frame
+      </p>
+    </div>
+
+    <!-- Loading -->
+    <div *ngIf="!isCameraReady && !cameraError" class="absolute inset-0 flex flex-col items-center justify-center gap-3">
+      <div class="w-10 h-10 border-4 border-white border-t-transparent rounded-full animate-spin"></div>
+      <span class="text-white font-fredoka text-[15px]">Starting camera...</span>
+    </div>
+
+    <!-- Error -->
+    <div *ngIf="cameraError" class="absolute inset-0 flex flex-col items-center justify-center gap-4 px-8 text-center">
+      <svg width="52" height="52" viewBox="0 0 24 24" fill="none" stroke="#f87171" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M23 7l-7 5 7 5V7z"/><rect x="1" y="5" width="15" height="14" rx="2" ry="2"/>
+        <line x1="1" y1="1" x2="23" y2="23"/>
+      </svg>
+      <p class="text-white font-fredoka font-medium text-[15px] md:text-[17px]">{{ cameraError }}</p>
+      <button
+        type="button"
+        (click)="closeCameraModal(); triggerFileInput()"
+        class="px-6 py-3 bg-white text-[#9333EA] font-fredoka font-semibold text-[14px] md:text-[16px] rounded-[12px] hover:bg-gray-100 transition-all">
+        Upload from Device Instead
+      </button>
+    </div>
+  </div>
+
+  <!-- Bottom bar: shutter -->
+  <div class="flex-shrink-0 flex flex-col items-center gap-2 py-5" style="background:rgba(0,0,0,0.7)">
+    <button
+      type="button"
+      (click)="capturePhoto()"
+      [disabled]="!isCameraReady"
+      class="w-[70px] h-[70px] md:w-[78px] md:h-[78px] rounded-full flex items-center justify-center transition-all duration-150 active:scale-90 hover:scale-105 disabled:opacity-40 disabled:cursor-not-allowed cursor-pointer"
+      style="background: linear-gradient(135deg,#687AE4,#9333EA); box-shadow: 0 0 0 4px rgba(147,51,234,0.35), 0 4px 20px rgba(147,51,234,0.5)">
+      <!-- Camera icon drawn inline so no font dependency -->
+      <svg width="30" height="30" viewBox="0 0 24 24" fill="white">
+        <path d="M12 15.2A3.2 3.2 0 1 0 12 8.8a3.2 3.2 0 0 0 0 6.4z"/>
+        <path d="M9 2L7.17 4H4a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V6a2 2 0 0 0-2-2h-3.17L15 2H9zm3 15a5 5 0 1 1 0-10 5 5 0 0 1 0 10z"/>
+      </svg>
+    </button>
+    <span class="text-white font-fredoka text-[12px] md:text-[14px] opacity-70">Tap to capture</span>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════════════════════════════════════ -->
+<!-- Crop Modal (square)                                                        -->
+<!-- ═══════════════════════════════════════════════════════════════════════════ -->
+<div
+  *ngIf="showCropModal"
+  class="fixed inset-0 bg-black bg-opacity-75 flex items-center justify-center z-[60] p-4"
+  (mouseup)="onPointerUp()"
+  (touchend)="onPointerUp()">
+  <div class="bg-white rounded-[20px] md:rounded-[25px] p-5 md:p-7 w-full max-w-[560px] shadow-2xl flex flex-col gap-4">
+    <div class="text-center">
+      <h3 class="text-[#9333EA] font-fredoka font-bold text-[20px] md:text-[26px] tracking-[-0.4px]">Crop Your Photo</h3>
+      <p class="text-[#6B7280] font-fredoka text-[13px] md:text-[15px] mt-1">Drag the box to move · Drag the corner ◢ to resize</p>
+    </div>
+
+    <div class="flex justify-center overflow-hidden rounded-[12px] bg-gray-100 select-none">
+      <canvas
+        #cropCanvas
+        class="max-w-full cursor-move touch-none"
+        (mousedown)="onCanvasMouseDown($event)"
+        (mousemove)="onCanvasMouseMove($event)"
+        (touchstart)="onCanvasTouchStart($event)"
+        (touchmove)="onCanvasTouchMove($event)">
+      </canvas>
+    </div>
+
+    <div class="flex gap-3 justify-center">
+      <button
+        type="button"
+        (click)="closeCropModal()"
+        class="flex-1 max-w-[160px] h-[48px] md:h-[56px] bg-gray-100 text-gray-600 font-fredoka font-semibold text-[14px] md:text-[17px] rounded-[12px] hover:bg-gray-200 transition-all cursor-pointer">
+        Cancel
+      </button>
+      <button
+        type="button"
+        (click)="confirmCrop()"
+        class="flex-1 max-w-[160px] h-[48px] md:h-[56px] bg-gradient-to-r from-[#687AE4] to-[#7452AC] text-white font-fredoka font-semibold text-[14px] md:text-[17px] rounded-[12px] hover:shadow-lg transition-all hover:scale-105 cursor-pointer">
+        Use Photo
+      </button>
+    </div>
+  </div>
+</div>

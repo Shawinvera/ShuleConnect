@@ -1,0 +1,38 @@
+.action-btn {
+  position: relative;
+  overflow: hidden;
+  border: none;
+  outline: none;
+  transform-origin: center;
+  width: 40px;
+  height: 40px;
+  border-radius: 8px;
+  cursor: pointer;
+}
+
+.action-btn::before {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 0;
+  height: 0;
+  background: rgba(255, 255, 255, 0.2);
+  border-radius: 50%;
+  transform: translate(-50%, -50%);
+  transition: width 0.2s, height 0.2s;
+}
+
+.action-btn:hover::before {
+  width: 60px;
+  height: 60px;
+}
+
+.action-btn:active {
+  transform: scale(0.95);
+}
+
+.action-btn:focus {
+  outline: 2px solid #4F46E5;
+  outline-offset: 2px;
+}

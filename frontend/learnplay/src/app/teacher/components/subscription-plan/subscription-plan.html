@@ -1,0 +1,118 @@
+<div class="min-h-screen pb-[80px] md:pb-0 bg-[#F3F4F8] font-sans flex flex-col">
+  <app-toast [message]="toast.message" [type]="toast.type" [visible]="toast.visible" (dismissed)="toast.dismiss()"></app-toast>
+  <div class="flex-1 pt-2 px-[12px] md:pt-4 md:px-[40px] xl:px-[150px] pb-[65px] md:pb-10 w-full">
+    <app-teacher-breadcrumb></app-teacher-breadcrumb>
+
+
+    <!-- Header -->
+    <div class="mb-6">
+      <div>
+        <h1 class="font-[Fredoka] font-bold text-[65px] leading-[64px] tracking-[-0.4px] text-[#374151]">Subscription Plan</h1>
+        <p class="font-[Fredoka] font-normal text-[30px] leading-[39px] tracking-[-0.4px] text-[#374151]">Manage your subscription plans</p>
+      </div>
+    </div>
+
+    <!-- Add Subscription Form --> 
+    <div *ngIf="showForm" class="bg-white shadow-sm px-4 sm:px-[30px] py-6 sm:py-[51px] mb-6 rounded-[23px] border-[5px] border-[#4C9AFC] space-y-6">
+      <h2 class="font-[Fredoka] font-semibold text-[40px] leading-[40px] tracking-[-0.4px] text-left text-[#374151]">New Subscription</h2>
+
+      <div class="space-y-6">
+
+        <div>
+          <label class="block font-[Fredoka] font-semibold text-[25px] leading-[20px] tracking-[-0.4px] text-[#374151] mb-2">Name *</label>
+          <input
+            [(ngModel)]="form.name"
+            type="text"
+            placeholder="Plan name"
+            class="mt-[10px] w-full h-[79px] bg-white border-gray-200 border-[2px] rounded-[20px] px-[20px] py-[25px] font-fredoka font-normal text-[23px] leading-[29px] tracking-[-0.4px] text-[#374151] placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500"
+          />
+        </div>
+
+        <div>
+          <label class="block font-[Fredoka] font-semibold text-[25px] leading-[20px] tracking-[-0.4px] text-[#374151] mb-2">Description</label>
+          <input
+            [(ngModel)]="form.description"
+            type="text"
+            placeholder="Plan description"
+            class="mt-[10px] w-full h-[79px] bg-white border-gray-200 border-[2px] rounded-[20px] px-[20px] py-[25px] font-fredoka font-normal text-[23px] leading-[29px] tracking-[-0.4px] text-[#374151] placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500"
+          />
+        </div>
+
+        <div>
+          <label class="block font-[Fredoka] font-semibold text-[25px] leading-[20px] tracking-[-0.4px] text-[#374151] mb-2">Amount *</label>
+          <input
+            [(ngModel)]="form.amount"
+            type="number"
+            placeholder="0"
+            class="mt-[10px] w-full h-[79px] bg-white border-gray-200 border-[2px] rounded-[20px] px-[20px] py-[25px] font-fredoka font-normal text-[23px] leading-[29px] tracking-[-0.4px] text-[#374151] placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500"
+          />
+        </div>
+
+        <div>
+          <label class="block font-[Fredoka] font-semibold text-[25px] leading-[20px] tracking-[-0.4px] text-[#374151] mb-2">Billing Type *</label>
+          <select
+            [(ngModel)]="form.billingType"
+            class="mt-[10px] w-full h-[79px] bg-white border-gray-200 border-[2px] rounded-[20px] px-[20px] font-fredoka font-normal text-[23px] text-[#374151] focus:outline-none focus:ring-2 focus:ring-blue-500"
+          >
+            <option value="" disabled>Select billing type</option>
+            <option value="MINUTELY">Minutely</option>
+            <option value="HOURLY">Hourly</option>
+            <option value="DAILY">Daily</option>
+            <option value="WEEKLY">Weekly</option>
+            <option value="MONTHLY">Monthly</option>
+          </select>
+        </div>
+
+        <p *ngIf="errorMessage" class="text-red-500 font-[Fredoka] text-[16px]">{{ errorMessage }}</p>
+
+        <div class="flex flex-col sm:flex-row gap-3 mt-4">
+          <button
+            (click)="submitForm()"
+            class="font-[Fredoka] bg-[#22c55e] hover:bg-green-600 text-white font-bold py-2 px-6 rounded-lg transition-colors"
+          >
+            Submit
+          </button>
+          <button
+            (click)="cancelForm()"
+            class="font-[Fredoka] bg-gray-200 hover:bg-gray-300 text-gray-700 font-bold py-2 px-6 rounded-lg transition-colors"
+          >
+            Cancel
+          </button>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- Tiers List -->
+    <app-spinner-overlay *ngIf="isLoading" [inline]="true"></app-spinner-overlay>
+
+    <div *ngIf="!isLoading && tiers.length === 0" class="bg-white rounded-[23px] p-10 text-center border border-slate-100">
+      <p class="font-[Fredoka] text-[22px] text-slate-400">No subscription plans yet. Add one above.</p>
+    </div>
+
+    <div *ngIf="!isLoading" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">
+
+      <!-- Transparent Add Card -->
+      <div
+        *ngIf="!showForm"
+        (click)="showForm = true"
+        class="rounded-[23px] px-5 py-8 border-2 border-dashed border-slate-300 flex flex-col items-center justify-center gap-3 cursor-pointer hover:border-[#4ADE80] hover:bg-white/50 transition-all duration-200 min-h-[160px]"
+      >
+        <span class="text-[48px] text-slate-300 leading-none">+</span>
+        <p class="font-[Fredoka] font-semibold text-[20px] text-slate-400">Add Subscription</p>
+      </div>
+
+      <!-- Existing Tier Cards -->
+      <div *ngFor="let tier of tiers" class="bg-white rounded-[16px] px-5 py-4 border border-slate-100 shadow-sm flex flex-col gap-1">
+        <div class="flex items-center justify-between mb-1">
+          <h3 class="font-[Fredoka] font-bold text-[24px] text-[#111827]">{{ tier.name }}</h3>
+          <span class="text-[12px] font-[Fredoka] font-semibold px-3 py-1 rounded-full bg-green-100 text-green-600 tracking-wide">{{ tier.billingType }}</span>
+        </div>
+        <p class="font-[Fredoka] font-normal text-[15px] text-slate-400">{{ tier.description }}</p>
+        <p class="font-[Fredoka] font-bold text-[32px] text-[#9333EA] leading-tight">KES {{ tier.amount }}</p>
+      </div>
+
+    </div>
+
+  </div>
+</div>

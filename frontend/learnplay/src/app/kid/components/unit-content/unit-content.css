@@ -1,0 +1,485 @@
+/* This adds a subtle blur to the masked areas for a premium look */
+/* .bg-gradient-to-b, .bg-gradient-to-t {
+  backdrop-filter: blur(10px);
+} */
+
+/* When the container is in fullscreen mode */
+#videoContainer:fullscreen {
+  border-radius: 0; /* Remove rounded corners in fullscreen */
+  width: 100vw;
+  height: 100vh;
+}
+
+/* Make shadows deeper/taller in fullscreen mode for better coverage */
+#videoContainer:fullscreen .bg-gradient-to-b {
+  height: 120px;
+}
+
+#videoContainer:fullscreen .bg-gradient-to-t {
+  height: 100px;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+@keyframes popIn {
+  0% { transform: scale(0.8); opacity: 0; }
+  100% { transform: scale(1); opacity: 1; }
+}
+
+.animate-fade-in {
+  animation: fadeIn 0.3s ease-out;
+}
+
+.animate-pop-in {
+  animation: popIn 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+/* The blink and scale animation */
+@keyframes pulse-blink {
+  0%, 100% {
+    transform: scale(1); /* Normal size */
+    opacity: 1;          /* Fully visible */
+  }
+  50% {
+    transform: scale(1.5); /* 20% larger */
+    opacity: 0.6;          /* Slightly faded */
+  }
+}
+
+.animate-video-icon {
+  /* This runs the animation every 2 seconds, forever */
+  animation: pulse-blink 2s ease-in-out infinite;
+  display: inline-block; /* Required for transform/scale to work properly */
+}
+
+/* -------------------------------------------------------------------------- */
+/* Lesson notes: HTML from admin TinyMCE (injected via innerHTML).              */
+/* ::ng-deep so rules apply to dynamic markup (no Angular host attributes).   */
+/* Inline alignment/font-size from TinyMCE are kept via DomSanitizer bypass. */
+/* -------------------------------------------------------------------------- */
+
+:host ::ng-deep .lesson-content-rich {
+  word-break: break-word;
+  overflow-wrap: anywhere;
+}
+
+:host ::ng-deep .lesson-content-rich > *:first-child {
+  margin-top: 0;
+}
+
+:host ::ng-deep .lesson-content-rich > *:last-child {
+  margin-bottom: 0;
+}
+
+:host ::ng-deep .lesson-content-rich p {
+  margin: 0 0 0.85em;
+}
+
+:host ::ng-deep .lesson-content-rich h1,
+:host ::ng-deep .lesson-content-rich h2,
+:host ::ng-deep .lesson-content-rich h3,
+:host ::ng-deep .lesson-content-rich h4 {
+  font-family: inherit;
+  font-weight: 700;
+  margin: 0.65em 0 0.45em;
+  color: #374151;
+  line-height: 1.25;
+}
+
+:host ::ng-deep .lesson-content-rich h1 {
+  font-size: 1.65em;
+}
+:host ::ng-deep .lesson-content-rich h2 {
+  font-size: 1.4em;
+}
+:host ::ng-deep .lesson-content-rich h3 {
+  font-size: 1.2em;
+}
+:host ::ng-deep .lesson-content-rich h4 {
+  font-size: 1.05em;
+}
+
+:host ::ng-deep .lesson-content-rich ul,
+:host ::ng-deep .lesson-content-rich ol {
+  margin: 0.45em 0 0.85em;
+  padding-left: 1.5em;
+}
+
+:host ::ng-deep .lesson-content-rich li {
+  margin: 0.2em 0;
+  padding-left: 0.2em;
+}
+
+:host ::ng-deep .lesson-content-rich ul {
+  list-style-type: disc;
+}
+
+:host ::ng-deep .lesson-content-rich ol {
+  list-style-type: decimal;
+}
+
+:host ::ng-deep .lesson-content-rich ul ul,
+:host ::ng-deep .lesson-content-rich ol ol,
+:host ::ng-deep .lesson-content-rich ul ol,
+:host ::ng-deep .lesson-content-rich ol ul {
+  margin-top: 0.3em;
+  margin-bottom: 0.3em;
+}
+
+:host ::ng-deep .lesson-content-rich a {
+  color: #9333ea;
+  text-decoration: underline;
+  text-underline-offset: 2px;
+}
+
+:host ::ng-deep .lesson-content-rich img,
+:host ::ng-deep .lesson-content-rich video {
+  max-width: 100%;
+  height: auto;
+  border-radius: 0.5rem;
+  margin: 0.5em 0;
+}
+
+:host ::ng-deep .lesson-content-rich table {
+  width: 100%;
+  border-collapse: collapse;
+  margin: 0.75em 0;
+  font-size: 0.95em;
+}
+
+:host ::ng-deep .lesson-content-rich th,
+:host ::ng-deep .lesson-content-rich td {
+  border: 1px solid #e2e8f0;
+  padding: 0.5em 0.65em;
+  vertical-align: top;
+}
+
+:host ::ng-deep .lesson-content-rich th {
+  background: #f8fafc;
+  font-weight: 600;
+}
+
+:host ::ng-deep .lesson-content-rich blockquote {
+  margin: 0.75em 0;
+  padding: 0.5em 1em;
+  border-left: 4px solid #c999f5;
+  background: #faf5ff;
+  color: #4b5563;
+}
+
+:host ::ng-deep .lesson-content-rich pre {
+  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+  font-size: 0.88em;
+  background: #f1f5f9;
+  padding: 0.75em 1em;
+  border-radius: 0.5rem;
+  overflow-x: auto;
+  margin: 0.75em 0;
+}
+
+:host ::ng-deep .lesson-content-rich code {
+  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+  font-size: 0.9em;
+  background: #f1f5f9;
+  padding: 0.1em 0.35em;
+  border-radius: 0.25rem;
+}
+
+:host ::ng-deep .lesson-content-rich pre code {
+  background: transparent;
+  padding: 0;
+}
+
+:host ::ng-deep .lesson-content-rich hr {
+  margin: 1rem 0;
+  border: 0;
+  border-top: 1px solid #e2e8f0;
+}
+
+/* Prevent interaction and scrolling when locked */
+/* .max-h-screen {
+  height: 100vh !important;
+  overflow: hidden !important;
+} */
+
+/* Make the blur transition smooth */
+.blur-xl {
+  filter: blur(24px);
+  transition: filter 0.5s ease-in-out;
+  user-select: none;
+}
+
+/* Ensure the payment overlay sits on top of everything including your sticky video */
+.z-\[200\] {
+  z-index: 200 !important;
+}
+
+/* Optional: Fade in animation for the overlay */
+.animate-fade-in {
+  animation: fadeIn 0.4s ease-out forwards;
+}
+
+/* Blocker overlay: Transparent but catches all events */
+.fixed.inset-0.z-\[150\] {
+    background: rgba(255, 255, 255, 0.01); /* Nearly invisible */
+    backdrop-filter: grayscale(0.2); /* Subtle visual hint that it's disabled */
+}
+
+/* Ensure the blocker actually blocks clicks to the video/notes */
+[click-blocker] {
+    pointer-events: all !important;
+}
+
+/* Fix for aspect-video on thumbnails */
+.aspect-video img {
+    display: block;
+    width: 100%;
+    height: 100%;
+}
+
+/* Animations */
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+@keyframes popIn {
+  0% { transform: scale(0.9); opacity: 0; }
+  100% { transform: scale(1); opacity: 1; }
+}
+
+.animate-fade-in { animation: fadeIn 0.3s ease-out; }
+.animate-pop-in { animation: popIn 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275); }
+
+@keyframes pulse-blink {
+  0%, 100% {
+    transform: scale(1);
+    opacity: 1;
+  }
+  50% {
+    transform: scale(1.15); /* Slightly bigger pulse */
+    opacity: 0.8;
+  }
+}
+
+.animate-video-icon {
+  animation: pulse-blink 2s ease-in-out infinite;
+  display: block;
+}
+
+/* .lesson-preview {
+  max-height: 500px;
+  overflow: hidden;
+  position: relative;
+} */
+
+/* Add this to ensure the truncated container feels "blocked" */
+.select-none {
+  user-select: none;
+  -webkit-user-select: none;
+}
+
+/* Remove any classes that might be causing the blur */
+.blur-xl, .blur-md, .blur-sm {
+    filter: none !important;
+}
+
+/* Ensure content looks natural but un-selectable when locked */
+.select-none {
+  user-select: none;
+  -webkit-user-select: none;
+  pointer-events: none; /* Prevents clicking links inside the truncated area */
+}
+
+/* Make sure the gradient fade is very smooth */
+.bg-gradient-to-t {
+  /* This ensures the bottom of the card is solid white to hide the rest of the text */
+  background: linear-gradient(to top, 
+    rgba(255, 255, 255, 1) 0%, 
+    rgba(255, 255, 255, 0.9) 40%, 
+    rgba(255, 255, 255, 0) 100%
+  );
+}
+
+/* Ensure images/videos inside notes don't break the truncation */
+:host ::ng-deep .lesson-content-rich img {
+  max-width: 100%;
+  height: auto;
+}
+
+/* ✅ ADD THIS SPECIFIC RULE for the lesson truncation */
+.lesson-truncation-gradient {
+  /* We use a solid white to transparent gradient. No blur filters! */
+  background: linear-gradient(
+    to top,
+    rgba(255, 255, 255, 1) 0%,    /* Solid white at the bottom */
+    rgba(255, 255, 255, 1) 20%,   /* Stay solid for a bit */
+    rgba(255, 255, 255, 0.8) 50%, /* Start fading */
+    rgba(255, 255, 255, 0) 100%   /* Fully clear at the top */
+  ) !important;
+  
+  /* Force disable any inherited blurs */
+  backdrop-filter: none !important;
+  filter: none !important;
+}
+
+/* Ensure the content is unselectable when locked */
+.lock-content-interaction {
+  user-select: none !important;
+  -webkit-user-select: none !important;
+  pointer-events: none !important;
+}
+
+/* Reset any blur classes that might be lingering */
+.blur-xl, .blur-md, .blur-sm {
+  filter: none !important;
+}
+
+/* Ensure the sticky video on mobile doesn't overlap the breadcrumbs awkwardly */
+@media (max-width: 768px) {
+  /* This makes the main container px-0 so video hits edges of the phone */
+  main {
+    padding-left: 0 !important;
+    padding-right: 0 !important;
+    padding-bottom: 120px !important; 
+  }
+  
+  /* Add padding back to non-video elements */
+  app-kid-breadcrumb, .w-full.relative, .pb-10 {
+    padding-left: 1rem;
+    padding-right: 1rem;
+  }
+
+  /* Sticky video header tweak */
+  .sticky.top-2 {
+    margin-top: 8px;
+    box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.3);
+    border: 2px solid white; /* Adds a nice border to separate from content below */
+  }
+
+  /* Ensure the breadcrumb stays above the sticky video when scrolling back up */
+  app-kid-breadcrumb {
+    margin-bottom: 15px;
+    display: block;
+  }
+}
+
+.min-h-\[320px\] {
+  min-height: 320px !important;
+  /* This ensures that even if there are 0 notes, the container 
+     is tall enough to show the "Lock Icon" and "Subscribe" button */
+}
+
+/* Reader mode background fix */
+/* .fixed.inset-0 {
+  background-color: white;
+} */
+
+/* Truncation Gradient Fix for Expanded View */
+.lesson-truncation-gradient {
+  background: linear-gradient(
+    to top,
+    rgba(255, 255, 255, 1) 0%,
+    rgba(255, 255, 255, 1) 35%, /* Solid white higher up */
+    rgba(255, 255, 255, 0.9) 60%,
+    rgba(255, 255, 255, 0) 100%
+  ) !important;
+  backdrop-filter: none !important;
+}
+
+/* --- STICKY VIDEO SHIELD LOGIC --- */
+.sticky-video-shield {
+  position: sticky;
+  top: 0; /* Sticks to the absolute top of the screen */
+  z-index: 150;
+  /* Matches the top color of your page gradient to create a "cut-off" shield */
+  background-color: #F5F5FF; 
+  padding-top: 10px;
+  padding-bottom: 15px;
+  margin-top: -10px;
+}
+
+/* On mobile, we reduce the padding to save space */
+@media (max-width: 768px) {
+  .sticky-video-shield {
+    padding-top: 5px;
+    padding-bottom: 10px;
+  }
+}
+
+.sticky-video-card {
+  /* This is the actual video floating inside the shield */
+  border: 3px solid white;
+  box-shadow: 0 10px 30px -5px rgba(0, 0, 0, 0.2);
+}
+
+/* --- FOCUS MODE (Expanded Notes) --- */
+.fixed.inset-0 {
+  /* background-color: white; Solid white background for focus mode */
+  animation: slideInUp 0.4s cubic-bezier(0.165, 0.84, 0.44, 1);
+  z-index: 400 !important;
+  box-sizing: border-box; 
+}
+
+@keyframes slideInUp {
+  from { transform: translateY(20px); opacity: 0; }
+  to { transform: translateY(0); opacity: 1; }
+}
+
+/* Ensure focus mode content is readable */
+.lesson-content-rich {
+  width: 100%;
+  margin: 0; /* Changed from 0 auto to 0 to align with title */
+  text-align: left;
+}
+
+/* --- PC SCREEN (DEFAULT) --- */
+.responsive-video-wrapper {
+  position: relative; /* Normal scrolling on PC */
+  width: 100%;
+  z-index: 1;
+  background-color: transparent;
+  padding: 0;
+  margin-bottom: 20px;
+}
+
+.video-card-style {
+  /* max-width: 1000px; Optional: keeps video from getting too wide on PC */
+  margin: 0 auto;
+}
+
+/* --- MOBILE & TABLET SCREEN --- */
+@media (max-width: 1024px) {
+  .responsive-video-wrapper {
+    position: sticky;
+    top: 0;
+    z-index: 150;
+    background-color: #F5F5FF; 
+    padding: 8px 0 16px 0;
+    margin-top: -10px;
+  }
+
+  /* .video-card-style {
+    border: 3px solid white;
+    box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.2);
+    margin: 0 10px; 
+  } */
+}
+
+@media (max-width: 768px) {
+  /* This ensures that when fixed, the p-6 from Tailwind actually applies visible margins */
+  .fixed.inset-0.overflow-y-auto {
+    padding: 1.5rem !important; 
+  }
+  
+  .fixed.inset-0 .lesson-content-rich {
+    margin-top: 10px;
+  }
+}
+
+.max-w-4xl {
+  max-width: 1100px; 
+}

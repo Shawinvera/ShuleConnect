@@ -1,0 +1,188 @@
+/* Mobile-first responsive design */
+.animate-fade-in {
+  animation: fadeIn 0.3s ease-in-out;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(-10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Course Card Enhancements - Compact Design */
+.course-card {
+  position: relative;
+  overflow: hidden;
+}
+
+.course-card::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+  transition: left 0.5s;
+}
+
+.course-card:hover::before {
+  left: 100%;
+}
+
+/* Course Tags Styling - No hover effects */
+.course-tag {
+  position: relative;
+  border: 1px solid rgba(255, 255, 255, 0.3);
+}
+
+/* Action Buttons Styling - Compact but distinct */
+.action-btn {
+  position: relative;
+  overflow: hidden;
+  border: none;
+  outline: none;
+  transform-origin: center;
+  width: 40px;
+  height: 40px;
+  border-radius: 8px;
+}
+
+.action-btn::before {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 0;
+  height: 0;
+  background: rgba(255, 255, 255, 0.2);
+  border-radius: 50%;
+  transform: translate(-50%, -50%);
+  transition: width 0.2s, height 0.2s;
+}
+
+.action-btn:hover::before {
+  width: 60px;
+  height: 60px;
+}
+
+.action-btn:active {
+  transform: scale(0.95);
+}
+
+/* Responsive Design Improvements */
+@media (max-width: 768px) {
+  .course-card {
+    padding: 1.25rem !important;
+    gap: 0.75rem !important;
+  }
+  
+  .action-btn {
+    width: 36px !important;
+    height: 36px !important;
+    padding: 0 !important;
+  }
+  
+  .action-btn svg {
+    width: 16px !important;
+    height: 16px !important;
+  }
+  
+  .course-tag {
+    font-size: 12px !important;
+    padding: 0.25rem 0.75rem !important;
+  }
+  
+  .create-course-btn {
+    width: 100% !important;
+    max-width: 300px;
+  }
+  
+  .form-buttons {
+    flex-direction: column;
+    gap: 0.75rem;
+  }
+  
+  .form-buttons button {
+    width: 100%;
+    min-height: 48px;
+  }
+}
+
+/* Tablet adjustments */
+@media (min-width: 769px) and (max-width: 1024px) {
+  .course-card {
+    padding: 1.5rem !important;
+  }
+  
+  .action-btn {
+    width: 38px !important;
+    height: 38px !important;
+  }
+}
+
+/* Desktop enhancements - Subtle animations */
+@media (min-width: 1025px) {
+  .course-card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 12px 24px rgba(0, 0, 0, 0.1);
+  }
+  
+  .action-btn:hover {
+    transform: scale(1.1) translateY(-1px);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+  }
+}
+
+/* Loading state improvements */
+.loading-container {
+  min-height: 200px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* Empty state styling */
+.empty-state {
+  text-align: center;
+  padding: 3rem 1rem;
+}
+
+.empty-state-icon {
+  font-size: 4rem;
+  margin-bottom: 1rem;
+  opacity: 0.5;
+}
+
+/* Accessibility improvements */
+.action-btn:focus {
+  outline: 2px solid #4F46E5;
+  outline-offset: 2px;
+}
+
+.course-card:focus-within {
+  outline: 2px solid #4F46E5;
+  outline-offset: 2px;
+}
+
+/* Smooth transitions for all interactive elements */
+* {
+  transition-property: transform, box-shadow, background-color, border-color, opacity;
+  transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* Ensure proper cursor states */
+.course-card,
+.action-btn {
+  cursor: pointer;
+}
+
+/* Button group spacing */
+.course-card .flex.gap-2 {
+  margin-top: 0.25rem;
+}

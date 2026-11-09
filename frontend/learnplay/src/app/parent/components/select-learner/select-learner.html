@@ -1,0 +1,171 @@
+<main class="bg-[linear-gradient(180deg,#F5F5FF_0%,#FBF4FC_100%)] min-h-screen pb-[65px] md:pb-0">
+  <app-toast
+    [message]="toast.message"
+    [type]="toast.type"
+    [visible]="toast.visible"
+    (dismissed)="toast.dismiss()"
+  ></app-toast>
+  <div
+    class="pt-[20px] md:pt-[50px] pr-[16px] sm:pr-[50px] md:pr-[50px] xl:pr-[150px] pb-[20px] pl-[16px] sm:pl-[50px] md:pl-[50px] xl:pl-[150px]"
+  >
+    <div class="text-center mb-8">
+      <h1
+        class="text-[#374151] font-fredoka font-bold text-[32px] md:text-[50px] leading-[36px] md:leading-[55px] tracking-[-0.4px] mb-2"
+      >
+        Select Learner
+      </h1>
+      <p
+        class="text-[#374151] font-fredoka font-normal text-[16px] md:text-[22px] leading-[20px] md:leading-[30px] tracking-[-0.4px]"
+      >
+        Choose which learner to log in
+      </p>
+    </div>
+
+    <app-spinner-overlay *ngIf="isLoading" [inline]="true"></app-spinner-overlay>
+
+    <div *ngIf="!isLoading" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-6">
+      <div
+        *ngFor="let learner of learners"
+        (click)="onSelectLearner(learner)"
+        [class.guide-highlight]="showLearnerGuide && learner === learners[0]"
+        class="relative overflow-hidden bg-white rounded-[15px] md:rounded-[23px] p-[20px] md:p-[30px] shadow-[0_6px_30px_0_rgba(0,0,0,0.1)] border border-gray-100 cursor-pointer hover:shadow-[0_8px_40px_0_rgba(147,51,234,0.2)] hover:border-[#9333EA] hover:-translate-y-2 transition-all duration-300 ease-in-out"
+      >
+        <!-- 1. NEW POINTS POSITION (TOP RIGHT) -->
+        <div
+          class="absolute top-4 right-4 flex items-center gap-1 bg-yellow-50 px-2 py-1 rounded-full border border-yellow-100"
+        >
+          <img
+            src="./assets/icons/star_parent_dashboard.png"
+            class="w-4 h-4 md:w-5 md:h-5"
+            alt="star"
+          />
+          <span class="text-[#CA8A04] font-fredoka font-bold text-sm md:text-base">
+            {{ learner.points || 0 }}
+          </span>
+        </div>
+
+        <!-- SUBSCRIPTION RIBBON (BOTTOM RIGHT) -->
+        <div
+          class="absolute bottom-[22px] right-[-42px] w-[160px] py-1 rotate-[-45deg] text-center shadow-lg z-10"
+          [ngClass]="isSubscribed(learner.subscriptionExpiryDate) ? 'bg-green-500' : 'bg-red-500'"
+        >
+          <span
+            class="text-white font-fredoka font-bold text-[11px] md:text-[13px] uppercase tracking-[1px] block w-full"
+          >
+            {{ isSubscribed(learner.subscriptionExpiryDate) ? 'Active' : 'Inactive' }}
+          </span>
+        </div>
+
+        <div class="flex flex-col items-center text-center">
+          <!-- Avatar -->
+          <div
+            class="rounded-full w-[80px] h-[80px] md:w-[100px] md:h-[100px] flex items-center justify-center mb-4 overflow-hidden"
+            style="background: linear-gradient(134.45deg, #f8c96c 15.3%, #fca780 81.76%)"
+          >
+            <img
+              [src]="getAvatarPath(learner)"
+              class="w-full h-full object-cover rounded-full"
+              [alt]="learner.firstName + ' avatar'"
+            />
+          </div>
+
+          <h3
+            class="text-[#374151] font-fredoka font-bold text-[20px] md:text-[30px] leading-[24px] md:leading-[35px] tracking-[-0.4px] mb-2"
+          >
+            {{ getDisplayName(learner) }}
+          </h3>
+
+          <p
+            class="text-[#9333EA] font-fredoka font-semibold text-[14px] md:text-[18px] leading-[18px] md:leading-[22px] tracking-[-0.4px] mb-3 truncate w-full px-2"
+            [title]="learner.gradeName + ' || ' + getCourseDisplay(learner.courseId)"
+          >
+            {{ learner.gradeName }} || {{ getCourseDisplay(learner.courseId) }}
+          </p>
+
+          <!-- 2. NEW COUNTDOWN POSITION (PREVIOUS POINTS SPOT) -->
+          <!-- 2. NEW COUNTDOWN POSITION -->
+          <div
+            class="flex items-center gap-2 mt-1 py-1.5 px-4 rounded-xl bg-gray-50 border border-gray-100 min-w-[150px] justify-center"
+          >
+            <div
+              class="w-2 h-2 rounded-full animate-pulse"
+              [ngClass]="
+                isSubscribed(learner.subscriptionExpiryDate) ? 'bg-green-500' : 'bg-red-500'
+              "
+            ></div>
+            <span
+              class="font-fredoka font-medium text-[13px] md:text-[15px] tracking-[-0.2px] tabular-nums"
+              [ngClass]="
+                isSubscribed(learner.subscriptionExpiryDate) ? 'text-gray-600' : 'text-red-500'
+              "
+            >
+              {{ getCountdown(learner.subscriptionExpiryDate) }}
+            </span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div *ngIf="!isLoading && !loadError && learners.length === 0" class="text-center py-12">
+      <p
+        class="text-[#374151] font-fredoka font-normal text-[18px] md:text-[24px] leading-[22px] md:leading-[30px] tracking-[-0.4px]"
+      >
+        No learners found
+      </p>
+    </div>
+
+    <!-- Network error state -->
+    <div
+      *ngIf="!isLoading && loadError"
+      class="flex flex-col items-center justify-center py-16 gap-4 text-center"
+    >
+      <div class="w-[70px] h-[70px] rounded-full bg-red-100 flex items-center justify-center">
+        <span class="text-red-500 text-[32px]">!</span>
+      </div>
+      <p class="font-fredoka font-semibold text-[18px] md:text-[22px] text-[#374151]">
+        Couldn't load learners
+      </p>
+      <p class="font-fredoka font-normal text-[14px] md:text-[18px] text-[#6B7280]">
+        Please check your connection and try again.
+      </p>
+      <button
+        (click)="loadLearners()"
+        class="px-8 py-3 bg-gradient-to-r from-[#667DE8] to-[#754DA5] text-white font-fredoka font-bold text-[16px] md:text-[18px] rounded-[15px] hover:scale-105 transition-all duration-200"
+      >
+        Try Again
+      </button>
+    </div>
+  </div>
+
+  <div
+    *ngIf="showLearnerGuide"
+    class="fixed left-3 right-3 bottom-[86px] md:left-auto md:right-8 md:bottom-8 z-[10030] max-w-none md:max-w-[360px]"
+  >
+    <div
+      class="rounded-[18px] border border-[#E8DDFB] bg-white shadow-[0_14px_40px_rgba(74,34,122,0.26)] overflow-hidden"
+    >
+      <div class="bg-[linear-gradient(90deg,#667DE8_0%,#754DA5_100%)] px-4 py-3">
+        <p class="font-fredoka font-bold text-[20px] text-white">Learner Guide</p>
+      </div>
+      <div class="p-4">
+        <p class="font-fredoka text-[15px] text-[#374151] leading-6">
+          Select a learner card to open course work and begin learning.
+        </p>
+        <div class="flex justify-end mt-3">
+          <button
+            (click)="skipAllGuides()"
+            class="px-4 py-2 rounded-[10px] bg-[#EEF0F5] text-[#6B7280] font-fredoka font-semibold text-[14px] mr-2"
+          >
+            Skip
+          </button>
+          <button
+            (click)="dismissLearnerGuide()"
+            class="px-4 py-2 rounded-[10px] bg-[linear-gradient(90deg,#667DE8_0%,#754DA5_100%)] text-white font-fredoka font-semibold text-[14px]"
+          >
+            Got it
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+</main>

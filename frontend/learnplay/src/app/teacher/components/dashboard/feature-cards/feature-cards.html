@@ -1,0 +1,58 @@
+<div class="min-h-screen bg-[#F3F4F8] font-sans pt-2 px-[12px] md:pt-4 md:px-[40px] xl:px-[150px] pb-[80px] md:pb-10 text-slate-800">
+    
+   
+    <nav class="mb-2">
+      
+    </nav>
+    
+    <!-- Header Section -->
+    <div class="flex flex-col md:flex-row md:items-end justify-between gap-6 mb-6">
+      <div>
+        <h1 class="font-[Fredoka] font-bold text-[30px] md:text-[50px] leading-[44px] md:leading-[64px] tracking-[-0.4px] text-[#374151] mb-3">Content Management</h1>
+        <p class="font-[Fredoka] font-normal text-[14px] md:text-[24px] leading-[28px] md:leading-[39px] tracking-[-0.4px] text-[#374151]">Create and manage learning content</p>
+      </div>
+    </div>
+
+    <!-- Row 1: Manage Grades, Manage Subjects, Grade Structure -->
+    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-[20px] mb-[20px]">
+      <button
+        *ngFor="let c of [cards[0], cards[1], cards[2]]"
+        class="bg-white shadow-md rounded-[23px] p-[30px] hover:shadow-lg transition text-left flex flex-col gap-3 cursor-pointer"
+        (click)="goTo(c.path)"
+      >
+        <div class="flex items-center gap-3 mb-1">
+          <div class="w-16 h-16 sm:w-20 sm:h-20 flex items-center justify-center">
+            <img [src]="c.icon" alt="icon" class="w-full h-full object-contain" (error)="onImageError($event)" />
+          </div>
+        </div>
+        <h3 class="font-[Fredoka] font-bold text-[28px] leading-[34px] tracking-[-0.4px] text-[#374151] overflow-hidden text-ellipsis whitespace-nowrap">
+          {{ c.title }}
+        </h3>
+        <p class="font-[Fredoka] font-normal text-[16px] leading-[24px] tracking-[-0.4px] text-[#374151] line-clamp-2">
+          {{ c.desc }}
+        </p>
+      </button>
+    </div>
+
+    <!-- Row 2: Manage Exams and Subscription Plan -->
+    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-[20px]">
+      <button
+        *ngFor="let c of [cards[3], cards[4]]"
+        class="bg-white shadow-md rounded-[23px] p-[30px] hover:shadow-lg transition text-left flex flex-col gap-3 cursor-pointer"
+        (click)="goTo(c.path)"
+      >
+        <div class="flex items-center gap-3 mb-1">
+          <div class="w-16 h-16 sm:w-20 sm:h-20 flex items-center justify-center">
+            <img [src]="c.icon" alt="icon" class="w-full h-full object-contain" (error)="onImageError($event)" />
+          </div>
+        </div>
+        <h3 class="font-[Fredoka] font-bold text-[28px] leading-[34px] tracking-[-0.4px] text-[#374151] overflow-hidden text-ellipsis whitespace-nowrap">
+          {{ c.title }}
+        </h3>
+        <p class="font-[Fredoka] font-normal text-[16px] leading-[24px] tracking-[-0.4px] text-[#374151] line-clamp-2">
+          {{ c.desc }}
+        </p>
+      </button>
+    </div>
+
+</div>

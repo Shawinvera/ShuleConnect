@@ -1,0 +1,111 @@
+server:
+  port: 8112
+  servlet:
+    context-path: /api
+  forward-headers-strategy: framework # This is important for correct URL generation behind proxies (e.g., for OAuth2 redirect URIs)
+
+security:
+  jwt:
+    secret: ${JWT_SECRET:Oz6b/lnE13gIibROom1kpLeGe0APAYOs3SGcGJKp8zg=}
+    access-expiration: 604800000
+    refresh-expiration: 604800000
+
+wazi:
+  frontend-dashboard-url: ${FRONTEND_DASHBOARD_URL:http://localhost:4200}
+  backend-base-url: ${BACKEND_BASE_URL:https://wazi.softkit.net/api}
+
+spring:
+  application:
+    name: wazi
+  profiles:
+    active: ${SPRING_PROFILES_ACTIVE:default}
+  config:
+    import: optional:file:.env
+
+  datasource:
+    url: jdbc:h2:mem:schooldb;MODE=MySQL;DATABASE_TO_LOWER=TRUE
+    driver-class-name: org.h2.Driver
+    username: sa
+    password: ""
+
+  jpa:
+    database-platform: org.hibernate.dialect.H2Dialect
+    hibernate:
+      ddl-auto: create-drop
+    show-sql: true
+    properties:
+      hibernate:
+        format_sql: true
+
+  h2:
+    console:
+      enabled: true
+      path: /h2-console
+
+  security:
+    oauth2:
+      client:
+        registration:
+          google:
+            client-id: ${GOOGLE_CLIENT_ID:my-client-id-comes-here}
+            client-secret: ${GOOGLE_CLIENT_SECRET:my-secret-comes-here}
+            scope:
+              - email
+              - profile
+
+          microsoft:
+            provider: microsoft
+            client-id: MICROSOFT_CLIENT_ID
+            client-secret: MICROSOFT_SECRET
+            authorization-grant-type: authorization_code
+            redirect-uri: "{baseUrl}/api/login/oauth2/code/{registrationId}"
+            client-authentication-method: client_secret_post
+            scope:
+              - openid
+              - profile
+              - email
+
+          apple:
+            client-id: APPLE_CLIENT_ID
+            client-secret: APPLE_SECRET
+            authorization-grant-type: authorization_code
+            redirect-uri: "{baseUrl}/api/login/oauth2/code/{registrationId}"
+            client-authentication-method: client_secret_post
+            scope:
+              - name
+              - email
+        provider:
+          google:
+            authorization-uri: https://accounts.google.com/o/oauth2/v2/auth
+            token-uri: https://oauth2.googleapis.com/token
+            user-info-uri: https://www.googleapis.com/oauth2/v3/userinfo
+          microsoft:
+            authorization-uri: https://login.microsoftonline.com/common/oauth2/v2.0/authorize
+            token-uri: https://login.microsoftonline.com/common/oauth2/v2.0/token
+            user-info-uri: https://graph.microsoft.com/oidc/userinfo
+            user-name-attribute: sub
+
+          apple:
+            authorization-uri: https://appleid.apple.com/auth/authorize
+            token-uri: https://appleid.apple.com/auth/token
+
+safaricom:
+  token-url: ${SAF_TOKEN_URL:https://sandbox.safaricom.co.ke/oauth/v1/generate?grant_type=client_credentials}
+  username: ${SAF_USERNAME:UZLGA0PYQVra6uok3EFXCE8bfJrIi9FcoIc3JArhca2FNAYT}
+  password: ${SAF_PASSWORD:FGYjZFHDTQPWKp1Q5VrZMfhlCz7tUmOb1OADMs2xwaILPT40Ol7AmqAM36WgIGJJ}
+  short-code: ${SAF_SHORT_CODE:174379}
+  pass-key: ${SAF_PASS_KEY:bfb279f9aa9bdbcf158e97dd71a467cd2e0c893059b10f78e6b72ada1ed2c919}
+  callback-url: ${SAF_CALLBACK_URL:https://wazi.softkit.net/api/public/safaricom/callback}
+  processing-url: ${SAF_PROCESSING_URL:https://sandbox.safaricom.co.ke/mpesa/stkpush/v1/processrequest}
+  payment-query-url: ${SAF_PAYMENT_QUERY_URL:https://sandbox.safaricom.co.ke/mpesa/stkpushquery/v1/query}
+
+africastalking:
+  username: ${AT_USERNAME:sandbox}
+  api-key: ${AT_API_KEY:atsk_28ca8560495db350fbfb50dbb26d3ba612e17b38543fc39da75b377fb806eaa555f3be49}
+  api-url: ${AT_API_URL:https://api.sandbox.africastalking.com/version1/messaging}
+
+brevo:
+  senderEmail: ${BREVO_SENDER_EMAIL:support@softkit.net}
+  senderName: ${BREVO_SENDER_NAME:SoftKitLimited}
+  apiUrl: ${BREVO_API_URL:https://brevo.com/send}
+  apiKey: ${BREVO_API_KEY:12345}

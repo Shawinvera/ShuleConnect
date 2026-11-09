@@ -1,0 +1,137 @@
+<main
+  class="min-h-screen px-4 md:px-12 lg:px-[150px] bg-gradient-to-b from-[#F5F5FF] to-[#FBF4FC] pb-[25px] md:pb-5"
+>
+  <app-toast
+    [message]="toast.message"
+    [type]="toast.type"
+    [visible]="toast.visible"
+    (dismissed)="toast.dismiss()"
+  ></app-toast>
+
+  <div class="py-2 md:py-[10px] mb-0.5 flex flex-col gap-3 md:gap-[10px]">
+    <app-kid-breadcrumb></app-kid-breadcrumb>
+
+    <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-1">
+      <div class="flex-1">
+        <h1
+          class="font-fredoka text-[#9333EA] font-bold text-3xl md:text-[50px] leading-tight tracking-[-0.4px] uppercase"
+        >
+          {{ subTopicName }}
+        </h1>
+        <p class="font-fredoka font-normal text-[#374151] text-base md:text-[20px]">
+          {{ lessons.length }} lesson{{ lessons.length !== 1 ? 's' : '' }} to complete
+        </p>
+      </div>
+      <div
+        class="bg-[#8F75BD] text-white px-4 md:px-[31px] py-2 md:py-[4px] rounded-full flex items-center gap-2 shrink-0"
+      >
+        <img src="assets/icons/star.png" class="w-6 h-6 md:w-[32px] md:h-[32px]" alt="star" />
+        <span class="font-fredoka font-bold text-lg md:text-[25px] text-white"
+          >{{ subjectPoints | number }} Points</span
+        >
+      </div>
+    </div>
+  </div>
+
+  <app-spinner-overlay *ngIf="isLoading" [inline]="true"></app-spinner-overlay>
+
+  <!-- 2. ERROR STATE (API Failure) -->
+  <div
+    *ngIf="!isLoading && loadError"
+    class="flex flex-col items-center justify-center py-12 px-6 bg-white rounded-[30px] shadow-sm border-2 border-dashed border-red-200 text-center animate-fade-in"
+  >
+    <div class="w-20 h-20 mb-4 bg-red-100 rounded-full flex items-center justify-center">
+      <mat-icon class="text-red-500 !w-10 !h-10 !text-[40px]">report_problem</mat-icon>
+    </div>
+    <h2 class="font-fredoka font-bold text-2xl md:text-3xl text-[#374151] mb-2">
+      Something went wrong
+    </h2>
+    <p class="font-fredoka text-[#6B7280] text-lg max-w-md mb-6">
+      We couldn't load the lesson parts for **{{ subTopicName }}**. Please check your connection and
+      try again!
+    </p>
+    <div class="flex gap-4">
+      <button
+        (click)="fetchLessons(currentSubTopicId)"
+        class="px-8 py-3 bg-[#9333EA] text-white font-fredoka font-bold rounded-2xl hover:scale-105 transition-transform shadow-lg"
+      >
+        Try Again
+      </button>
+      <button
+        (click)="goBack()"
+        class="px-8 py-3 bg-gray-100 text-[#374151] font-fredoka font-bold rounded-2xl hover:bg-gray-200 transition-colors"
+      >
+        Go Back
+      </button>
+    </div>
+  </div>
+
+  <!-- 3. EMPTY STATE (No Lessons Found) -->
+  <div
+    *ngIf="!isLoading && !loadError && activeLessons.length === 0"
+    class="flex flex-col items-center justify-center py-12 px-6 bg-white rounded-[30px] shadow-sm border-2 border-dashed border-purple-200 text-center animate-fade-in"
+  >
+    <div class="w-24 h-24 mb-4">
+      <img
+        src="assets/icons/rocket.png"
+        class="w-full h-full object-contain opacity-30 grayscale"
+        alt="empty"
+      />
+    </div>
+    <h2 class="font-fredoka font-bold text-2xl md:text-3xl text-[#374151] mb-2">
+      Lessons are Coming!
+    </h2>
+    <p class="font-fredoka text-[#6B7280] text-lg max-w-md mb-6">
+      There are no parts added for this lesson yet. Our team is uploading them as we speak. Check
+      back in a bit!
+    </p>
+    <button
+      (click)="goBack()"
+      class="px-8 py-3 border-2 border-[#9333EA] text-[#9333EA] font-fredoka font-bold rounded-2xl hover:bg-purple-50 transition-colors"
+    >
+      Pick another Lesson
+    </button>
+  </div>
+
+  <!-- YouTube-Style Responsive Grid -->
+  <div
+    *ngIf="!isLoading && !loadError && activeLessons.length > 0"
+    class="grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-8 pb-10"
+  >
+    @for (lesson of activeLessons; track lesson.id; let i = $index) {
+      <app-lesson-card
+        [lesson]="lesson"
+        [index]="i"
+        [fallbackIcon]="currentSubjectIcon"
+        (selected)="onSelectLesson($event)"
+      >
+      </app-lesson-card>
+    }
+  </div>
+  <!-- History Section -->
+  <div *ngIf="completedLessons.length > 0" class="mt-12">
+    <div class="flex items-center gap-4 mb-6">
+      <div class="h-[2px] flex-1 bg-purple-100"></div>
+      <h2
+        class="font-fredoka font-bold text-xl md:text-2xl text-purple-300 uppercase tracking-widest flex items-center gap-2"
+      >
+        <mat-icon>history</mat-icon> Lesson History
+      </h2>
+      <div class="h-[2px] flex-1 bg-purple-100"></div>
+    </div>
+
+    <div
+      class="grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-8 pb-10 opacity-75 grayscale-[0.5] hover:grayscale-0 hover:opacity-100 transition-all duration-300"
+    >
+      @for (lesson of completedLessons; track lesson.id; let i = $index) {
+        <app-lesson-card
+          [lesson]="lesson"
+          [index]="i"
+          [fallbackIcon]="currentSubjectIcon"
+          (selected)="onSelectLesson($event)"
+        ></app-lesson-card>
+      }
+    </div>
+  </div>
+  <div class="h-4"></div>
+</main>

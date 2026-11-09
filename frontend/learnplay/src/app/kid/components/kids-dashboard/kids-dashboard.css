@@ -1,0 +1,42 @@
+.tabular-nums {
+  font-variant-numeric: tabular-nums;
+}
+
+.animate-fade-in {
+  animation: fadeIn 0.4s ease-out forwards;
+}
+
+@keyframes fadeIn {
+  from { 
+    opacity: 0; 
+    transform: translateY(-10px) scale(0.95); 
+  }
+  to { 
+    opacity: 1; 
+    transform: translateY(0) scale(1); 
+  }
+}
+
+.dashboard-content {
+    position: relative;
+    min-height: calc(100vh - 80px);
+    /* No longer need to worry about sticky margins here */
+}
+
+/* Custom Marquee Animation for Mobile Subscription Ticker */
+@keyframes marquee {
+  0% {
+    /* Starts completely off-screen to the right */
+    transform: translateX(100vw);
+  }
+  100% {
+    /* Moves completely off-screen to the left */
+    transform: translateX(-100%);
+  }
+}
+
+.animate-marquee {
+  animation: marquee 12s linear infinite;
+  display: inline-block;
+  will-change: transform;
+}

@@ -1,0 +1,217 @@
+<app-spinner-overlay *ngIf="isSubmitting"></app-spinner-overlay>
+<app-toast [message]="toast.message" [type]="toast.type" [visible]="toast.visible" (dismissed)="toast.dismiss()"></app-toast>
+
+<div class="h-screen overflow-hidden bg-gradient-to-b from-[#F5F5FF] to-[#FBF4FC] w-full flex items-center justify-center px-4 sm:px-8 md:px-12 lg:px-0">
+    <div class="w-full max-w-[520px] mx-auto">
+
+        <div class="w-full p-[16px] md:p-[30px] lg:pt-[50px] lg:pr-[40px] lg:pb-[50px] lg:pl-[40px] flex flex-col gap-[12px] md:gap-[25px] lg:gap-[30px] rounded-[15px] md:rounded-[20px] lg:rounded-[23px] bg-white shadow-[0px_6px_30px_0px_#0000001A] overflow-y-auto max-h-[calc(100vh-32px)] scrollbar-hide">
+
+            <!-- Header -->
+            <div class="w-full flex items-center flex-col gap-[6px] md:gap-[10px]">
+                <div class="w-[60px] h-[60px] md:w-[90px] md:h-[90px] lg:w-[100px] lg:h-[100px] rounded-full bg-gradient-to-b from-[#FAB315] to-[#F98816] shadow-[0px_10px_25px_0px_#00000026] overflow-hidden">
+                    <img src="./assets/icons/logo.png" class="w-full h-full object-cover">
+                </div>
+                <div class="w-full flex flex-col gap-[2px] text-center">
+                    <span class="font-fredoka font-bold text-[26px] md:text-[38px] lg:text-[45px] leading-[30px] md:leading-[50px] lg:leading-[64px] tracking-[-0.4px] text-[#9333EA]">
+                        {{ isSignUp ? 'Admin Sign Up!' : 'Admin Sign In!' }}
+                    </span>
+                    <span class="font-fredoka font-normal text-[13px] md:text-[18px] lg:text-[20px] leading-[16px] md:leading-[32px] lg:leading-[39px] tracking-[-0.4px] text-[#374151]">
+                        {{ isSignUp ? 'Create an admin account' : 'Welcome back, Admin' }}
+                    </span>
+                </div>
+            </div>
+
+            <!-- Error -->
+            <div *ngIf="errorMessage" class="bg-red-100 border border-red-400 text-red-700 px-3 py-2 rounded-lg">
+                <p class="font-fredoka font-medium text-[13px] md:text-[16px]">{{ errorMessage }}</p>
+            </div>
+
+            <!-- Sign In fields -->
+            <div *ngIf="!isSignUp" class="w-full flex flex-col gap-[12px] md:gap-[25px] lg:gap-[30px]">
+                <!-- Tab switcher -->
+                <div class="flex rounded-[12px] border-[2px] border-[#E5E7EB] overflow-hidden">
+                    <button (click)="activeForm = 'phone'"
+                        class="flex-1 h-[40px] md:h-[50px] font-fredoka font-semibold text-[14px] md:text-[18px] transition-colors"
+                        [class.bg-gradient-to-r]="activeForm === 'phone'"
+                        [class.from-[#9333EA]]="activeForm === 'phone'"
+                        [class.to-[#687AE4]]="activeForm === 'phone'"
+                        [class.text-white]="activeForm === 'phone'"
+                        [class.text-[#BBC2CD]]="activeForm !== 'phone'">
+                        Phone
+                    </button>
+                    <button (click)="activeForm = 'email'"
+                        class="flex-1 h-[40px] md:h-[50px] font-fredoka font-semibold text-[14px] md:text-[18px] transition-colors"
+                        [class.bg-gradient-to-r]="activeForm === 'email'"
+                        [class.from-[#687AE4]]="activeForm === 'email'"
+                        [class.to-[#7452AC]]="activeForm === 'email'"
+                        [class.text-white]="activeForm === 'email'"
+                        [class.text-[#BBC2CD]]="activeForm !== 'email'">
+                        Email
+                    </button>
+                </div>
+                <!-- Email field -->
+                <div *ngIf="activeForm === 'email'" class="w-full flex flex-col gap-[6px] md:gap-[12px]">
+                    <label class="font-fredoka text-[#374151] font-semibold text-[15px] md:text-[22px] lg:text-[25px] leading-[18px] tracking-[-0.4px]">Email</label>
+                    <input type="email" [(ngModel)]="email" placeholder="your@email.com"
+                        class="w-full h-[44px] md:h-[70px] lg:h-[79px] px-[14px] md:px-[18px] lg:px-[20px] bg-white border-[2px] border-[#E5E7EB] rounded-[12px] md:rounded-[18px] lg:rounded-[20px] focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent font-fredoka font-medium text-[15px] md:text-[20px] lg:text-[23px] tracking-[-0.4px] text-[#374151] placeholder:text-[#BBC2CD]" />
+                </div>
+                <!-- Phone field -->
+                <div *ngIf="activeForm === 'phone'" class="w-full flex flex-col gap-[6px] md:gap-[12px]">
+                    <label class="font-fredoka text-[#374151] font-semibold text-[15px] md:text-[22px] lg:text-[25px] leading-[18px] tracking-[-0.4px]">Phone Number</label>
+                    <app-phone-input (phoneChange)="onPhoneChange($event)"></app-phone-input>
+                </div>
+                <div class="w-full flex flex-col gap-[6px] md:gap-[12px]">
+                    <label class="font-fredoka text-[#374151] font-semibold text-[15px] md:text-[22px] lg:text-[25px] leading-[18px] tracking-[-0.4px]">Password</label>
+                    <div class="relative w-full">
+                        <input [type]="showPassword ? 'text' : 'password'" [(ngModel)]="password" placeholder="Enter password"
+                            class="w-full h-[44px] md:h-[70px] lg:h-[79px] px-[14px] pr-[42px] md:px-[18px] md:pr-[52px] lg:px-[20px] lg:pr-[56px] bg-white border-[2px] border-[#E5E7EB] rounded-[12px] md:rounded-[18px] lg:rounded-[20px] focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent font-fredoka font-medium text-[15px] md:text-[20px] lg:text-[23px] tracking-[-0.4px] text-[#374151] placeholder:text-[#BBC2CD]" />
+                        <button type="button" (click)="showPassword = !showPassword"
+                            class="absolute right-[12px] top-1/2 -translate-y-1/2 text-[#BBC2CD] hover:text-[#9333EA] transition-colors">
+                            <svg *ngIf="!showPassword" xmlns="http://www.w3.org/2000/svg" class="w-[18px] h-[18px] md:w-[22px] md:h-[22px]" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                                <path stroke-linecap="round" stroke-linejoin="round" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/>
+                                <path stroke-linecap="round" stroke-linejoin="round" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.477 0 8.268 2.943 9.542 7-1.274 4.057-5.065 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"/>
+                            </svg>
+                            <svg *ngIf="showPassword" xmlns="http://www.w3.org/2000/svg" class="w-[18px] h-[18px] md:w-[22px] md:h-[22px]" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                                <path stroke-linecap="round" stroke-linejoin="round" d="M13.875 18.825A10.05 10.05 0 0112 19c-4.477 0-8.268-2.943-9.542-7a9.97 9.97 0 012.163-3.592M6.228 6.228A9.97 9.97 0 0112 5c4.477 0 8.268 2.943 9.542 7a9.97 9.97 0 01-4.255 5.197M3 3l18 18"/>
+                            </svg>
+                        </button>
+                    </div>
+                </div>
+                <button [disabled]="isSubmitting"
+                    class="w-full h-[48px] md:h-[70px] lg:h-[83px] rounded-[15px] md:rounded-[18px] lg:rounded-[20px] bg-gradient-to-r from-[#687AE4] to-[#7452AC] flex items-center justify-center cursor-pointer disabled:opacity-60 disabled:cursor-not-allowed"
+                    (click)="onAdminSignIn()">
+                    <span class="font-fredoka font-bold text-[16px] md:text-[22px] lg:text-[25px] tracking-[-0.4px] text-[#FFFFFF]">Login</span>
+                    <img src="./assets/icons/start.png" alt="start" class="w-[24px] h-[24px] md:w-[34px] md:h-[34px] lg:w-[40px] lg:h-[40px] ml-2">
+                </button>
+            </div>
+
+            <!-- Sign Up fields -->
+            <div *ngIf="isSignUp" class="w-full flex flex-col gap-[8px] md:gap-[20px] lg:gap-[25px]">
+                <!-- Tab switcher -->
+                <div class="flex rounded-[12px] border-[2px] border-[#E5E7EB] overflow-hidden">
+                    <button (click)="activeForm = 'phone'"
+                        class="flex-1 h-[40px] md:h-[50px] font-fredoka font-semibold text-[14px] md:text-[18px] transition-colors"
+                        [class.bg-gradient-to-r]="activeForm === 'phone'"
+                        [class.from-[#9333EA]]="activeForm === 'phone'"
+                        [class.to-[#687AE4]]="activeForm === 'phone'"
+                        [class.text-white]="activeForm === 'phone'"
+                        [class.text-[#BBC2CD]]="activeForm !== 'phone'">
+                        Phone
+                    </button>
+                    <button (click)="activeForm = 'email'"
+                        class="flex-1 h-[40px] md:h-[50px] font-fredoka font-semibold text-[14px] md:text-[18px] transition-colors"
+                        [class.bg-gradient-to-r]="activeForm === 'email'"
+                        [class.from-[#687AE4]]="activeForm === 'email'"
+                        [class.to-[#7452AC]]="activeForm === 'email'"
+                        [class.text-white]="activeForm === 'email'"
+                        [class.text-[#BBC2CD]]="activeForm !== 'email'">
+                        Email
+                    </button>
+                </div>
+                <!-- Name -->
+                <div class="w-full flex flex-col gap-[4px] md:gap-[10px]">
+                    <label class="font-fredoka text-[#374151] font-semibold text-[14px] md:text-[22px] lg:text-[25px] leading-[18px] tracking-[-0.4px]">Name</label>
+                    <input [(ngModel)]="name" type="text" placeholder="Enter your name"
+                        class="w-full h-[42px] md:h-[70px] lg:h-[79px] px-[14px] md:px-[18px] lg:px-[20px] bg-white border-[2px] border-[#E5E7EB] rounded-[12px] md:rounded-[18px] lg:rounded-[20px] focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent font-fredoka font-medium text-[14px] md:text-[20px] lg:text-[23px] tracking-[-0.4px] text-[#374151] placeholder:text-[#BBC2CD]" />
+                </div>
+                <!-- Email or Phone -->
+                <div *ngIf="activeForm === 'email'" class="w-full flex flex-col gap-[4px] md:gap-[10px]">
+                    <label class="font-fredoka text-[#374151] font-semibold text-[14px] md:text-[22px] lg:text-[25px] leading-[18px] tracking-[-0.4px]">Email</label>
+                    <input [(ngModel)]="email" type="email" placeholder="your@email.com"
+                        class="w-full h-[42px] md:h-[70px] lg:h-[79px] px-[14px] md:px-[18px] lg:px-[20px] bg-white border-[2px] border-[#E5E7EB] rounded-[12px] md:rounded-[18px] lg:rounded-[20px] focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent font-fredoka font-medium text-[14px] md:text-[20px] lg:text-[23px] tracking-[-0.4px] text-[#374151] placeholder:text-[#BBC2CD]" />
+                </div>
+                <div *ngIf="activeForm === 'phone'" class="w-full flex flex-col gap-[4px] md:gap-[10px]">
+                    <label class="font-fredoka text-[#374151] font-semibold text-[14px] md:text-[22px] lg:text-[25px] leading-[18px] tracking-[-0.4px]">Phone Number</label>
+                    <app-phone-input (phoneChange)="onPhoneChange($event)"></app-phone-input>
+                </div>
+                <!-- Password -->
+                <div class="w-full flex flex-col gap-[4px] md:gap-[10px]">
+                    <label class="font-fredoka text-[#374151] font-semibold text-[14px] md:text-[22px] lg:text-[25px] leading-[18px] tracking-[-0.4px]">Password</label>
+                    <div class="relative w-full">
+                        <input [(ngModel)]="password" [type]="showPassword ? 'text' : 'password'" placeholder="Create a password"
+                            (focus)="passwordFocused = true" (blur)="passwordFocused = false"
+                            class="w-full h-[42px] md:h-[70px] lg:h-[79px] px-[14px] pr-[42px] md:px-[18px] md:pr-[52px] lg:px-[20px] lg:pr-[56px] bg-white border-[2px] rounded-[12px] md:rounded-[18px] lg:rounded-[20px] focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent font-fredoka font-medium text-[14px] md:text-[20px] lg:text-[23px] tracking-[-0.4px] text-[#374151] placeholder:text-[#BBC2CD]"
+                            [class.border-green-400]="!passwordFocused && password.length > 0 && passwordValid"
+                            [class.border-red-400]="!passwordFocused && password.length > 0 && !passwordValid"
+                            [class.border-[#E5E7EB]]="password.length === 0" />
+                        <button type="button" (click)="showPassword = !showPassword"
+                            class="absolute right-[12px] top-1/2 -translate-y-1/2 text-[#BBC2CD] hover:text-[#9333EA] transition-colors">
+                            <svg *ngIf="!showPassword" xmlns="http://www.w3.org/2000/svg" class="w-[18px] h-[18px] md:w-[22px] md:h-[22px]" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                                <path stroke-linecap="round" stroke-linejoin="round" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/>
+                                <path stroke-linecap="round" stroke-linejoin="round" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.477 0 8.268 2.943 9.542 7-1.274 4.057-5.065 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"/>
+                            </svg>
+                            <svg *ngIf="showPassword" xmlns="http://www.w3.org/2000/svg" class="w-[18px] h-[18px] md:w-[22px] md:h-[22px]" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                                <path stroke-linecap="round" stroke-linejoin="round" d="M13.875 18.825A10.05 10.05 0 0112 19c-4.477 0-8.268-2.943-9.542-7a9.97 9.97 0 012.163-3.592M6.228 6.228A9.97 9.97 0 0112 5c4.477 0 8.268 2.943 9.542 7a9.97 9.97 0 01-4.255 5.197M3 3l18 18"/>
+                            </svg>
+                        </button>
+                    </div>
+                    <!-- Rules shown when focused -->
+                    <div *ngIf="passwordFocused && password.length > 0" class="flex flex-col gap-[2px] md:gap-[4px] mt-[2px]">
+                        <span [class]="passwordRules.minLength ? 'text-green-500' : 'text-red-400'" class="font-fredoka text-[11px] md:text-[14px] flex items-center gap-1">
+                            <span>{{ passwordRules.minLength ? '✓' : '✗' }}</span> At least 6 characters
+                        </span>
+                        <!-- <span [class]="passwordRules.uppercase ? 'text-green-500' : 'text-red-400'" class="font-fredoka text-[11px] md:text-[14px] flex items-center gap-1">
+                            <span>{{ passwordRules.uppercase ? '✓' : '✗' }}</span> One uppercase letter
+                        </span>
+                        <span [class]="passwordRules.lowercase ? 'text-green-500' : 'text-red-400'" class="font-fredoka text-[11px] md:text-[14px] flex items-center gap-1">
+                            <span>{{ passwordRules.lowercase ? '✓' : '✗' }}</span> One lowercase letter
+                        </span>
+                        <span [class]="passwordRules.number ? 'text-green-500' : 'text-red-400'" class="font-fredoka text-[11px] md:text-[14px] flex items-center gap-1">
+                            <span>{{ passwordRules.number ? '✓' : '✗' }}</span> One number
+                        </span>
+                        <span [class]="passwordRules.special ? 'text-green-500' : 'text-red-400'" class="font-fredoka text-[11px] md:text-[14px] flex items-center gap-1">
+                            <span>{{ passwordRules.special ? '✓' : '✗' }}</span> One special character
+                        </span> -->
+                    </div>
+                    <!-- Summary when blurred -->
+                    <span *ngIf="!passwordFocused && password.length > 0" [class]="passwordValid ? 'text-green-500' : 'text-red-400'" class="font-fredoka text-[11px] md:text-[14px] flex items-center gap-1">
+                        <span>{{ passwordValid ? '✓' : '✗' }}</span> {{ passwordValid ? 'Password meets all conditions' : 'Password conditions not met' }}
+                    </span>
+                </div>
+                <!-- Confirm Password -->
+                <div class="w-full flex flex-col gap-[4px] md:gap-[10px]">
+                    <label class="font-fredoka text-[#374151] font-semibold text-[14px] md:text-[22px] lg:text-[25px] leading-[18px] tracking-[-0.4px]">Confirm Password</label>
+                    <div class="relative w-full">
+                        <input [(ngModel)]="confirmPassword" [type]="showConfirmPassword ? 'text' : 'password'" placeholder="Repeat your password"
+                            class="w-full h-[42px] md:h-[70px] lg:h-[79px] px-[14px] pr-[42px] md:px-[18px] md:pr-[52px] lg:px-[20px] lg:pr-[56px] bg-white border-[2px] rounded-[12px] md:rounded-[18px] lg:rounded-[20px] focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent font-fredoka font-medium text-[14px] md:text-[20px] lg:text-[23px] tracking-[-0.4px] text-[#374151] placeholder:text-[#BBC2CD]"
+                            [class.border-red-400]="confirmPassword.length > 0 && !passwordsMatch"
+                            [class.border-green-400]="passwordsMatch"
+                            [class.border-[#E5E7EB]]="confirmPassword.length === 0" />
+                        <button type="button" (click)="showConfirmPassword = !showConfirmPassword"
+                            class="absolute right-[12px] top-1/2 -translate-y-1/2 text-[#BBC2CD] hover:text-[#9333EA] transition-colors">
+                            <svg *ngIf="!showConfirmPassword" xmlns="http://www.w3.org/2000/svg" class="w-[18px] h-[18px] md:w-[22px] md:h-[22px]" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                                <path stroke-linecap="round" stroke-linejoin="round" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/>
+                                <path stroke-linecap="round" stroke-linejoin="round" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.477 0 8.268 2.943 9.542 7-1.274 4.057-5.065 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"/>
+                            </svg>
+                            <svg *ngIf="showConfirmPassword" xmlns="http://www.w3.org/2000/svg" class="w-[18px] h-[18px] md:w-[22px] md:h-[22px]" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                                <path stroke-linecap="round" stroke-linejoin="round" d="M13.875 18.825A10.05 10.05 0 0112 19c-4.477 0-8.268-2.943-9.542-7a9.97 9.97 0 012.163-3.592M6.228 6.228A9.97 9.97 0 0112 5c4.477 0 8.268 2.943 9.542 7a9.97 9.97 0 01-4.255 5.197M3 3l18 18"/>
+                            </svg>
+                        </button>
+                    </div>
+                    <span *ngIf="confirmPassword.length > 0" [class]="passwordsMatch ? 'text-green-500' : 'text-red-400'" class="font-fredoka text-[11px] md:text-[14px] flex items-center gap-1">
+                        <span>{{ passwordsMatch ? '✓' : '✗' }}</span> {{ passwordsMatch ? 'Passwords match' : 'Passwords do not match' }}
+                    </span>
+                </div>
+                <button [disabled]="isSubmitting || !passwordValid || !passwordsMatch"
+                    class="w-full h-[48px] md:h-[70px] lg:h-[83px] rounded-[15px] md:rounded-[18px] lg:rounded-[20px] bg-gradient-to-r from-[#687AE4] to-[#7452AC] flex items-center justify-center cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed"
+                    (click)="onAdminSignUp()">
+                    <span class="font-fredoka font-bold text-[16px] md:text-[22px] lg:text-[25px] tracking-[-0.4px] text-[#FFFFFF]">
+                        {{ isSubmitting ? 'Creating Account...' : 'Create Admin Account' }}
+                    </span>
+                    <img *ngIf="!isSubmitting" src="./assets/icons/start.png" alt="start" class="w-[24px] h-[24px] md:w-[34px] md:h-[34px] lg:w-[40px] lg:h-[40px] ml-2">
+                </button>
+            </div>
+
+            <!-- Toggle sign in / sign up -->
+            <div class="flex justify-center flex-wrap gap-1">
+                <span class="font-fredoka font-normal text-[13px] md:text-[18px] lg:text-[20px] leading-[16px] md:leading-[32px] lg:leading-[39px] tracking-[-0.4px] text-[#374151]">
+                    {{ isSignUp ? 'Already have an account?' : "Don't have an account?" }}
+                </span>
+                <span class="font-fredoka font-semibold text-[13px] md:text-[18px] lg:text-[20px] leading-[16px] md:leading-[32px] lg:leading-[39px] tracking-[-0.4px] text-[#9333EA] cursor-pointer" (click)="toggleMode()">
+                    {{ isSignUp ? 'Sign in' : 'Sign up' }}
+                </span>
+            </div>
+
+        </div>
+    </div>
+</div>

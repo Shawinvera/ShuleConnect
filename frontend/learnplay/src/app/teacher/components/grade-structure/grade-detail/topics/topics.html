@@ -1,0 +1,105 @@
+<div class="min-h-screen bg-[#F3F4F8] font-sans pt-2 px-[12px] md:pt-4 md:px-[40px] xl:px-[150px] pb-[80px] md:pb-10 text-slate-800">
+  <app-toast [message]="toast.message" [type]="toast.type" [visible]="toast.visible" (dismissed)="toast.dismiss()"></app-toast>
+
+  <div class="mb-4">
+      <app-teacher-breadcrumb></app-teacher-breadcrumb>
+    </div>
+
+    <!-- Header Section -->
+    <div class="flex flex-col md:flex-row md:items-end justify-between gap-6 mb-12">
+      <div>
+        <h1 class="font-[Fredoka] font-bold text-[48px] leading-[65px] tracking-[-0.4px] text-left text-[#374151] mb-3">{{ subjectName }} Topics</h1>
+        <p class="font-[Fredoka] font-normal text-[24px] leading-[39px] tracking-[-0.4px] text-[#374151]">Create and manage topics for this subject</p>
+      </div>
+
+      <button
+        (click)="toggleForm()"
+        class="w-[284px] h-[83px] text-white rounded-[20px] py-[20px] px-[55px] shadow-lg hover:shadow-xl transition-all duration-200 flex items-center justify-center gap-[10px] opacity-100"
+        style="background: linear-gradient(90deg, #4ADE80 0%, #687AE4 100%); font-family: 'Fredoka'; font-weight: 600; font-size: 25px; line-height: 43px; letter-spacing: -0.4px; text-align: center; vertical-align: middle;"
+      >
+        <span class="text-lg" *ngIf="!isFormVisible">+</span>
+        <span class="text-lg" *ngIf="isFormVisible">×</span>
+        {{ isFormVisible ? 'Close Form' : 'Add Topic' }}
+      </button>
+    </div>
+
+    <!-- Add New Topic Form -->
+    <div *ngIf="isFormVisible" class="bg-white border-4 border-emerald-400 rounded-2xl p-8 mb-10 shadow-sm animate-fade-in">
+      <h2 class="font-[Fredoka] font-semibold text-[40px] leading-[40px] tracking-[-0.4px] text-left text-[#374151] mb-6">{{ editingTopic ? 'Edit Topic' : 'Add New Topic' }}</h2>
+      <div class="space-y-6">
+        <div>
+          <label class="block font-[Fredoka] font-semibold text-[25px] leading-[20px] tracking-[-0.4px] text-left text-[#374151] mb-2">Topic Name *</label>
+          <input
+            type="text"
+            [(ngModel)]="newTopic.name"
+            placeholder="e.g Algebra"
+            class="mt-[10px] w-full h-[79px] bg-white border-gray-200 border-[2px] rounded-[20px] px-[20px] py-[25px] font-fredoka font-normal text-[23px] leading-[29px] tracking-[-0.4px] text-[#374151] placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500"
+          />
+        </div>
+        <div>
+          <label class="block font-[Fredoka] font-semibold text-[25px] leading-[20px] tracking-[-0.4px] text-left text-[#374151] mb-2">Description</label>
+          <textarea
+            [(ngModel)]="newTopic.description"
+            placeholder="Brief description..."
+            rows="3"
+            class="mt-[10px] w-full bg-white border-gray-200 border-[2px] rounded-[20px] px-[20px] py-[25px] font-fredoka font-normal text-[23px] leading-[29px] tracking-[-0.4px] text-[#374151] placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500 resize-y"
+          ></textarea>
+        </div>
+        <div>
+          <label class="block font-[Fredoka] font-semibold text-[25px] leading-[20px] tracking-[-0.4px] text-left text-[#374151] mb-2">Order Index *</label>
+          <select
+            [(ngModel)]="newTopic.orderIndex"
+            class="mt-[10px] w-full h-[79px] bg-white border-gray-200 border-[2px] rounded-[20px] px-[20px] font-fredoka font-normal text-[23px] text-[#374151] focus:outline-none focus:ring-2 focus:ring-blue-500"
+          >
+            <option *ngFor="let num of orderNumbers" [ngValue]="num">{{ num }}</option>
+          </select>
+        </div>
+        <div class="flex gap-4 pt-2">
+          <button
+            (click)="saveTopic()"
+            [disabled]="!newTopic.name || !isTopicFormChanged"
+            [class.opacity-50]="!newTopic.name || !isTopicFormChanged"
+            [class.cursor-not-allowed]="!isTopicFormChanged"
+            class="bg-[#10B981] hover:bg-emerald-600 text-white font-bold py-3 px-8 rounded-xl shadow-md transition-colors"
+          >
+            {{ editingTopic ? 'Update Topic' : 'Save Topic' }}
+          </button>
+          <button (click)="toggleForm()" class="bg-gray-200 hover:bg-gray-300 text-slate-600 font-bold py-3 px-8 rounded-xl transition-colors">
+            Cancel
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Topics Grid -->
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+      <app-spinner-overlay *ngIf="isLoading" [inline]="true"></app-spinner-overlay>
+      <div *ngFor="let topic of topics"
+           (click)="navigateToSubtopic(topic)"
+           class="bg-white rounded-[20px] p-8 shadow-[0_2px_8px_rgba(0,0,0,0.04)] border border-slate-100 hover:shadow-lg hover:-translate-y-1 transition-all duration-300 cursor-pointer group">
+        <h2 class="font-[Fredoka] font-semibold text-[35px] leading-[40px] tracking-[-0.4px] text-left text-[#374151] mb-2">{{ topic.name }}</h2>
+        <p class="font-[Fredoka] font-normal text-[22px] leading-[39px] tracking-[-0.4px] text-left text-slate-500 mb-8">{{ topic.description }}</p>
+        <div class="flex items-center gap-3">
+          <div class="px-2 py-2 rounded-full bg-[#DBEAFE] text-[#1E40AF]" style="font-family: 'Fredoka'; font-weight: 600; font-size: 15px; line-height: 40px; letter-spacing: -0.4px;">Order: {{ topic.orderIndex ?? '-' }}</div>
+          <div class="px-2 py-2 rounded-full bg-[#D1FAE5] text-[#059669]" style="font-family: 'Fredoka'; font-weight: 600; font-size: 15px; line-height: 40px; letter-spacing: -0.4px;">{{ topic.subtopicsCount }} subtopics</div>
+        </div>
+        <div class="flex gap-2 mt-4" (click)="$event.stopPropagation()">
+          <button (click)="editTopic(topic)"
+            class="action-btn bg-[#8B5CF6] hover:bg-[#7C3AED] text-white p-2.5 rounded-lg transition-all duration-200 hover:scale-105 hover:shadow-lg flex items-center justify-center"
+            title="Edit Topic">
+            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"></path>
+            </svg>
+          </button>
+          <button (click)="deleteTopic(topic.id)"
+            class="action-btn bg-[#EF4444] hover:bg-[#DC2626] text-white p-2.5 rounded-lg transition-all duration-200 hover:scale-105 hover:shadow-lg flex items-center justify-center"
+            title="Delete Topic">
+            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"></path>
+            </svg>
+          </button>
+        </div>
+      </div>
+    </div>
+
+</div>

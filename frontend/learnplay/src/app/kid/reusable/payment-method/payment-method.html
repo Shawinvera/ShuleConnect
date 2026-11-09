@@ -1,0 +1,529 @@
+<div
+  class="min-h-screen flex justify-center font-fredoka px-4 md:px-8 lg:px-[150px] !bg-gradient-to-b from-[#F5F5FF] to-[#FBF4FC] !pt-6 pb-[90px] md:!py-6 animate-fade-in"
+>
+  <app-toast
+    [message]="toast.message"
+    [type]="toast.type"
+    [visible]="toast.visible"
+    (dismissed)="toast.dismiss()"
+  ></app-toast>
+  <div class="max-w-xl w-full flex flex-col items-center">
+    <!-- Header -->
+    <div class="text-center mb-6">
+      <h1
+        class="font-bold text-3xl md:text-[55px] md:leading-[64px] tracking-[-0.4px] text-center text-[#9333EA] flex gap-2 md:gap-3 items-center justify-center"
+      >
+        Payment Method
+        <!-- Card Icon Decor -->
+        <div class="hidden sm:block w-[60px] md:w-[114px] h-auto">
+          <img
+            src="assets/icons/credit-card.png"
+            alt="Credit Card Decor"
+            class="w-full h-full object-contain"
+          />
+        </div>
+      </h1>
+      <p
+        class="font-normal text-lg sm:text-xl md:text-[26px] md:leading-[39px] tracking-[-0.4px] text-center text-[#374151] flex items-center justify-center px-2"
+      >
+        Select the plan that works best for you!
+      </p>
+    </div>
+
+    <!-- Selected Plan Badge -->
+    <div
+      class="bg-[#F1E2FB] text-base md:text-[20px] leading-relaxed tracking-[-0.4px] text-[#9333EA] border border-[#C999F5] px-4 md:px-6 py-2 rounded-lg font-bold mb-8 shadow-sm flex flex-wrap items-center justify-center gap-2 text-center"
+    >
+      <span class="font-normal text-sm md:text-[18px] text-[#374151]">Selected Plan:</span>
+      {{ plan.title }} - {{ plan.price }} {{ plan.currency }}
+      <button
+        (click)="backToPlans.emit()"
+        class="ml-1 cursor-pointer underline text-purple-500 hover:text-purple-700"
+      >
+        Change
+      </button>
+    </div>
+
+    <!-- Payment Methods List -->
+    <div class="w-full flex flex-col gap-4 mb-8">
+      <!-- 1. M-PESA -->
+      <div
+        class="bg-white rounded-2xl overflow-hidden shadow-sm border-2 border-transparent transition-all"
+        [class.border-green-400]="selectedMethodId === 'mpesa'"
+      >
+        <!-- Header -->
+        <div
+          class="p-3 md:p-4 flex items-center justify-between cursor-pointer"
+          (click)="toggleMethod('mpesa')"
+          matRipple
+        >
+          <div class="flex items-center gap-3 md:gap-4">
+            <div
+              class="w-[60px] h-[60px] md:w-[86px] md:h-[85px] rounded-xl bg-[#D6FFE5] flex items-center justify-center shrink-0"
+            >
+              <img
+                src="assets/icons/phone.png"
+                alt="phone"
+                class="w-[35px] md:w-[50px] h-[35px] md:h-[50px] object-contain"
+              />
+            </div>
+            <div>
+              <h3
+                class="font-bold text-xl md:text-[30px] text-[#374151] leading-tight tracking-[-0.4px]"
+              >
+                M-PESA
+              </h3>
+              <p class="font-normal text-xs md:text-[18px] text-[#374151]">
+                Safaricom M-PESA Payment
+              </p>
+            </div>
+          </div>
+          <mat-icon
+            class="text-gray-400 transition-transform duration-300"
+            [class.rotate-180]="selectedMethodId === 'mpesa'"
+            >expand_more</mat-icon
+          >
+        </div>
+
+        <!-- Body -->
+        <div class="accordion-content bg-[#E5FFEF]" [class.expanded]="selectedMethodId === 'mpesa'">
+          <div class="p-4 md:p-5 border-t border-green-100">
+            <label class="block text-sm md:text-[16px] font-bold text-gray-700 mb-2"
+              >M-PESA Phone Number</label
+            >
+            <input
+              type="tel"
+              [(ngModel)]="mpesaNumber"
+              (input)="validateMpesa($event)"
+              maxlength="10"
+              placeholder="e.g. 07XXXXXXXX"
+              class="w-full p-3 rounded-lg border border-gray-200 focus:outline-none focus:ring-2 focus:ring-green-500 bg-white mb-1.5 text-gray-700"
+            />
+            <div class="flex justify-between items-center mb-4">
+              <p class="text-xs md:text-[14px] text-gray-500">
+                Enter your Safaricom number (10 digits)
+              </p>
+              <!-- Visual digit counter -->
+              <p
+                class="text-xs font-bold"
+                [class.text-green-600]="mpesaNumber.length === 10"
+                [class.text-red-500]="mpesaNumber.length > 0 && mpesaNumber.length < 10"
+              >
+                {{ mpesaNumber.length }}/10
+              </p>
+            </div>
+
+            <div class="bg-white p-3 md:p-4 rounded-xl border border-green-100 mb-4">
+              <h4 class="font-bold text-sm md:text-[16px] mb-2 flex items-center gap-1">
+                <img
+                  src="assets/icons/indicator.png"
+                  alt="indicator"
+                  class="w-[18px] h-[18px] object-contain"
+                />
+                How it works
+              </h4>
+              <ol
+                class="text-sm md:text-[18px] text-[#374151] space-y-1 list-decimal list-inside pl-1"
+              >
+                <li>Enter your M-PESA phone number</li>
+                <li>Click "Pay with M-PESA"</li>
+                <li>You'll receive a prompt on your phone</li>
+                <li>Enter your M-PESA PIN to complete</li>
+              </ol>
+            </div>
+
+            <button
+              (click)="processPayment('M-PESA')"
+              [disabled]="mpesaNumber.length !== 10 || paymentStatus !== 'IDLE'"
+              class="w-full cursor-pointer bg-[#3CB067] hover:bg-green-600 text-lg md:text-[22px] text-white font-bold py-3 rounded-lg shadow-md transition-all duration-200 active:scale-95 disabled:opacity-50 disabled:active:scale-100 flex justify-center items-center gap-2"
+            >
+              <span>{{ paymentStatus === 'WAITING' ? 'Processing...' : 'Pay with M-PESA' }}</span>
+              <img
+                *ngIf="paymentStatus !== 'WAITING'"
+                src="assets/icons/phone.png"
+                alt="phone"
+                class="w-[20px] md:w-[25px] h-auto object-contain"
+              />
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <!-- 2. Airtel Money -->
+      <!-- <div
+        class="bg-white rounded-2xl overflow-hidden shadow-sm border-2 border-transparent transition-all"
+        [class.border-red-300]="selectedMethodId === 'airtel'"
+      >
+        <div
+          class="p-3 md:p-4 flex items-center justify-between cursor-pointer"
+          (click)="toggleMethod('airtel')"
+          matRipple
+        >
+          <div class="flex items-center gap-3 md:gap-4">
+            <div class="w-[60px] h-[60px] md:w-[86px] md:h-[85px] rounded-xl bg-[#FFD6DE] flex items-center justify-center shrink-0">
+              <img
+                src="assets/icons/phone.png"
+                alt="phone"
+                class="w-[35px] md:w-[50px] h-[35px] md:h-[50px] object-contain"
+              />
+            </div>
+            <div>
+              <h3
+                class="font-bold text-xl md:text-[30px] text-[#374151] leading-tight tracking-[-0.4px]"
+              >
+                Airtel Money
+              </h3>
+              <p
+                class="font-normal text-xs md:text-[18px] text-[#374151]"
+              >
+                Airtel Money Payment
+              </p>
+            </div>
+          </div>
+          <mat-icon
+            class="text-gray-400 transition-transform duration-300"
+            [class.rotate-180]="selectedMethodId === 'airtel'"
+            >expand_more</mat-icon
+          >
+        </div>
+
+        <div
+          class="accordion-content bg-[#FFEFF2]"
+          [class.expanded]="selectedMethodId === 'airtel'"
+        >
+          <div class="p-4 md:p-5 border-t border-red-100">
+            <label
+              class="block text-sm md:text-[16px] font-bold text-gray-700 mb-2"
+              >Airtel Money Number</label
+            >
+            <input
+              type="text"
+              [(ngModel)]="airtelNumber"
+              placeholder="e.g. 2547XXXXXXXX"
+              class="w-full p-3 rounded-lg border border-gray-200 focus:outline-none focus:ring-2 focus:ring-red-400 bg-white mb-4"
+            />
+            <p class="text-[16px] leading-[30px] tracking-[-0.4px] mb-4">
+              Enter your Airtel number (10 digits)
+            </p>
+
+            
+            <div class="bg-white p-3 md:p-4 rounded-xl border border-red-100 mb-4">
+              <h4
+                class="font-bold text-sm md:text-[20px] mb-2 flex items-center gap-1"
+              >
+                <img
+                  src="assets/icons/indicator.png"
+                  alt="indicator"
+                  class="w-[18px] h-[18px] object-contain"
+                />
+                How it works
+              </h4>
+              <ol
+                class="text-sm md:text-[18px] text-[#374151] text-gray-600 space-y-1 list-decimal list-inside pl-1"
+              >
+                <li>Enter your Airtel Money number</li>
+                <li>Click "Pay with Airtel Money"</li>
+                <li>You'll receive a prompt on your phone</li>
+                <li>Enter your Airtel Money PIN to complete</li>
+              </ol>
+            </div>
+
+            <button
+              (click)="processPayment('Airtel')"
+              class="w-full cursor-pointer bg-[#EF443C] hover:bg-red-600 text-lg md:text-[22px] text-white font-bold py-3 rounded-lg shadow-md flex justify-center items-center gap-2"
+            >
+              Pay with Airtel Money
+              <img
+                src="assets/icons/phone.png"
+                alt="phone"
+                class="w-[25px] h-[25px] object-contain"
+              />
+            </button>
+          </div>
+        </div>
+      </div> -->
+
+      <!-- 3. Credit/Debit Card -->
+      <!-- <div
+        class="bg-white rounded-2xl overflow-hidden shadow-sm border-2 border-transparent transition-all"
+        [class.border-blue-300]="selectedMethodId === 'card'"
+      >
+        <div
+          class="p-3 md:p-4 flex items-center justify-between cursor-pointer"
+          (click)="toggleMethod('card')"
+          matRipple
+        >
+          <div class="flex items-center gap-3 md:gap-4">
+            <div class="w-[60px] h-[60px] md:w-[86px] md:h-[85px] rounded-xl bg-[#EBF1FF] flex items-center justify-center shrink-0">
+              <img
+                src="assets/icons/credit-card.png"
+                alt="credit card"
+                class="w-[35px] md:w-[50px] h-[35px] md:h-[50px] object-contain"
+              />
+            </div>
+            <div>
+              <h3
+                class="font-bold text-xl md:text-[30px] text-[#374151] leading-tight tracking-[-0.4px]"
+              >
+                Credit/Debit Card
+              </h3>
+              <p
+                class="font-normal text-xs md:text-[18px] text-[#374151] "
+              >
+                Pay with Visa, Mastercard etc
+              </p>
+            </div>
+          </div>
+          <mat-icon
+            class="text-gray-400 transition-transform duration-300"
+            [class.rotate-180]="selectedMethodId === 'card'"
+            >expand_more</mat-icon
+          >
+        </div>
+
+        <div class="accordion-content bg-[#EBF1FF]" [class.expanded]="selectedMethodId === 'card'">
+          <div class="p-4 md:p-5 border-t border-blue-100">
+            <div class="space-y-4 mb-4">
+              <div>
+                <label class="block text-sm md:text-[16px] font-bold text-gray-700 mb-1">Card Number</label>
+                <input
+                  type="text"
+                  [(ngModel)]="cardDetails.number"
+                  placeholder="1234 5678 9012 3456"
+                  class="w-full p-3 rounded-lg border border-gray-200 focus:outline-none focus:ring-2 focus:ring-blue-400 bg-white"
+                />
+              </div>
+              <div>
+                <label class="block text-sm md:text-[16px] font-bold text-gray-700 mb-1">Cardholder Name</label>
+                <input
+                  type="text"
+                  [(ngModel)]="cardDetails.holder"
+                  placeholder="Pres Tone"
+                  class="w-full p-3 rounded-lg border border-gray-200 focus:outline-none focus:ring-2 focus:ring-blue-400 bg-white"
+                />
+              </div>
+              <div class="flex flex-col md:flex-row gap-4">
+                <div class="w-full md:w-1/2">
+                  <label class="block text-sm md:text-[16px] font-bold text-gray-700 mb-1">Expiry Date</label>
+                  <input
+                    type="text"
+                    [(ngModel)]="cardDetails.expiry"
+                    placeholder="MM/YY"
+                    class="w-full p-3 rounded-lg border border-gray-200 focus:outline-none focus:ring-2 focus:ring-blue-400 bg-white"
+                  />
+                </div>
+                <div class="w-full md:w-1/2">
+                  <label class="block text-sm md:text-[16px] font-bold text-gray-700 mb-1">CVV</label>
+                  <input
+                    type="text"
+                    [(ngModel)]="cardDetails.cvv"
+                    placeholder="123"
+                    class="w-full p-3 rounded-lg border border-gray-200 focus:outline-none focus:ring-2 focus:ring-blue-400 bg-white"
+                  />
+                </div>
+              </div>
+            </div>
+
+            
+            <div
+              class="bg-white p-3 rounded-xl border border-blue-100 mb-4 flex items-start gap-3"
+            >
+              <input
+                type="checkbox"
+                id="recurring"
+                [(ngModel)]="cardDetails.recurring"
+                class="w-5 h-5 mt-1 text-blue-600 rounded focus:ring-blue-500 border-gray-300"
+              />
+              <label for="recurring" class="text-xs md:text-sm text-[#374151] cursor-pointer select-none">
+                <span class="font-bold text-sm md:text-[16px] block text-[#374151]">Enable Recurring Payment</span>
+                Automatically renew your subscription when it expires
+              </label>
+            </div>
+
+            <button
+              (click)="processPayment('Card')"
+              class="w-full cursor-pointer bg-[#3466EB] hover:bg-blue-700 text-lg md:text-[22px] text-white font-bold py-3 rounded-lg shadow-md flex justify-center items-center gap-2"
+            >
+              Pay with Card
+              <img
+                src="assets/icons/credit-card.png"
+                alt="phone"
+                class="w-[20px] md:w-[25px] h-auto object-contain"
+              />
+            </button>
+          </div>
+        </div>
+      </div> -->
+    </div>
+
+    <!-- Footer Secure -->
+    <div class="bg-white w-full rounded-xl p-4 flex items-center gap-3 md:gap-4 shadow-sm">
+      <img
+        src="assets/icons/lock.png"
+        alt="phone"
+        class="w-[24px] md:w-[32px] h-auto object-contain shrink-0"
+      />
+      <div>
+        <h4 class="font-bold text-sm md:text-[18px] text-[#374151]">Secure Payment</h4>
+        <p class="text-[11px] md:text-[13px] text-[#374151] leading-tight">
+          Your payment information is encrypted and secure. We never store your card details.
+        </p>
+      </div>
+    </div>
+  </div>
+  <!-- OVERLAY MODAL -->
+  <div
+    *ngIf="paymentStatus !== 'IDLE'"
+    class="fixed inset-0 z-[100] flex items-center justify-center bg-black/60 backdrop-blur-sm p-4"
+  >
+    <div class="bg-white rounded-[30px] p-8 max-w-sm w-full text-center shadow-2xl animate-pop-in">
+      <!-- 1. WAITING STATE (PLACE IT HERE) -->
+      <div *ngIf="paymentStatus === 'WAITING'">
+        <div class="mb-6 flex justify-center relative">
+          <!-- Progress Ring -->
+          <div
+            class="w-20 h-20 border-4 border-purple-100 border-t-purple-600 rounded-full animate-spin"
+          ></div>
+          <!-- Centered Countdown Number -->
+          <span
+            class="absolute inset-0 flex items-center justify-center font-bold text-xl text-purple-600"
+          >
+            {{ countdown }}
+          </span>
+        </div>
+
+        <h2 class="font-fredoka font-bold text-2xl text-[#374151] mb-2">Processing...</h2>
+
+        <!-- This shows while waiting for the initial 10 seconds -->
+        <p class="text-gray-600 mb-4" *ngIf="!showManualConfirm">
+          Please check your phone and enter your M-PESA PIN. We are waiting 10s for you to finish!
+        </p>
+
+        <!-- NEW MANUAL CONFIRM BUTTON -->
+        <div *ngIf="showManualConfirm" class="mb-4 animate-fade-in">
+          <button
+            (click)="manualConfirm()"
+            [disabled]="isVerifying"
+            class="w-full py-3 bg-purple-600 hover:bg-purple-700 text-white font-bold rounded-xl shadow-lg transition-all duration-200 active:scale-95 disabled:opacity-70 disabled:active:scale-100 flex items-center justify-center gap-2"
+          >
+            <!-- Spinner shows only when verifying -->
+            <svg
+              *ngIf="isVerifying"
+              class="animate-spin h-5 w-5 text-white"
+              xmlns="http://www.w3.org/2000/svg"
+              fill="none"
+              viewBox="0 0 24 24"
+            >
+              <circle
+                class="opacity-25"
+                cx="12"
+                cy="12"
+                r="10"
+                stroke="currentColor"
+                stroke-width="4"
+              ></circle>
+              <path
+                class="opacity-75"
+                fill="currentColor"
+                d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
+              ></path>
+            </svg>
+
+            <mat-icon *ngIf="!isVerifying">check_circle</mat-icon>
+            <span>{{ isVerifying ? 'Verifying...' : 'I have finished paying' }}</span>
+          </button>
+          <p class="text-[11px] text-purple-400 mt-2 font-bold">Waiting for your confirmation</p>
+        </div>
+
+        <!-- This shows once the 10-second polling intervals start -->
+        <p class="text-gray-600 mb-4" *ngIf="pollingTimer">
+          Verifying your payment with Safaricom...
+        </p>
+
+        <div class="bg-purple-50 p-3 rounded-lg text-xs text-purple-700 italic">
+          Do not refresh or close this window.
+        </div>
+      </div>
+
+      <!-- 2. SUCCESS STATE -->
+      <div *ngIf="paymentStatus === 'SUCCESS'">
+        <div
+          class="w-20 h-20 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-6"
+        >
+          <mat-icon class="text-green-600 !w-12 !h-12 !text-[48px]">check_circle</mat-icon>
+        </div>
+        <h2 class="font-fredoka font-bold text-2xl text-green-600 mb-2">Payment Received!</h2>
+        <p class="text-gray-600">Welcome to WaziLearn! Taking you to your dashboard...</p>
+      </div>
+
+      <!-- payment-method.html -> FAILED STATE MODIFICATION -->
+
+      <div *ngIf="paymentStatus === 'FAILED'">
+        <div
+          class="w-20 h-20 bg-red-100 rounded-full flex items-center justify-center mx-auto mb-6"
+        >
+          <mat-icon class="text-red-600 !w-12 !h-12 !text-[48px]">
+            {{ failureReason === 'CANCELLED' ? 'close' : 'priority_high' }}
+          </mat-icon>
+        </div>
+
+        <!-- Dynamic Titles -->
+        <h2 class="font-fredoka font-bold text-2xl text-red-600 mb-2">
+          <span *ngIf="failureReason === 'INSUFFICIENT-FUNDS'">Low Balance</span>
+          <span *ngIf="failureReason === 'INCORRECT-PIN'">Wrong PIN</span>
+          <span *ngIf="failureReason === 'CANCELLED'">Request Cancelled</span>
+          <span *ngIf="failureReason === 'TIMEOUT'">Time Out</span>
+          <span
+            *ngIf="
+              !['INSUFFICIENT-FUNDS', 'INCORRECT-PIN', 'CANCELLED', 'TIMEOUT'].includes(
+                failureReason
+              )
+            "
+          >
+            Something Went Wrong
+          </span>
+        </h2>
+
+        <!-- Dynamic Instructions -->
+        <p class="text-gray-600 mb-6">
+          <span *ngIf="failureReason === 'INSUFFICIENT-FUNDS'">
+            You don't have enough money in your M-PESA. Please top up your account and try again.
+          </span>
+          <span *ngIf="failureReason === 'INCORRECT-PIN'">
+            The M-PESA PIN you entered was wrong. Please try again and enter the correct M-PESA PIN.
+          </span>
+          <span *ngIf="failureReason === 'CANCELLED'">
+            You cancelled the request on your phone. If you changed your mind, you can pick a
+            different plan below and try again..
+          </span>
+          <span
+            *ngIf="!['INSUFFICIENT-FUNDS', 'INCORRECT-PIN', 'CANCELLED'].includes(failureReason)"
+          >
+            We couldn't confirm your payment. Please check your phone and try again.
+          </span>
+        </p>
+
+        <!-- Buttons -->
+        <div class="flex flex-col gap-3">
+          <button
+            (click)="closeModal()"
+            class="w-full py-3 bg-purple-600 hover:bg-purple-700 text-white font-bold rounded-xl shadow-lg transition-all duration-200 active:scale-95 flex items-center justify-center gap-2"
+          >
+            <mat-icon>refresh</mat-icon>
+            Try Again
+          </button>
+
+          <button
+            *ngIf="
+              ['CANCELLED', 'TIMEOUT', 'TRIGGER_FAILED', 'SERVER_ERROR'].includes(failureReason)
+            "
+            (click)="backToPlans.emit()"
+            class="w-full py-3 bg-gray-100 rounded-xl font-bold text-gray-700"
+          >
+            Change Plan / Number
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

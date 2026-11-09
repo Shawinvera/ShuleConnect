@@ -1,0 +1,100 @@
+name: Fresh APK Compilation
+
+on:
+  workflow_dispatch:
+    inputs:
+      notes:
+        description: 'Reason for fresh compile (optional)'
+        required: false
+        default: 'Fresh compilation'
+
+jobs:
+  build:
+    name: Fresh Build Debug APK
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout apk-build branch
+        uses: actions/checkout@v4
+        with:
+          ref: apk-build
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'npm'
+          cache-dependency-path: learnplay/package-lock.json
+
+      - name: Set up Java
+        uses: actions/setup-java@v4
+        with:
+          distribution: 'temurin'
+          java-version: '21'
+
+      - name: Set up Android SDK
+        uses: android-actions/setup-android@v3
+        env:
+          FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: true
+
+      - name: Install dependencies
+        run: npm install --legacy-peer-deps
+        working-directory: learnplay
+
+      - name: Generate environment files
+        run: node scripts/generate-env.js
+        working-directory: learnplay
+        env:
+          API_URL: ${{ secrets.API_URL }}
+          GOOGLE_CLIENT_ID: ${{ secrets.GOOGLE_CLIENT_ID }}
+          ADMIN_LOGIN_PATH: ${{ secrets.ADMIN_LOGIN_PATH }}
+          POSTHOG_KEY: ${{ secrets.POSTHOG_KEY }}
+          POSTHOG_HOST: ${{ secrets.POSTHOG_HOST }}
+
+      - name: Build Angular web app
+        run: npm run build
+        working-directory: learnplay
+        env:
+          API_URL: ${{ secrets.API_URL }}
+          GOOGLE_CLIENT_ID: ${{ secrets.GOOGLE_CLIENT_ID }}
+          ADMIN_LOGIN_PATH: ${{ secrets.ADMIN_LOGIN_PATH }}
+          POSTHOG_KEY: ${{ secrets.POSTHOG_KEY }}
+          POSTHOG_HOST: ${{ secrets.POSTHOG_HOST }}
+
+      - name: Remove existing android folder for fresh generation
+        run: rm -rf android
+        working-directory: learnplay
+
+      - name: Add Android platform fresh
+        run: npx cap add android
+        working-directory: learnplay
+
+      - name: Sync web assets into Android
+        run: npx cap sync android
+        working-directory: learnplay
+
+      - name: Create local.properties
+        run: |
+          echo "sdk.dir=$ANDROID_SDK_ROOT" > android/local.properties
+          echo "GOOGLE_WEB_CLIENT_ID=${{ secrets.GOOGLE_CLIENT_ID }}" >> android/local.properties
+        working-directory: learnplay
+
+      - name: Set up debug keystore
+        run: |
+          mkdir -p ~/.android
+          echo "${{ secrets.DEBUG_KEYSTORE_BASE64 }}" | base64 -d > ~/.android/debug.keystore
+
+      - name: Make gradlew executable
+        run: chmod +x gradlew
+        working-directory: learnplay/android
+
+      - name: Compile debug APK
+        run: ./gradlew assembleDebug
+        working-directory: learnplay/android
+
+      - name: Upload APK artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: app-debug-fresh
+          path: learnplay/android/app/build/outputs/apk/debug/app-debug.apk
+          retention-days: 30

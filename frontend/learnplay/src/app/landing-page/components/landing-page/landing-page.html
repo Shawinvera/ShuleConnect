@@ -1,0 +1,36 @@
+<div
+  class="min-h-screen flex items-center justify-center p-4 md:p-8 bg-gradient-to-b from-[#F5F5FF] to-[#FBF4FC]"
+>
+  <div class="text-center flex flex-col items-center gap-6 md:gap-10 max-w-2xl px-4">
+    <div
+      class="w-[145px] h-[145px] md:w-[220px] md:h-[220px] bg-gradient-to-b from-[#FAB315] to-[#F98816] rounded-full shadow-[0_10px_25px_0_rgba(0,0,0,0.15)] overflow-hidden"
+    >
+      <img src="./assets/icons/Homepage.png" class="w-full h-full object-cover" alt="graduand" />
+    </div>
+    <div class="flex flex-col gap-[16px] md:gap-[27px]">
+      <h1
+        class="text-[48px] md:text-[75px] font-[700] font-fredoka text-center leading-tight tracking-[-0.4px] text-[#9333EA]"
+      >
+        WaziLearn
+      </h1>
+      <p
+        class="text-[20px] md:text-[30px] font-[500] font-fredoka text-center align-middle tracking-[-0.4px] text-[#374151]"
+      >
+        Where Learning Meets Fun!
+      </p>
+    </div>
+    <button
+      (click)="onGetStarted()"
+      class="w-[280px] h-[70px] md:w-[326px] md:h-[83px] bg-gradient-to-r from-[#AA54F3] to-[#EA499C] px-[20px] py-[20px] rounded-[35px] md:rounded-[67px] shadow-[0_10px_25px_0_rgba(170,84,243,0.25)] hover:shadow-[0_15px_30px_0_rgba(170,84,243,0.3)] hover:-translate-y-1 transition-all duration-300 flex items-center justify-center gap-2 cursor-pointer"
+    >
+      <span class="text-[24px] md:text-[32px] font-[700] font-fredoka tracking-[-0.4px] text-white">
+        Let's Start!
+      </span>
+      <img
+        src="./assets/icons/rocket.png"
+        alt="rocket"
+        class="w-[32px] h-[32px] md:w-[42px] md:h-[42px]"
+      />
+    </button>
+  </div>
+</div>

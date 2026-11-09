@@ -1,0 +1,103 @@
+<div class="navbar-container fixed top-0 left-0 right-0 z-[1001] w-full text-white shadow-md h-[80px] md:h-[103px] py-3 md:py-5"
+     style="background: linear-gradient(90deg, #667DE8 0%, #754DA5 100%); opacity: 1;"
+     (click)="closeDropdowns()">
+  <div class="navbar-content flex justify-between items-center h-full px-[12px] md:px-[40px] xl:px-[150px]" 
+       [class.sidebar-expanded]="sidebarExpanded" 
+       (click)="$event.stopPropagation()">
+
+    <!-- Left: Icon + Title -->
+    <div class="flex items-center gap-2 md:gap-3">
+      <div>
+        <img src="assets/icons/teacher.png" alt="Teacher Icon"
+             class="w-10 h-10 md:w-[55px] md:h-[55px] rounded-full border-2 border-white" />
+      </div>
+      <h1 class="font-[Fredoka] font-bold text-[24px] md:text-[34px] leading-[24px] md:leading-[30px] tracking-[-0.4px]">Admin's Portal</h1>
+    </div>
+
+    <!-- Right: Welcome Message + Avatar -->
+    <div class="flex items-center gap-4 relative">
+      <!-- Welcome message - hidden on mobile, shown on desktop -->
+      <span class="hidden lg:flex items-center justify-center font-[Fredoka] font-bold text-[20px] md:text-[25px] leading-[43px] tracking-[-0.4px] text-center">
+        Welcome, {{ userName }}!
+      </span>
+      
+      <!-- Avatar -->
+      <div class="relative group cursor-pointer" (click)="onAvatarClick()">
+        <img src="assets/icons/kenan.png" alt="Admin Avatar"
+             class="w-[55px] h-[45px] md:w-[63px] md:h-[55px] rounded-full group-hover:scale-110 transition-all duration-200" />
+      </div>
+    </div>
+
+  </div>
+</div>
+
+
+<nav *ngIf="!isCameraOpen" class="md:hidden fixed bottom-0 left-0 right-0 z-[9998] admin-bottom-nav-bar">
+  <div class="flex items-stretch h-[64px]">
+
+    <!-- Home / Courses -->
+    <button
+      (click)="onHomeClick()"
+      class="admin-bottom-nav-item"
+      [class.admin-bottom-nav-item--active]="isHomePage"
+    >
+      <div class="admin-bottom-nav-icon-wrap" [class.admin-bottom-nav-icon-wrap--active]="isHomePage">
+        <img src="assets/icons/home.png" class="w-[20px] h-[20px]" alt="home" />
+      </div>
+      <span class="admin-bottom-nav-label">Courses</span>
+    </button>
+
+    <!-- Grades -->
+    <button
+      (click)="onGradesClick()"
+      class="admin-bottom-nav-item"
+      [class.admin-bottom-nav-item--active]="isGradesPage"
+      [class.admin-bottom-nav-item--locked]="!hasCourseSelected"
+      [title]="!hasCourseSelected ? 'Select a course first' : ''"
+    >
+      <div class="admin-bottom-nav-icon-wrap" [class.admin-bottom-nav-icon-wrap--active]="isGradesPage">
+        <mat-icon [style.color]="isGradesPage ? '#667DE8' : (hasCourseSelected ? '#6B7280' : '#D1D5DB')" style="font-size: 20px; width: 20px; height: 20px;">school</mat-icon>
+        <mat-icon *ngIf="!hasCourseSelected" class="admin-bottom-nav-lock-badge" style="font-size: 10px; width: 10px; height: 10px;">lock</mat-icon>
+      </div>
+      <span class="admin-bottom-nav-label" [class.admin-bottom-nav-label--locked]="!hasCourseSelected">Grades</span>
+    </button>
+
+    <!-- Exams -->
+    <button
+      (click)="onExamsClick()"
+      class="admin-bottom-nav-item"
+      [class.admin-bottom-nav-item--active]="isExamsPage"
+      [class.admin-bottom-nav-item--locked]="!hasCourseSelected"
+      [title]="!hasCourseSelected ? 'Select a course first' : ''"
+    >
+      <div class="admin-bottom-nav-icon-wrap" [class.admin-bottom-nav-icon-wrap--active]="isExamsPage">
+        <mat-icon [style.color]="isExamsPage ? '#667DE8' : (hasCourseSelected ? '#6B7280' : '#D1D5DB')" style="font-size: 20px; width: 20px; height: 20px;">quiz</mat-icon>
+        <mat-icon *ngIf="!hasCourseSelected" class="admin-bottom-nav-lock-badge" style="font-size: 10px; width: 10px; height: 10px;">lock</mat-icon>
+      </div>
+      <span class="admin-bottom-nav-label" [class.admin-bottom-nav-label--locked]="!hasCourseSelected">Exams</span>
+    </button>
+
+    <!-- Profile/Settings -->
+    <button
+      (click)="onAvatarClick()"
+      class="admin-bottom-nav-item"
+    >
+      <div class="admin-bottom-nav-icon-wrap">
+        <img src="assets/icons/kenan.png" class="w-[20px] h-[20px] rounded-full" alt="profile" />
+      </div>
+      <span class="admin-bottom-nav-label">Profile</span>
+    </button>
+
+    <!-- Logout -->
+    <button
+      (click)="onLogout()"
+      class="admin-bottom-nav-item"
+    >
+      <div class="admin-bottom-nav-icon-wrap">
+        <img src="assets/icons/logout.png" class="w-[20px] h-[20px]" alt="logout" />
+      </div>
+      <span class="admin-bottom-nav-label">Logout</span>
+    </button>
+
+  </div>
+</nav>

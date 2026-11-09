@@ -1,0 +1,43 @@
+<app-toast [message]="toast.message" [type]="toast.type" [visible]="toast.visible" (dismissed)="toast.dismiss()"></app-toast>
+<div class="min-h-screen bg-[#F3F4F8] font-sans pt-2 px-[12px] md:pt-4 md:px-[40px] xl:px-[150px] pb-[80px] md:pb-10 text-slate-800">
+    <app-teacher-breadcrumb></app-teacher-breadcrumb>
+
+    <!-- Header Section -->
+    <div class="flex flex-col md:flex-row md:items-end justify-between gap-6 mb-12">
+      <div>
+        <h1 class="font-[Fredoka] font-bold text-[30px] md:text-[50px] leading-[44px] md:leading-[64px] tracking-[-0.4px] text-[#374151] mb-3">Grade Structure</h1>
+        <p class="font-[Fredoka] font-normal text-[14px] md:text-[24px] leading-[28px] md:leading-[39px] tracking-[-0.4px] text-[#374151]">Select a grade to build its curriculum structure</p>
+      </div>
+    </div>
+
+    <!-- Grades Grid -->
+    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-[20px]">
+      <div *ngIf="isLoading" class="col-span-full">
+        <app-spinner-overlay [inline]="true"></app-spinner-overlay>
+      </div>
+      <!-- Card Loop -->
+      <div 
+        *ngFor="let grade of grades" 
+        (click)="navigateToGrade(grade)"
+        class="bg-white shadow-md rounded-[23px] p-[30px] hover:shadow-lg transition text-left flex flex-col gap-3 cursor-pointer"
+      >
+        <!-- Icon (Graduation Cap) -->
+        <div class="flex items-center gap-3 mb-1">
+          <div class="w-16 h-16 sm:w-20 sm:h-20 flex items-center justify-center">
+            <img src="assets/icons/graduand.png" alt="Graduation Cap" class="w-full h-full object-contain" />
+          </div>
+        </div>
+
+        <!-- Content -->
+        <h2 class="font-[Fredoka] font-bold text-[28px] leading-[34px] tracking-[-0.4px] text-[#374151] overflow-hidden text-ellipsis whitespace-nowrap">{{ grade.name }}</h2>
+        <p class="font-[Fredoka] font-normal text-[16px] leading-[24px] tracking-[-0.4px] text-[#374151] line-clamp-2">{{ grade.description }}</p>
+
+        <!-- Badges -->
+        <div class="flex flex-wrap gap-2">
+          <span class="bg-[#E0E7FF] text-[#4338CA] px-3 py-1 rounded-full font-[Fredoka] font-semibold text-[14px]">{{ grade.subjectsCount }} subjects</span>
+          <span class="bg-[#D1FAE5] text-[#059669] px-3 py-1 rounded-full font-[Fredoka] font-semibold text-[14px]">{{ grade.topicsCount }} topics</span>
+        </div>
+      </div>
+
+    </div>
+</div>

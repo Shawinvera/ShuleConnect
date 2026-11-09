@@ -1,0 +1,199 @@
+/* Mobile dropdown animation */
+.animate-fade-in {
+  animation: fadeInDown 0.2s ease-out forwards;
+}
+
+@keyframes fadeInDown {
+  from {
+    opacity: 0;
+    transform: translateY(-10px) scale(0.95);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+/* Navbar seamless integration with sidebar */
+.navbar-container {
+  /* Navbar extends full width */
+}
+
+.navbar-content {
+  /* On desktop, add left margin to account for sidebar */
+}
+
+@media (min-width: 768px) {
+  .navbar-content {
+    margin-left: 68px; /* Default collapsed sidebar width */
+    transition: margin-left 0.3s ease;
+  }
+  
+  /* When sidebar is expanded, adjust navbar content margin */
+  .navbar-content.sidebar-expanded {
+    margin-left: 220px; /* Expanded sidebar width */
+  }
+}
+
+/* Ensure dropdown is above other elements */
+.dropdown-menu {
+  z-index: 9999;
+}
+
+/* Mobile navbar adjustments */
+@media (max-width: 767px) {
+  .navbar-container {
+    height: 80px !important;
+    padding: 15px !important;
+  }
+  
+  .navbar-title {
+    font-size: 20px !important;
+    line-height: 20px !important;
+  }
+  
+  .navbar-icon {
+    width: 32px !important;
+    height: 32px !important;
+  }
+  
+  .navbar-avatar {
+    width: 64px !important;
+    height: 48px !important;
+  }
+  
+  .mobile-avatar-dropdown {
+    right: 0;
+    left: auto;
+    min-width: 180px;
+  }
+}
+
+/* Desktop navbar */
+@media (min-width: 768px) {
+  .navbar-container {
+    height: 103px !important;
+    padding: 20px 15px !important;
+  }
+}
+
+/* Smooth transitions for dropdown indicator */
+.dropdown-indicator {
+  transition: transform 0.2s ease-in-out;
+}
+
+/* Hover effects for dropdown items */
+.dropdown-item:hover {
+  background-color: rgba(0, 0, 0, 0.05);
+}
+
+/* Ensure proper touch targets on mobile */
+@media (max-width: 767px) {
+  .dropdown-item {
+    min-height: 48px;
+    display: flex;
+    align-items: center;
+  }
+}
+
+
+/* ================================
+   Bottom Navigation Bar — Admin
+   ================================ */
+
+.admin-bottom-nav-bar {
+  background: rgba(255, 255, 255, 0.97);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border-top: 1px solid rgba(102, 125, 232, 0.12);
+  box-shadow: 0 -4px 24px rgba(102, 125, 232, 0.12);
+}
+
+.admin-bottom-nav-item {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 3px;
+  padding: 6px 4px;
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  transition: opacity 0.15s ease;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.admin-bottom-nav-item:active {
+  opacity: 0.7;
+}
+
+.admin-bottom-nav-item--disabled {
+  opacity: 0.35;
+  pointer-events: none;
+}
+
+.admin-bottom-nav-icon-wrap {
+  width: 36px;
+  height: 36px;
+  border-radius: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: transparent;
+  transition: background 0.2s ease, transform 0.15s ease;
+}
+
+.admin-bottom-nav-item:not(.admin-bottom-nav-item--disabled):active .admin-bottom-nav-icon-wrap {
+  transform: scale(0.9);
+}
+
+.admin-bottom-nav-icon-wrap--active {
+  background: linear-gradient(135deg, rgba(102, 125, 232, 0.15), rgba(117, 77, 165, 0.15));
+}
+
+.admin-bottom-nav-icon-wrap--danger {
+  background: rgba(239, 68, 68, 0.08);
+}
+
+.admin-bottom-nav-label {
+  font-family: 'Fredoka', sans-serif;
+  font-size: 11px;
+  font-weight: 500;
+  color: #9CA3AF;
+  line-height: 1;
+  transition: color 0.2s ease;
+}
+
+.admin-bottom-nav-item--active .admin-bottom-nav-label {
+  color: #667DE8;
+  font-weight: 600;
+}
+
+.admin-bottom-nav-label--danger {
+  color: #EF4444;
+}
+
+.admin-bottom-nav-item--locked {
+  cursor: not-allowed;
+  opacity: 1;
+}
+
+.admin-bottom-nav-item--locked .admin-bottom-nav-icon-wrap {
+  position: relative;
+}
+
+.admin-bottom-nav-lock-badge {
+  position: absolute;
+  bottom: 2px;
+  right: 2px;
+  color: #9CA3AF !important;
+  background: white;
+  border-radius: 50%;
+  padding: 1px;
+  line-height: 1;
+}
+
+.admin-bottom-nav-label--locked {
+  color: #D1D5DB !important;
+}

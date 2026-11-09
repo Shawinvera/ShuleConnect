@@ -1,0 +1,7 @@
+<?xml version='1.0' encoding='utf-8'?>
+<resources>
+    <string name="app_name">WaziLearn</string>
+    <string name="title_activity_main">WaziLearn</string>
+    <string name="package_name">net.softkit.wazi</string>
+    <string name="custom_url_scheme">net.softkit.wazi</string>
+</resources>

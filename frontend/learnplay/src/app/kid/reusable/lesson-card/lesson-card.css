@@ -1,0 +1,27 @@
+.line-clamp-2 {
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;  
+  overflow: hidden;
+}
+
+/* Mobile adjustments */
+@media (max-width: 768px) {
+  /* Force fixed height on the card container */
+  .lesson-card-fixed-height {
+    height: 210px !important; /* Adjust this value until it looks perfect for 2-rows */
+    min-height: 210px !important;
+  }
+
+  /* Force shrink the title if Tailwind classes are being ignored */
+  .lesson-card-fixed-height h2 {
+    font-size: 13px !important;
+    line-height: 1.2 !important;
+    margin-top: 2px !important;
+  }
+
+  /* Adjust padding for smaller screens */
+  .lesson-card-fixed-height .p-3 {
+    padding: 8px !important;
+  }
+}

@@ -1,0 +1,59 @@
+/* Child details styles */
+
+/* Custom scrollbar for activity list */
+.activity-scroll::-webkit-scrollbar {
+  width: 6px;
+}
+
+.activity-scroll::-webkit-scrollbar-track {
+  background: #f1f5f9;
+  border-radius: 3px;
+}
+
+.activity-scroll::-webkit-scrollbar-thumb {
+  background: #cbd5e1;
+  border-radius: 3px;
+}
+
+.activity-scroll::-webkit-scrollbar-thumb:hover {
+  background: #94a3b8;
+}
+
+/* Smooth transitions for activity expansion */
+.activity-container {
+  transition: max-height 0.3s ease-in-out;
+}
+
+/* Dynamic max-height for different screen sizes */
+.activity-container.expanded {
+  max-height: 80vh; /* Use viewport height for better responsiveness */
+}
+
+@media (max-width: 768px) {
+  .activity-container.expanded {
+    max-height: 70vh; /* Smaller on mobile */
+  }
+}
+
+/* Button hover effects */
+.activity-btn {
+  transition: all 0.2s ease-in-out;
+}
+
+.activity-btn:hover {
+  transform: translateY(-1px);
+}
+
+/* Loading animation for pagination */
+.pagination-loading {
+  animation: pulse 1.5s ease-in-out infinite;
+}
+
+@keyframes pulse {
+  0%, 100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.5;
+  }
+}

@@ -1,0 +1,64 @@
+<div
+  (click)="onCardClick()"
+  class="group flex flex-col bg-white rounded-[16px] md:rounded-[20px] overflow-hidden transition-all duration-300 cursor-pointer hover:shadow-2xl hover:-translate-y-2 border border-transparent hover:border-purple-100 shadow-sm h-full lesson-card-fixed-height"
+>
+  <!-- THUMBNAIL -->
+  <div class="relative w-full aspect-video overflow-hidden bg-slate-100">
+    <img
+      [src]="thumbnail"
+      class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
+      [class.p-10]="thumbnail === fallbackIcon"
+      alt="thumbnail"
+    />
+
+    <!-- Duration Label -->
+    <div class="hidden md:block absolute bottom-3 right-3 bg-black/70 backdrop-blur-sm text-white text-[12px] px-2 py-0.5 rounded-lg font-bold tabular-nums">
+      {{ formatDuration(lesson.duration) }}
+    </div>
+
+    <!-- Completion Overlay -->
+    <div *ngIf="lesson.learnerCompleted" class="absolute top-2 right-2 md:top-3 md:right-3 bg-green-500 text-white p-1 md:p-1.5 rounded-full shadow-lg flex items-center justify-center">
+      <mat-icon class="!w-6 !h-6! text-[16px] md:!w-5 md:!h-5 md:!text-[20px] font-bold">check</mat-icon>
+    </div>
+
+    <!-- Play Icon Hover -->
+    <div class="absolute inset-0 bg-purple-900/10 opacity-0 group-hover:opacity-100 flex items-center justify-center transition-all duration-300">
+      <div class="w-12 h-12 md:w-16 md:h-16 bg-white/90 rounded-full flex items-center justify-center shadow-2xl transform scale-75 group-hover:scale-100 transition-transform">
+        <mat-icon class="text-[#9333EA] !w-8 !h-8 !text-[32px] md:!w-10 md:!h-10 md:!text-[40px]">play_arrow</mat-icon>
+      </div>
+    </div>
+  </div>
+
+  <!-- INFO SECTION -->
+  <div class="p-3 md:p-6 flex flex-col gap-1 md:gap-2 flex-1">
+    <h2 class="font-fredoka font-bold text-sm md:text-xl lg:text-[24px] leading-tight text-[#374151] group-hover:text-[#9333EA] transition-colors line-clamp-2">
+      {{ lesson.name }}
+    </h2>
+
+    <div class="hidden md:flex items-center gap-2">
+      <span class="bg-purple-100 text-[#9333EA] text-[10px] md:text-xs font-bold px-2 py-1 rounded-md uppercase tracking-wider">
+        Part {{ index + 1 }}
+      </span>
+      <span class="text-gray-400 text-xs md:text-sm font-medium">
+        • {{ lesson.duration ? (lesson.duration / 60 | number: '1.0-0') + ' mins' : '' }}
+      </span>
+    </div>
+
+    <!-- Description -->
+    <!-- <p class="hidden md:line-clamp-2 font-fredoka font-normal text-[16px] text-gray-500 leading-snug mt-1">
+      {{ lesson.content | slice: 0 : 80 }}...
+    </p> -->
+
+    <!-- Footer Action -->
+    <div class="mt-auto border-t border-slate-50 flex items-center justify-between">
+      <span *ngIf="lesson.learnerCompleted" class="text-green-600 font-bold text-[10px] md:text-sm flex items-center gap-1">
+        <mat-icon class="!w-5 !h-5 !text-[16px] md:!w-6 md:!h-6 md:!text-[20px]">verified</mat-icon> 
+        <span class="hidden xs:inline">Completed</span>
+      </span>
+      <span *ngIf="!lesson.learnerCompleted" class="text-[#9333EA] font-bold text-[11px] md:text-sm">
+        Watch Now
+      </span>
+      <mat-icon class="text-slate-300 group-hover:text-[#9333EA] transition-colors !text-[18px] md:!text-[24px]">arrow_forward</mat-icon>
+    </div>
+  </div>
+</div>
