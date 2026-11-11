@@ -15,7 +15,7 @@
       <!-- Title Row -->
       <div class="flex-1">
         <h1
-          class="font-fredoka text-[#9333EA] font-bold text-3xl md:text-4xl lg:text-[50px] leading-tight tracking-[-0.4px]"
+          class="font-fredoka text-[#15803d] font-bold text-3xl md:text-4xl lg:text-[50px] leading-tight tracking-[-0.4px]"
           *ngIf="topicTitle"
         >
           {{ topicTitle }}
@@ -34,8 +34,8 @@
           class="lg:hidden cursor-pointer flex items-center justify-center gap-2 px-4 md:px-6 h-[40px] md:h-[55px] rounded-2xl border-2 transition-all font-fredoka font-bold shadow-sm shrink-0"
           [ngClass]="
             showAllLessons
-              ? 'bg-[#9333EA] text-white border-[#9333EA]'
-              : 'bg-white text-[#9333EA] border-[#9333EA]'
+              ? 'bg-[#15803d] text-white border-[#15803d]'
+              : 'bg-white text-[#15803d] border-[#15803d]'
           "
         >
           <span class="text-sm md:text-lg whitespace-nowrap">
@@ -61,8 +61,8 @@
         class="flex cursor-pointer items-center justify-center gap-2 px-6 h-[55px] rounded-2xl border-2 transition-all font-fredoka font-bold shadow-sm shrink-0"
         [ngClass]="
           showAllLessons
-            ? 'bg-[#9333EA] text-white border-[#9333EA]'
-            : 'bg-white text-[#9333EA] border-[#9333EA]'
+            ? 'bg-[#15803d] text-white border-[#15803d]'
+            : 'bg-white text-[#15803d] border-[#15803d]'
         "
       >
         <span class="text-lg whitespace-nowrap">
@@ -92,7 +92,7 @@
       <div class="flex gap-4">
         <button
           (click)="ngOnInit()"
-          class="px-8 py-3 bg-[#9333EA] text-white font-fredoka font-bold rounded-2xl hover:scale-105 transition-transform"
+          class="px-8 py-3 bg-[#15803d] text-white font-fredoka font-bold rounded-2xl hover:scale-105 transition-transform"
         >
           Try Again
         </button>
@@ -108,7 +108,7 @@
     <!-- 3. EMPTY STATE (No SubTopics Found) -->
     <div
       *ngIf="!isLoading && !loadError && currentUnit.lessons.length === 0"
-      class="flex flex-col items-center justify-center py-12 px-6 bg-white rounded-[30px] shadow-sm border-2 border-dashed border-purple-200 text-center animate-fade-in"
+      class="flex flex-col items-center justify-center py-12 px-6 bg-white rounded-[30px] shadow-sm border-2 border-dashed border-green-200 text-center animate-fade-in"
     >
       <div class="w-24 h-24 mb-4">
         <img
@@ -124,7 +124,7 @@
       </p>
       <button
         (click)="goBack()"
-        class="px-8 py-3 border-2 border-[#9333EA] text-[#9333EA] font-fredoka font-bold rounded-2xl hover:bg-purple-50 transition-colors"
+        class="px-8 py-3 border-2 border-[#15803d] text-[#15803d] font-fredoka font-bold rounded-2xl hover:bg-green-100 transition-colors"
       >
         Pick another Unit
       </button>
@@ -227,7 +227,7 @@
             </div>
             <div
               *ngIf="lesson.status === 'Start'"
-              class="flex items-center gap-1 bg-gradient-to-r from-[#9333EA] to-[#687AE4] text-white px-3 py-1.5 md:px-4 md:py-2 rounded-full"
+              class="flex items-center gap-1 bg-gradient-to-r from-[#15803d] to-[#687AE4] text-white px-3 py-1.5 md:px-4 md:py-2 rounded-full"
             >
               <span class="font-fredoka font-bold text-sm md:text-[16px]">START</span>
               <svg
@@ -260,13 +260,13 @@
         <!-- History -->
         <div *ngIf="completedTopicLessons.length > 0" class="mt-12">
           <div class="flex items-center gap-4 mb-6">
-            <div class="h-[2px] flex-1 bg-purple-100"></div>
+            <div class="h-[2px] flex-1 bg-green-200"></div>
             <h2
-              class="font-fredoka font-bold text-xl md:text-2xl text-purple-300 uppercase tracking-widest flex items-center gap-2"
+              class="font-fredoka font-bold text-xl md:text-2xl text-green-300 uppercase tracking-widest flex items-center gap-2"
             >
               <mat-icon>check_circle</mat-icon> Completed in this Unit
             </h2>
-            <div class="h-[2px] flex-1 bg-purple-100"></div>
+            <div class="h-[2px] flex-1 bg-green-200"></div>
           </div>
 
           <div
@@ -299,7 +299,7 @@
       </p>
       <button
         (click)="goBack()"
-        class="px-8 py-3 bg-gradient-to-r from-[#667DE8] to-[#754DA5] text-white font-fredoka font-bold text-[16px] rounded-[15px] hover:scale-105 transition-all duration-200"
+        class="px-8 py-3 bg-gradient-to-r from-[#166534] to-[#14532d] text-white font-fredoka font-bold text-[16px] rounded-[15px] hover:scale-105 transition-all duration-200"
       >
         Go Back
       </button>

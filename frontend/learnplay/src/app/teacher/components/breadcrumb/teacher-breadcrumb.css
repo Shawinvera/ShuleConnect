@@ -11,13 +11,13 @@
   width: 36px;
   height: 36px;
   border-radius: 50%;
-  border: 1.5px solid #E5DAFB;
-  background: #FAFAFF;
-  color: #7C3AED;
+  border: 1.5px solid #bbf7d0;
+  background: #f0fdf4;
+  color: #166534;
   cursor: pointer;
   flex-shrink: 0;
   transition: background 0.18s, border-color 0.18s, color 0.18s, transform 0.15s;
-  box-shadow: 0 2px 8px rgba(147, 51, 234, 0.12);
+  box-shadow: 0 2px 8px rgba(21, 128, 61, 0.12);
 }
 
 .back-btn span {
@@ -47,9 +47,9 @@
   }
 
   .back-btn:hover {
-    background: #F3E8FF;
-    border-color: #9333EA;
-    color: #6D28D9;
+    background: #dcfce7;
+    border-color: #15803d;
+    color: #14532d;
     transform: translateX(-2px);
   }
 
@@ -92,14 +92,14 @@
   font-family: 'Fredoka', sans-serif;
   font-weight: 500;
   font-size: clamp(14px, 1.8vw, 18px);
-  color: #9333EA;
+  color: #15803d;
   cursor: pointer;
   transition: color 0.2s;
   white-space: nowrap;
 }
 
 .teacher-breadcrumb-link:hover {
-  color: #7C3AED;
+  color: #166534;
   text-decoration: underline;
 }
 

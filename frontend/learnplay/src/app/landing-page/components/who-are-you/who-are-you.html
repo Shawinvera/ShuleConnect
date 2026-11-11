@@ -2,7 +2,7 @@
             bg-gradient-to-b from-[#F5F5FF] to-[#FBF4FC]">
   <div class="text-center w-full max-w-[520px] md:max-w-[1449px] mx-auto flex flex-col gap-8 md:gap-12 lg:gap-[70px]">
     <div class="w-full flex flex-col gap-2 md:gap-6 lg:gap-[27px]">
-      <h1 class="text-[44px] md:text-[55px] lg:text-[72px] font-[700] font-fredoka text-center tracking-[-0.4px] text-[#9333EA]">
+      <h1 class="text-[44px] md:text-[55px] lg:text-[72px] font-[700] font-fredoka text-center tracking-[-0.4px] text-[#15803d]">
         Who Are You?
       </h1>
       <p class="text-[20px] md:text-[26px] lg:text-[33px] font-[400] font-fredoka text-center tracking-[-0.4px] leading-[24px] md:leading-[32px] lg:leading-[39px] text-[#374151]">
@@ -82,8 +82,8 @@
   </div>
 
   <div *ngIf="showRoleGuide" class="fixed bottom-4 right-4 md:bottom-8 md:right-8 z-[110] max-w-[340px]">
-    <div class="rounded-[18px] border border-[#E8DDFB] bg-white shadow-[0_14px_40px_rgba(74,34,122,0.26)] overflow-hidden">
-      <div class="bg-[linear-gradient(90deg,#667DE8_0%,#754DA5_100%)] px-4 py-3">
+    <div class="rounded-[18px] border border-[#bbf7d0] bg-white shadow-[0_14px_40px_rgba(20,83,45,0.26)] overflow-hidden">
+      <div class="bg-[linear-gradient(90deg,#166534_0%,#14532d_100%)] px-4 py-3">
         <p class="font-fredoka font-bold text-[20px] text-white">Quick Guide</p>
       </div>
       <div class="p-4">
@@ -103,7 +103,7 @@
           </button>
           <button
             (click)="nextRoleGuideStep()"
-            class="px-4 py-2 rounded-[10px] bg-[linear-gradient(90deg,#667DE8_0%,#754DA5_100%)] text-white font-fredoka font-semibold text-[14px]"
+            class="px-4 py-2 rounded-[10px] bg-[linear-gradient(90deg,#166534_0%,#14532d_100%)] text-white font-fredoka font-semibold text-[14px]"
           >
             {{ roleGuideStep === 0 ? 'Next' : 'Got it' }}
           </button>

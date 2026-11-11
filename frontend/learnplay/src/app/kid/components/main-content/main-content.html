@@ -21,7 +21,7 @@
     <!-- Greeting Block -->
     <div class="flex flex-col gap-1 md:gap-2">
       <h1
-        class="font-fredoka font-bold text-[#9333EA] text-2xl sm:text-3xl md:text-4xl lg:text-[65px] leading-tight tracking-[-0.4px]"
+        class="font-fredoka font-bold text-[#15803d] text-2xl sm:text-3xl md:text-4xl lg:text-[65px] leading-tight tracking-[-0.4px]"
       >
         Hello, {{ userName }}! 👋
       </h1>
@@ -35,13 +35,13 @@
     <!-- SEARCH BAR CONTAINER -->
     <div
       #searchContainer
-      class="mb-2 md:mb-0 relative flex items-center bg-white rounded-2xl shadow-sm border-2 focus-within:border-[#9333EA] transition-all duration-500 ease-in-out h-[55px] md:h-[65px]"
+      class="mb-2 md:mb-0 relative flex items-center bg-white rounded-2xl shadow-sm border-2 focus-within:border-[#15803d] transition-all duration-500 ease-in-out h-[55px] md:h-[65px]"
       [ngClass]="{
         'w-full': true,
         'md:w-[65px]': !isSearchExpanded,
         'md:w-[400px]': isSearchExpanded,
         'border-transparent': !isSearchExpanded,
-        'border-[#9333EA]/30': isSearchExpanded,
+        'border-[#15803d]/30': isSearchExpanded,
       }"
     >
       <!-- Search Icon / Toggle Button -->
@@ -49,11 +49,11 @@
         (click)="toggleSearch()"
         type="button"
         class="absolute left-0 z-30 w-[55px] h-[55px] md:w-[65px] md:h-[65px] flex items-center justify-center rounded-2xl bg-transparent transition-all md:cursor-pointer outline-none"
-        [class.md:hover:bg-purple-50]="!isSearchExpanded"
+        [class.md:hover:bg-green-100]="!isSearchExpanded"
       >
         <!-- Increased icon size slightly for better visuals -->
         <mat-icon
-          [class.text-[#9333EA]]="isSearchExpanded"
+          [class.text-[#15803d]]="isSearchExpanded"
           class="text-gray-400 !w-6 !h-6 !text-[24px]"
           >search</mat-icon
         >
@@ -104,7 +104,7 @@
       </p>
       <button
         (click)="ngOnInit()"
-        class="px-8 py-3 bg-[#9333EA] text-white font-fredoka font-bold rounded-2xl hover:scale-105 transition-transform"
+        class="px-8 py-3 bg-[#15803d] text-white font-fredoka font-bold rounded-2xl hover:scale-105 transition-transform"
       >
         Try Again
       </button>
@@ -113,7 +113,7 @@
     <!-- 3. EMPTY State (No Subjects Found for this Grade) -->
     <div
       *ngIf="!isLoading && !loadError && allSubjects.length === 0"
-      class="flex flex-col items-center justify-center py-12 px-6 bg-white rounded-[30px] shadow-sm border-2 border-dashed border-purple-200 text-center animate-fade-in"
+      class="flex flex-col items-center justify-center py-12 px-6 bg-white rounded-[30px] shadow-sm border-2 border-dashed border-green-200 text-center animate-fade-in"
     >
       <div class="w-24 h-24 mb-4">
         <img
@@ -131,7 +131,7 @@
       </p>
       <button
         (click)="onBackToSelectLearner()"
-        class="px-8 py-3 border-2 border-[#9333EA] text-[#9333EA] font-fredoka font-bold rounded-2xl hover:bg-purple-50 transition-colors"
+        class="px-8 py-3 border-2 border-[#15803d] text-[#15803d] font-fredoka font-bold rounded-2xl hover:bg-green-100 transition-colors"
       >
         Go Back
       </button>
@@ -140,10 +140,10 @@
     <!-- Search Empty State (Added this part) -->
     <div
       *ngIf="!isLoading && !loadError && filteredSubjects.length === 0 && allSubjects.length > 0"
-      class="flex flex-col items-center justify-center py-12 px-6 bg-white rounded-[30px] shadow-sm border-2 border-dashed border-purple-200 text-center animate-fade-in"
+      class="flex flex-col items-center justify-center py-12 px-6 bg-white rounded-[30px] shadow-sm border-2 border-dashed border-green-200 text-center animate-fade-in"
     >
-      <div class="w-20 h-20 mb-4 bg-purple-50 rounded-full flex items-center justify-center">
-        <mat-icon class="text-[#9333EA] !w-10 !h-10 !text-[40px]">search_off</mat-icon>
+      <div class="w-20 h-20 mb-4 bg-green-100 rounded-full flex items-center justify-center">
+        <mat-icon class="text-[#15803d] !w-10 !h-10 !text-[40px]">search_off</mat-icon>
       </div>
       <h2 class="font-fredoka font-bold text-2xl text-[#374151] mb-2">Subject not found</h2>
       <p class="font-fredoka text-[#6B7280] text-lg">
@@ -151,7 +151,7 @@
       </p>
       <button
         (click)="searchTerm = ''; applyFilter()"
-        class="mt-4 text-[#9333EA] font-bold underline"
+        class="mt-4 text-[#15803d] font-bold underline"
       >
         Clear search
       </button>
@@ -252,9 +252,9 @@
     class="fixed left-3 right-3 bottom-[86px] md:left-auto md:right-8 md:bottom-8 z-[10030] max-w-none md:max-w-[360px]"
   >
     <div
-      class="rounded-[18px] border border-[#E8DDFB] bg-white shadow-[0_14px_40px_rgba(74,34,122,0.26)] overflow-hidden"
+      class="rounded-[18px] border border-[#bbf7d0] bg-white shadow-[0_14px_40px_rgba(20,83,45,0.26)] overflow-hidden"
     >
-      <div class="bg-[linear-gradient(90deg,#667DE8_0%,#754DA5_100%)] px-4 py-3">
+      <div class="bg-[linear-gradient(90deg,#166534_0%,#14532d_100%)] px-4 py-3">
         <p class="font-fredoka font-bold text-[20px] text-white">Learning Guide</p>
       </div>
       <div class="p-4">
@@ -270,7 +270,7 @@
           </button>
           <button
             (click)="dismissSubjectGuide()"
-            class="px-4 py-2 rounded-[10px] bg-[linear-gradient(90deg,#667DE8_0%,#754DA5_100%)] text-white font-fredoka font-semibold text-[14px]"
+            class="px-4 py-2 rounded-[10px] bg-[linear-gradient(90deg,#166534_0%,#14532d_100%)] text-white font-fredoka font-semibold text-[14px]"
           >
             Got it
           </button>

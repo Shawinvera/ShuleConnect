@@ -92,12 +92,12 @@
             <p class="font-[Fredoka] font-normal text-[22px] leading-[39px] tracking-[-0.4px] text-left text-slate-500 mb-8">{{ subtopic.description }}</p>
             <div class="flex items-center gap-3">
               <div class="px-3 py-1 rounded-full bg-[#D1FAE5] text-[#059669] font-[Fredoka] font-semibold text-[16px]">{{ subtopic.videoCount }} video</div>
-              <div class="px-3 py-1 rounded-full bg-[#F3E8FF] text-[#9333EA] font-[Fredoka] font-semibold text-[16px]">{{ subtopic.noteCount }} notes</div>
+              <div class="px-3 py-1 rounded-full bg-[#dcfce7] text-[#15803d] font-[Fredoka] font-semibold text-[16px]">{{ subtopic.noteCount }} notes</div>
               <div *ngIf="subtopic.orderIndex != null" class="px-3 py-1 rounded-full bg-[#DBEAFE] text-[#1E40AF] font-[Fredoka] font-semibold text-[16px]">Order: {{ subtopic.orderIndex }}</div>
             </div>
             <div class="flex gap-2 mt-4" (click)="$event.stopPropagation()">
               <button (click)="editSubtopic(subtopic)"
-                class="action-btn bg-[#8B5CF6] hover:bg-[#7C3AED] text-white p-2.5 rounded-lg transition-all duration-200 hover:scale-105 hover:shadow-lg flex items-center justify-center"
+                class="action-btn bg-[#16a34a] hover:bg-[#166534] text-white p-2.5 rounded-lg transition-all duration-200 hover:scale-105 hover:shadow-lg flex items-center justify-center"
                 title="Edit Subtopic">
                 <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"></path>

@@ -11,7 +11,7 @@
     <!-- Header -->
     <div class="text-center mb-6">
       <h1
-        class="font-bold text-3xl md:text-[55px] md:leading-[64px] tracking-[-0.4px] text-center text-[#9333EA] flex gap-2 md:gap-3 items-center justify-center"
+        class="font-bold text-3xl md:text-[55px] md:leading-[64px] tracking-[-0.4px] text-center text-[#15803d] flex gap-2 md:gap-3 items-center justify-center"
       >
         Payment Method
         <!-- Card Icon Decor -->
@@ -32,13 +32,13 @@
 
     <!-- Selected Plan Badge -->
     <div
-      class="bg-[#F1E2FB] text-base md:text-[20px] leading-relaxed tracking-[-0.4px] text-[#9333EA] border border-[#C999F5] px-4 md:px-6 py-2 rounded-lg font-bold mb-8 shadow-sm flex flex-wrap items-center justify-center gap-2 text-center"
+      class="bg-[#F1E2FB] text-base md:text-[20px] leading-relaxed tracking-[-0.4px] text-[#15803d] border border-[#C999F5] px-4 md:px-6 py-2 rounded-lg font-bold mb-8 shadow-sm flex flex-wrap items-center justify-center gap-2 text-center"
     >
       <span class="font-normal text-sm md:text-[18px] text-[#374151]">Selected Plan:</span>
       {{ plan.title }} - {{ plan.price }} {{ plan.currency }}
       <button
         (click)="backToPlans.emit()"
-        class="ml-1 cursor-pointer underline text-purple-500 hover:text-purple-700"
+        class="ml-1 cursor-pointer underline text-green-500 hover:text-green-700"
       >
         Change
       </button>
@@ -382,11 +382,11 @@
         <div class="mb-6 flex justify-center relative">
           <!-- Progress Ring -->
           <div
-            class="w-20 h-20 border-4 border-purple-100 border-t-purple-600 rounded-full animate-spin"
+            class="w-20 h-20 border-4 border-green-100 border-t-green-700 rounded-full animate-spin"
           ></div>
           <!-- Centered Countdown Number -->
           <span
-            class="absolute inset-0 flex items-center justify-center font-bold text-xl text-purple-600"
+            class="absolute inset-0 flex items-center justify-center font-bold text-xl text-green-600"
           >
             {{ countdown }}
           </span>
@@ -404,7 +404,7 @@
           <button
             (click)="manualConfirm()"
             [disabled]="isVerifying"
-            class="w-full py-3 bg-purple-600 hover:bg-purple-700 text-white font-bold rounded-xl shadow-lg transition-all duration-200 active:scale-95 disabled:opacity-70 disabled:active:scale-100 flex items-center justify-center gap-2"
+            class="w-full py-3 bg-green-700 hover:bg-green-800 text-white font-bold rounded-xl shadow-lg transition-all duration-200 active:scale-95 disabled:opacity-70 disabled:active:scale-100 flex items-center justify-center gap-2"
           >
             <!-- Spinner shows only when verifying -->
             <svg
@@ -432,7 +432,7 @@
             <mat-icon *ngIf="!isVerifying">check_circle</mat-icon>
             <span>{{ isVerifying ? 'Verifying...' : 'I have finished paying' }}</span>
           </button>
-          <p class="text-[11px] text-purple-400 mt-2 font-bold">Waiting for your confirmation</p>
+          <p class="text-[11px] text-green-400 mt-2 font-bold">Waiting for your confirmation</p>
         </div>
 
         <!-- This shows once the 10-second polling intervals start -->
@@ -440,7 +440,7 @@
           Verifying your payment with Safaricom...
         </p>
 
-        <div class="bg-purple-50 p-3 rounded-lg text-xs text-purple-700 italic">
+        <div class="bg-green-100 p-3 rounded-lg text-xs text-green-700 italic">
           Do not refresh or close this window.
         </div>
       </div>
@@ -453,7 +453,7 @@
           <mat-icon class="text-green-600 !w-12 !h-12 !text-[48px]">check_circle</mat-icon>
         </div>
         <h2 class="font-fredoka font-bold text-2xl text-green-600 mb-2">Payment Received!</h2>
-        <p class="text-gray-600">Welcome to WaziLearn! Taking you to your dashboard...</p>
+        <p class="text-gray-600">Welcome to ShuleConnect! Taking you to your dashboard...</p>
       </div>
 
       <!-- payment-method.html -> FAILED STATE MODIFICATION -->
@@ -507,7 +507,7 @@
         <div class="flex flex-col gap-3">
           <button
             (click)="closeModal()"
-            class="w-full py-3 bg-purple-600 hover:bg-purple-700 text-white font-bold rounded-xl shadow-lg transition-all duration-200 active:scale-95 flex items-center justify-center gap-2"
+            class="w-full py-3 bg-green-700 hover:bg-green-800 text-white font-bold rounded-xl shadow-lg transition-all duration-200 active:scale-95 flex items-center justify-center gap-2"
           >
             <mat-icon>refresh</mat-icon>
             Try Again

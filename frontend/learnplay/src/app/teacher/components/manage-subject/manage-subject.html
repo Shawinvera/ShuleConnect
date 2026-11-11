@@ -51,7 +51,7 @@
                 <span *ngIf="!formData.colour" class="text-gray-400 text-[24px]">🎨</span>
               </div>
               <button type="button" (click)="openColourPicker()"
-                class="h-[79px] px-6 bg-white border-[2px] border-gray-200 rounded-[20px] font-fredoka font-semibold text-[20px] text-[#374151] hover:border-purple-400 hover:text-purple-500 transition-colors">
+                class="h-[79px] px-6 bg-white border-[2px] border-gray-200 rounded-[20px] font-fredoka font-semibold text-[20px] text-[#374151] hover:border-green-400 hover:text-green-500 transition-colors">
                 Pick Colour
               </button>
             </div>
@@ -88,7 +88,7 @@
           </div>
           <div class="flex gap-2 justify-start">
             <button (click)="handleEdit(subject.id)"
-              class="action-btn bg-[#8B5CF6] hover:bg-[#7C3AED] text-white p-2.5 rounded-lg transition-all duration-200 hover:scale-105 hover:shadow-lg flex items-center justify-center"
+              class="action-btn bg-[#16a34a] hover:bg-[#166534] text-white p-2.5 rounded-lg transition-all duration-200 hover:scale-105 hover:shadow-lg flex items-center justify-center"
               title="Edit Subject">
               <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"></path>
@@ -119,7 +119,7 @@
           </div>
           <div class="flex gap-2 sm:gap-3 justify-end">
             <button (click)="handleEdit(subject.id)"
-              class="action-btn bg-[#8B5CF6] hover:bg-[#7C3AED] text-white p-2.5 rounded-lg transition-all duration-200 hover:scale-105 hover:shadow-lg flex items-center justify-center"
+              class="action-btn bg-[#16a34a] hover:bg-[#166534] text-white p-2.5 rounded-lg transition-all duration-200 hover:scale-105 hover:shadow-lg flex items-center justify-center"
               title="Edit Subject">
               <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"></path>
@@ -158,8 +158,8 @@
     <div class="overflow-y-auto p-6 grid grid-cols-3 sm:grid-cols-4 gap-4">
       <div *ngFor="let icon of assetIcons"
         (click)="selectIcon(getIconPath(icon))"
-        class="flex flex-col items-center gap-1 cursor-pointer p-2 rounded-xl hover:bg-purple-50 border-2 transition-colors"
-        [class.border-purple-500]="formData.icon === icon"
+        class="flex flex-col items-center gap-1 cursor-pointer p-2 rounded-xl hover:bg-green-100 border-2 transition-colors"
+        [class.border-green-500]="formData.icon === icon"
         [class.border-transparent]="formData.icon !== icon">
         <div class="w-16 h-16 flex items-center justify-center">
           <img [src]="getIconPath(icon)" class="w-16 h-16 object-contain" />

@@ -6,7 +6,7 @@
     <!-- Header Section -->
     <div class="text-center mb-8">
       <h1
-        class="font-bold text-[#9333EA] mb-2 text-3xl sm:text-4xl md:text-[55px] md:leading-[64px] tracking-[-0.4px] flex items-center justify-center gap-2"
+        class="font-bold text-[#15803d] mb-2 text-3xl sm:text-4xl md:text-[55px] md:leading-[64px] tracking-[-0.4px] flex items-center justify-center gap-2"
       >
         Choose Your Plan
         <!-- Decorative Credit Card Icon -->
@@ -26,7 +26,7 @@
     </div>
 
     <div class="w-full flex flex-col gap-4 mb-8">
-      <div *ngIf="isLoading" class="text-center py-10 font-fredoka text-[#9333EA]">
+      <div *ngIf="isLoading" class="text-center py-10 font-fredoka text-[#15803d]">
         Fetching the best plans for you...
       </div>
 
@@ -36,7 +36,7 @@
         </div>
         <p class="font-fredoka font-semibold text-[18px] md:text-[22px] text-[#374151]">Couldn't load plans</p>
         <p class="font-fredoka font-normal text-[14px] md:text-[18px] text-[#6B7280]">Please check your connection and try again.</p>
-        <button (click)="fetchPlans(null!)" class="px-8 py-3 bg-gradient-to-r from-[#667DE8] to-[#754DA5] text-white font-fredoka font-bold text-[16px] rounded-[15px] hover:scale-105 transition-all duration-200">Try Again</button>
+        <button (click)="fetchPlans(null!)" class="px-8 py-3 bg-gradient-to-r from-[#166534] to-[#14532d] text-white font-fredoka font-bold text-[16px] rounded-[15px] hover:scale-105 transition-all duration-200">Try Again</button>
       </div>
 
       <!-- Dynamic Plans List -->

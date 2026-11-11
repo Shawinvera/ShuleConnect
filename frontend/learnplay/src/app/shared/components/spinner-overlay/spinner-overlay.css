@@ -31,7 +31,7 @@
   width: clamp(40px, 8vw, 80px);
   height: clamp(40px, 8vw, 80px);
   border-radius: 50%;
-  background: conic-gradient(from 0deg, transparent 0%, #c084fc 50%, #9333EA 100%);
+  background: conic-gradient(from 0deg, transparent 0%, #86efac 50%, #15803d 100%);
   -webkit-mask: radial-gradient(
     farthest-side,
     transparent calc(100% - clamp(5px, 1vw, 8px)),

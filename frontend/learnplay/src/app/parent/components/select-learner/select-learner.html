@@ -28,7 +28,7 @@
         *ngFor="let learner of learners"
         (click)="onSelectLearner(learner)"
         [class.guide-highlight]="showLearnerGuide && learner === learners[0]"
-        class="relative overflow-hidden bg-white rounded-[15px] md:rounded-[23px] p-[20px] md:p-[30px] shadow-[0_6px_30px_0_rgba(0,0,0,0.1)] border border-gray-100 cursor-pointer hover:shadow-[0_8px_40px_0_rgba(147,51,234,0.2)] hover:border-[#9333EA] hover:-translate-y-2 transition-all duration-300 ease-in-out"
+        class="relative overflow-hidden bg-white rounded-[15px] md:rounded-[23px] p-[20px] md:p-[30px] shadow-[0_6px_30px_0_rgba(0,0,0,0.1)] border border-gray-100 cursor-pointer hover:shadow-[0_8px_40px_0_rgba(21,128,61,0.2)] hover:border-[#15803d] hover:-translate-y-2 transition-all duration-300 ease-in-out"
       >
         <!-- 1. NEW POINTS POSITION (TOP RIGHT) -->
         <div
@@ -76,7 +76,7 @@
           </h3>
 
           <p
-            class="text-[#9333EA] font-fredoka font-semibold text-[14px] md:text-[18px] leading-[18px] md:leading-[22px] tracking-[-0.4px] mb-3 truncate w-full px-2"
+            class="text-[#15803d] font-fredoka font-semibold text-[14px] md:text-[18px] leading-[18px] md:leading-[22px] tracking-[-0.4px] mb-3 truncate w-full px-2"
             [title]="learner.gradeName + ' || ' + getCourseDisplay(learner.courseId)"
           >
             {{ learner.gradeName }} || {{ getCourseDisplay(learner.courseId) }}
@@ -130,7 +130,7 @@
       </p>
       <button
         (click)="loadLearners()"
-        class="px-8 py-3 bg-gradient-to-r from-[#667DE8] to-[#754DA5] text-white font-fredoka font-bold text-[16px] md:text-[18px] rounded-[15px] hover:scale-105 transition-all duration-200"
+        class="px-8 py-3 bg-gradient-to-r from-[#166534] to-[#14532d] text-white font-fredoka font-bold text-[16px] md:text-[18px] rounded-[15px] hover:scale-105 transition-all duration-200"
       >
         Try Again
       </button>
@@ -142,9 +142,9 @@
     class="fixed left-3 right-3 bottom-[86px] md:left-auto md:right-8 md:bottom-8 z-[10030] max-w-none md:max-w-[360px]"
   >
     <div
-      class="rounded-[18px] border border-[#E8DDFB] bg-white shadow-[0_14px_40px_rgba(74,34,122,0.26)] overflow-hidden"
+      class="rounded-[18px] border border-[#bbf7d0] bg-white shadow-[0_14px_40px_rgba(20,83,45,0.26)] overflow-hidden"
     >
-      <div class="bg-[linear-gradient(90deg,#667DE8_0%,#754DA5_100%)] px-4 py-3">
+      <div class="bg-[linear-gradient(90deg,#166534_0%,#14532d_100%)] px-4 py-3">
         <p class="font-fredoka font-bold text-[20px] text-white">Learner Guide</p>
       </div>
       <div class="p-4">
@@ -160,7 +160,7 @@
           </button>
           <button
             (click)="dismissLearnerGuide()"
-            class="px-4 py-2 rounded-[10px] bg-[linear-gradient(90deg,#667DE8_0%,#754DA5_100%)] text-white font-fredoka font-semibold text-[14px]"
+            class="px-4 py-2 rounded-[10px] bg-[linear-gradient(90deg,#166534_0%,#14532d_100%)] text-white font-fredoka font-semibold text-[14px]"
           >
             Got it
           </button>

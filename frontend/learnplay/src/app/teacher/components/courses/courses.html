@@ -58,12 +58,12 @@
           <div class="flex flex-col md:flex-row gap-6">
             <div class="flex items-center gap-3">
               <input type="checkbox" [(ngModel)]="newCourse.premium" name="premium" id="premium"
-                class="w-6 h-6 rounded border-gray-300 text-purple-600 focus:ring-purple-500 cursor-pointer">
+                class="w-6 h-6 rounded border-gray-300 text-green-600 focus:ring-green-500 cursor-pointer">
               <label for="premium" class="font-[Fredoka] font-semibold text-[20px] text-[#374151] cursor-pointer">Premium Course</label>
             </div>
             <div class="flex items-center gap-3">
               <input type="checkbox" [(ngModel)]="newCourse.active" name="active" id="active"
-                class="w-6 h-6 rounded border-gray-300 text-purple-600 focus:ring-purple-500 cursor-pointer">
+                class="w-6 h-6 rounded border-gray-300 text-green-600 focus:ring-green-500 cursor-pointer">
               <label for="active" class="font-[Fredoka] font-semibold text-[20px] text-[#374151] cursor-pointer">Active</label>
             </div>
           </div>
@@ -118,7 +118,7 @@
            <span *ngIf="course.countryCode" class="course-tag bg-[#DBEAFE] text-[#1E40AF] px-3 py-1 rounded-full font-[Fredoka] font-semibold text-[14px] shadow-sm">
   {{ course.countryCode }}
 </span>
-            <span *ngIf="course.shortCode" class="course-tag bg-[#F3E8FF] text-[#9333EA] px-3 py-1 rounded-full font-[Fredoka] font-semibold text-[14px] shadow-sm">
+            <span *ngIf="course.shortCode" class="course-tag bg-[#dcfce7] text-[#15803d] px-3 py-1 rounded-full font-[Fredoka] font-semibold text-[14px] shadow-sm">
               {{ course.shortCode }}
             </span>
             <span [class]="course.active ? 'bg-[#D1FAE5] text-[#059669]' : 'bg-[#FEE2E2] text-[#DC2626]'" 
@@ -145,7 +145,7 @@
             
             <button 
               (click)="editCourse(course); $event.stopPropagation()" 
-              class="action-btn bg-[#8B5CF6] hover:bg-[#7C3AED] text-white p-2.5 rounded-lg transition-all duration-200 hover:scale-105 hover:shadow-lg cursor-pointer flex items-center justify-center group/btn"
+              class="action-btn bg-[#16a34a] hover:bg-[#166534] text-white p-2.5 rounded-lg transition-all duration-200 hover:scale-105 hover:shadow-lg cursor-pointer flex items-center justify-center group/btn"
               title="Edit Course"
             >
               <svg class="w-4 h-4 group-hover/btn:scale-110 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">

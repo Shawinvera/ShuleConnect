@@ -9,7 +9,7 @@
     (click)="$event.stopPropagation()"
   >
     <!-- Header -->
-    <div class="bg-[linear-gradient(90deg,#667DE8_0%,#754DA5_100%)] px-6 md:px-10 py-5 md:py-6 flex items-center justify-between">
+    <div class="bg-[linear-gradient(90deg,#166534_0%,#14532d_100%)] px-6 md:px-10 py-5 md:py-6 flex items-center justify-between">
       <div class="flex items-center gap-4">
         <div class="w-12 h-12 md:w-16 md:h-16 rounded-full bg-white/20 flex items-center justify-center overflow-hidden">
           <img 
@@ -176,7 +176,7 @@
           <label class="block font-fredoka font-semibold text-[15px] text-[#4B5563] mb-4 text-center">Avatar</label>
           <div 
             (click)="openAvatarModal()" 
-            class="w-[100px] h-[100px] md:w-[120px] md:h-[120px] rounded-[20px] md:rounded-[25px] flex items-center justify-center cursor-pointer transition-all duration-200 overflow-hidden bg-gradient-to-br from-[#BAE8E8] to-[#EEDAE4] hover:scale-105 border-2 border-dashed border-[#9333EA] hover:border-solid"
+            class="w-[100px] h-[100px] md:w-[120px] md:h-[120px] rounded-[20px] md:rounded-[25px] flex items-center justify-center cursor-pointer transition-all duration-200 overflow-hidden bg-gradient-to-br from-[#BAE8E8] to-[#EEDAE4] hover:scale-105 border-2 border-dashed border-[#15803d] hover:border-solid"
           >
             <img 
               *ngIf="selectedAvatar" 
@@ -184,9 +184,9 @@
               class="w-full h-full object-cover"
               alt="Selected avatar"
             >
-            <mat-icon *ngIf="!selectedAvatar" class="text-[#9333EA] text-[32px] md:text-[40px]">photo_camera</mat-icon>
+            <mat-icon *ngIf="!selectedAvatar" class="text-[#15803d] text-[32px] md:text-[40px]">photo_camera</mat-icon>
           </div>
-          <span class="mt-3 font-fredoka font-semibold text-[#9333EA] text-sm md:text-base">Change Avatar</span>
+          <span class="mt-3 font-fredoka font-semibold text-[#15803d] text-sm md:text-base">Change Avatar</span>
         </div>
       </form>
     </div>
@@ -203,7 +203,7 @@
       <button
         (click)="onUpdate()"
         [disabled]="isSubmitting || isLoadingData"
-        class="h-[48px] md:h-[52px] px-6 md:px-8 rounded-[14px] bg-[linear-gradient(90deg,#667DE8_0%,#754DA5_100%)] text-white font-fredoka font-bold text-[16px] md:text-[17px] hover:shadow-[0_10px_28px_0_rgba(117,77,165,0.35)] disabled:opacity-60 cursor-pointer transition-all"
+        class="h-[48px] md:h-[52px] px-6 md:px-8 rounded-[14px] bg-[linear-gradient(90deg,#166534_0%,#14532d_100%)] text-white font-fredoka font-bold text-[16px] md:text-[17px] hover:shadow-[0_10px_28px_0_rgba(117,77,165,0.35)] disabled:opacity-60 cursor-pointer transition-all"
       >
         {{ isSubmitting ? 'Updating...' : 'Save Changes' }}
       </button>
@@ -226,7 +226,7 @@
       </div>
       
       <div *ngIf="isLoadingAvatars" class="flex justify-center py-8">
-        <div class="animate-spin rounded-full h-8 w-8 border-b-2 border-[#9333EA]"></div>
+        <div class="animate-spin rounded-full h-8 w-8 border-b-2 border-[#15803d]"></div>
       </div>
       
       <div *ngIf="!isLoadingAvatars" class="grid grid-cols-3 sm:grid-cols-4 gap-4">
@@ -234,7 +234,7 @@
           *ngFor="let avatar of avatars" 
           (click)="selectAvatar(avatar)" 
           class="aspect-square rounded-2xl overflow-hidden cursor-pointer border-4 transition-all hover:scale-105" 
-          [class.border-[#9333EA]]="selectedAvatar === avatar.filename"
+          [class.border-[#15803d]]="selectedAvatar === avatar.filename"
           [class.border-transparent]="selectedAvatar !== avatar.filename"
           [class.shadow-lg]="selectedAvatar === avatar.filename"
         >

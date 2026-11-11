@@ -14,7 +14,7 @@
     </div>
     <div class="flex items-center gap-3 w-full md:w-auto justify-between md:justify-end">
       <button (click)="onAddChild()" [class.guide-highlight]="guideStep === 0"
-        class="bg-gradient-to-r from-[#667DE8] to-[#754DA5] cursor-pointer px-[22px] md:px-[40px] lg:px-[55px] py-[12px] md:py-[16px] lg:py-[20px] rounded-[15px] md:rounded-[20px] flex items-center justify-center gap-2 hover:scale-[1.03] transition-all duration-300 ease-in-out w-full md:flex-none md:w-auto">
+        class="bg-gradient-to-r from-[#166534] to-[#14532d] cursor-pointer px-[22px] md:px-[40px] lg:px-[55px] py-[12px] md:py-[16px] lg:py-[20px] rounded-[15px] md:rounded-[20px] flex items-center justify-center gap-2 hover:scale-[1.03] transition-all duration-300 ease-in-out w-full md:flex-none md:w-auto">
         <span class="font-fredoka font-bold text-[18px] md:text-[22px] lg:text-[25px] text-white whitespace-nowrap">
           + Add Learner
         </span>
@@ -25,8 +25,8 @@
   <div *ngIf="guideStep >= 0"
     class="fixed left-3 right-3 bottom-[86px] md:left-auto md:right-8 md:bottom-8 z-[10030] max-w-none md:max-w-[360px]">
     <div
-      class="rounded-[18px] border border-[#E8DDFB] bg-white shadow-[0_14px_40px_rgba(74,34,122,0.26)] overflow-hidden">
-      <div class="bg-[linear-gradient(90deg,#667DE8_0%,#754DA5_100%)] px-4 py-3">
+      class="rounded-[18px] border border-[#bbf7d0] bg-white shadow-[0_14px_40px_rgba(20,83,45,0.26)] overflow-hidden">
+      <div class="bg-[linear-gradient(90deg,#166534_0%,#14532d_100%)] px-4 py-3">
         <p class="font-fredoka font-bold text-[20px] text-white">Navigation Guide</p>
       </div>
       <div class="p-4">
@@ -39,7 +39,7 @@
             Skip
           </button>
           <button (click)="nextGuideStep()"
-            class="px-4 py-2 rounded-[10px] bg-[linear-gradient(90deg,#667DE8_0%,#754DA5_100%)] text-white font-fredoka font-semibold text-[14px]">
+            class="px-4 py-2 rounded-[10px] bg-[linear-gradient(90deg,#166534_0%,#14532d_100%)] text-white font-fredoka font-semibold text-[14px]">
             Done
           </button>
         </div>
@@ -53,7 +53,7 @@
     <div
       class="w-full max-w-[720px] max-h-[92vh] md:max-h-none bg-white rounded-[20px] md:rounded-[28px] shadow-[0_20px_70px_0_rgba(74,34,122,0.35)] border border-[#EEE8F7] overflow-visible flex flex-col">
       <div
-        class="bg-[linear-gradient(90deg,#667DE8_0%,#754DA5_100%)] rounded-t-[20px] md:rounded-t-[28px] px-6 md:px-10 py-5 md:py-6 flex items-center justify-between">
+        class="bg-[linear-gradient(90deg,#166534_0%,#14532d_100%)] rounded-t-[20px] md:rounded-t-[28px] px-6 md:px-10 py-5 md:py-6 flex items-center justify-between">
         <div>
           <h2 class="font-fredoka font-bold text-[22px] sm:text-[26px] md:text-[34px] leading-[1.1] text-white">
             Update Profile
@@ -112,7 +112,7 @@
                   </svg>
                   <input type="text" [(ngModel)]="countrySearch" [ngModelOptions]="{ standalone: true }"
                     (ngModelChange)="filterCountries()" placeholder="Search country..."
-                    class="w-full h-[38px] pl-9 pr-3 bg-[#F5F5FF] border border-transparent rounded-[10px] focus:outline-none focus:border-[#9333EA] font-fredoka font-medium text-[14px] text-[#374151] placeholder:text-[#BBC2CD]" />
+                    class="w-full h-[38px] pl-9 pr-3 bg-[#F5F5FF] border border-transparent rounded-[10px] focus:outline-none focus:border-[#15803d] font-fredoka font-medium text-[14px] text-[#374151] placeholder:text-[#BBC2CD]" />
                 </div>
               </div>
 
@@ -124,7 +124,7 @@
                 <button *ngFor="let c of filteredCountries" type="button" (click)="selectCountry(c)"
                   class="w-full flex items-center gap-3 px-4 py-2.5 hover:bg-[#F5F5FF] transition-colors text-left"
                   [class.bg-[#F1E2FB]]="selectedCountry?.iso === c.iso">
-                  <span class="font-fredoka font-bold text-[14px] text-[#9333EA] w-[34px] shrink-0">{{ c.iso }}</span>
+                  <span class="font-fredoka font-bold text-[14px] text-[#15803d] w-[34px] shrink-0">{{ c.iso }}</span>
                   <span class="font-fredoka font-medium text-[14px] text-[#374151] flex-1 truncate">{{ c.name }}</span>
                 </button>
               </div>
@@ -146,7 +146,7 @@
           Cancel
         </button>
         <button (click)="saveProfile()" [disabled]="isSavingProfile"
-          class="h-[46px] md:h-[50px] px-6 md:px-7 rounded-[14px] bg-[linear-gradient(90deg,#667DE8_0%,#754DA5_100%)] text-white font-fredoka font-bold text-[16px] md:text-[17px] hover:shadow-[0_10px_28px_0_rgba(117,77,165,0.35)] disabled:opacity-60 cursor-pointer">
+          class="h-[46px] md:h-[50px] px-6 md:px-7 rounded-[14px] bg-[linear-gradient(90deg,#166534_0%,#14532d_100%)] text-white font-fredoka font-bold text-[16px] md:text-[17px] hover:shadow-[0_10px_28px_0_rgba(117,77,165,0.35)] disabled:opacity-60 cursor-pointer">
           {{ isSavingProfile ? 'Saving...' : 'Save Changes' }}
         </button>
       </div>
@@ -159,7 +159,7 @@
     <div
       class="w-full max-w-[520px] bg-white rounded-[20px] md:rounded-[28px] shadow-[0_20px_70px_0_rgba(74,34,122,0.35)] border border-[#EEE8F7] overflow-visible flex flex-col">
       <div
-        class="bg-[linear-gradient(90deg,#667DE8_0%,#754DA5_100%)] rounded-t-[20px] md:rounded-t-[28px] px-6 md:px-10 py-5 md:py-6 flex items-center justify-between">
+        class="bg-[linear-gradient(90deg,#166534_0%,#14532d_100%)] rounded-t-[20px] md:rounded-t-[28px] px-6 md:px-10 py-5 md:py-6 flex items-center justify-between">
         <div>
           <h2 class="font-fredoka font-bold text-[22px] sm:text-[26px] md:text-[34px] leading-[1.1] text-white">
             Update Phone Number
@@ -191,7 +191,7 @@
           Cancel
         </button>
         <button (click)="savePhoneNumber()" [disabled]="isSavingPhone"
-          class="h-[46px] md:h-[50px] px-6 md:px-7 rounded-[14px] bg-[linear-gradient(90deg,#667DE8_0%,#754DA5_100%)] text-white font-fredoka font-bold text-[16px] md:text-[17px] hover:shadow-[0_10px_28px_0_rgba(117,77,165,0.35)] disabled:opacity-60 cursor-pointer">
+          class="h-[46px] md:h-[50px] px-6 md:px-7 rounded-[14px] bg-[linear-gradient(90deg,#166534_0%,#14532d_100%)] text-white font-fredoka font-bold text-[16px] md:text-[17px] hover:shadow-[0_10px_28px_0_rgba(117,77,165,0.35)] disabled:opacity-60 cursor-pointer">
           {{ isSavingPhone ? 'Updating...' : 'Update Phone Number' }}
         </button>
       </div>
@@ -205,7 +205,7 @@
       class="w-full max-w-[520px] bg-white rounded-[20px] md:rounded-[28px] shadow-[0_20px_70px_0_rgba(74,34,122,0.35)] border border-[#EEE8F7] flex flex-col">
       <!-- Header -->
       <div
-        class="bg-[linear-gradient(90deg,#667DE8_0%,#754DA5_100%)] rounded-t-[20px] md:rounded-t-[28px] px-6 md:px-10 py-5 md:py-6 flex items-center justify-between">
+        class="bg-[linear-gradient(90deg,#166534_0%,#14532d_100%)] rounded-t-[20px] md:rounded-t-[28px] px-6 md:px-10 py-5 md:py-6 flex items-center justify-between">
         <div class="flex items-center gap-3">
           <img src="assets/icons/password_reset.png" alt="password" class="w-8 h-8 object-contain"
             style="filter:brightness(0) invert(1)" />
@@ -331,7 +331,7 @@
           Cancel
         </button>
         <button (click)="savePassword()" [disabled]="isSavingPassword"
-          class="h-[46px] md:h-[50px] px-6 md:px-7 rounded-[14px] bg-[linear-gradient(90deg,#667DE8_0%,#754DA5_100%)] text-white font-fredoka font-bold text-[16px] md:text-[17px] hover:shadow-[0_10px_28px_0_rgba(117,77,165,0.35)] disabled:opacity-60 cursor-pointer">
+          class="h-[46px] md:h-[50px] px-6 md:px-7 rounded-[14px] bg-[linear-gradient(90deg,#166534_0%,#14532d_100%)] text-white font-fredoka font-bold text-[16px] md:text-[17px] hover:shadow-[0_10px_28px_0_rgba(117,77,165,0.35)] disabled:opacity-60 cursor-pointer">
           {{ isSavingPassword ? 'Updating...' : 'Update Password' }}
         </button>
       </div>
@@ -351,7 +351,7 @@
         {{ errorMessage }}
       </p>
       <button (click)="fetchChildren()"
-        class="bg-gradient-to-r from-[#667DE8] to-[#754DA5] px-6 py-3 rounded-lg text-white font-fredoka font-bold">
+        class="bg-gradient-to-r from-[#166534] to-[#14532d] px-6 py-3 rounded-lg text-white font-fredoka font-bold">
         Try Again
       </button>
     </div>
@@ -364,7 +364,7 @@
       <p class="font-fredoka font-semibold text-[20px] md:text-[25px] text-[#374151] mb-4">
         No learners added yet
       </p>
-      <!-- <button (click)="onAddChild()" class="bg-gradient-to-r from-[#667DE8] to-[#754DA5] px-6 py-3 rounded-lg text-white font-fredoka font-bold">
+      <!-- <button (click)="onAddChild()" class="bg-gradient-to-r from-[#166534] to-[#14532d] px-6 py-3 rounded-lg text-white font-fredoka font-bold">
           Add Your First Child
         </button> -->
     </div>

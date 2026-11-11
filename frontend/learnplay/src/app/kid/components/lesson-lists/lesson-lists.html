@@ -14,7 +14,7 @@
     <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-1">
       <div class="flex-1">
         <h1
-          class="font-fredoka text-[#9333EA] font-bold text-3xl md:text-[50px] leading-tight tracking-[-0.4px] uppercase"
+          class="font-fredoka text-[#15803d] font-bold text-3xl md:text-[50px] leading-tight tracking-[-0.4px] uppercase"
         >
           {{ subTopicName }}
         </h1>
@@ -53,7 +53,7 @@
     <div class="flex gap-4">
       <button
         (click)="fetchLessons(currentSubTopicId)"
-        class="px-8 py-3 bg-[#9333EA] text-white font-fredoka font-bold rounded-2xl hover:scale-105 transition-transform shadow-lg"
+        class="px-8 py-3 bg-[#15803d] text-white font-fredoka font-bold rounded-2xl hover:scale-105 transition-transform shadow-lg"
       >
         Try Again
       </button>
@@ -69,7 +69,7 @@
   <!-- 3. EMPTY STATE (No Lessons Found) -->
   <div
     *ngIf="!isLoading && !loadError && activeLessons.length === 0"
-    class="flex flex-col items-center justify-center py-12 px-6 bg-white rounded-[30px] shadow-sm border-2 border-dashed border-purple-200 text-center animate-fade-in"
+    class="flex flex-col items-center justify-center py-12 px-6 bg-white rounded-[30px] shadow-sm border-2 border-dashed border-green-200 text-center animate-fade-in"
   >
     <div class="w-24 h-24 mb-4">
       <img
@@ -87,7 +87,7 @@
     </p>
     <button
       (click)="goBack()"
-      class="px-8 py-3 border-2 border-[#9333EA] text-[#9333EA] font-fredoka font-bold rounded-2xl hover:bg-purple-50 transition-colors"
+      class="px-8 py-3 border-2 border-[#15803d] text-[#15803d] font-fredoka font-bold rounded-2xl hover:bg-green-100 transition-colors"
     >
       Pick another Lesson
     </button>
@@ -111,13 +111,13 @@
   <!-- History Section -->
   <div *ngIf="completedLessons.length > 0" class="mt-12">
     <div class="flex items-center gap-4 mb-6">
-      <div class="h-[2px] flex-1 bg-purple-100"></div>
+      <div class="h-[2px] flex-1 bg-green-200"></div>
       <h2
-        class="font-fredoka font-bold text-xl md:text-2xl text-purple-300 uppercase tracking-widest flex items-center gap-2"
+        class="font-fredoka font-bold text-xl md:text-2xl text-green-300 uppercase tracking-widest flex items-center gap-2"
       >
         <mat-icon>history</mat-icon> Lesson History
       </h2>
-      <div class="h-[2px] flex-1 bg-purple-100"></div>
+      <div class="h-[2px] flex-1 bg-green-200"></div>
     </div>
 
     <div

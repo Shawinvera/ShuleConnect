@@ -3,7 +3,7 @@
 
 <!-- Photo preview card (shown after crop, before and after upload) -->
 <div *ngIf="croppedPreviewUrl" class="relative w-full rounded-[16px] overflow-hidden border-2 mb-3"
-     [class]="currentPhotoUrl ? 'border-green-400' : 'border-[#9333EA]'">
+     [class]="currentPhotoUrl ? 'border-green-400' : 'border-[#15803d]'">
   <!-- Preview image -->
   <img [src]="croppedPreviewUrl" alt="Photo preview"
        class="w-full h-[180px] md:h-[220px] object-cover" />
@@ -38,7 +38,7 @@
     type="button"
     (click)="openCamera()"
     [disabled]="isUploading"
-    class="flex-1 flex items-center justify-center gap-2 h-[50px] md:h-[60px] lg:h-[70px] px-4 rounded-[12px] md:rounded-[16px] border-2 border-solid border-[#9333EA] bg-[#F5F3FF] text-[#9333EA] font-fredoka font-semibold text-[14px] md:text-[17px] lg:text-[20px] transition-all duration-200 hover:bg-[#EDE9FE] disabled:opacity-50 disabled:cursor-not-allowed cursor-pointer">
+    class="flex-1 flex items-center justify-center gap-2 h-[50px] md:h-[60px] lg:h-[70px] px-4 rounded-[12px] md:rounded-[16px] border-2 border-solid border-[#15803d] bg-[#F5F3FF] text-[#15803d] font-fredoka font-semibold text-[14px] md:text-[17px] lg:text-[20px] transition-all duration-200 hover:bg-[#EDE9FE] disabled:opacity-50 disabled:cursor-not-allowed cursor-pointer">
     <mat-icon class="text-[20px] md:text-[24px]">photo_camera</mat-icon>
     Take Photo
   </button>
@@ -135,7 +135,7 @@
       <button
         type="button"
         (click)="closeCameraModal(); triggerFileInput()"
-        class="px-6 py-3 bg-white text-[#9333EA] font-fredoka font-semibold text-[14px] md:text-[16px] rounded-[12px] hover:bg-gray-100 transition-all">
+        class="px-6 py-3 bg-white text-[#15803d] font-fredoka font-semibold text-[14px] md:text-[16px] rounded-[12px] hover:bg-gray-100 transition-all">
         Upload from Device Instead
       </button>
     </div>
@@ -148,7 +148,7 @@
       (click)="capturePhoto()"
       [disabled]="!isCameraReady"
       class="w-[70px] h-[70px] md:w-[78px] md:h-[78px] rounded-full flex items-center justify-center transition-all duration-150 active:scale-90 hover:scale-105 disabled:opacity-40 disabled:cursor-not-allowed cursor-pointer"
-      style="background: linear-gradient(135deg,#687AE4,#9333EA); box-shadow: 0 0 0 4px rgba(147,51,234,0.35), 0 4px 20px rgba(147,51,234,0.5)">
+      style="background: linear-gradient(135deg,#687AE4,#15803d); box-shadow: 0 0 0 4px rgba(147,51,234,0.35), 0 4px 20px rgba(147,51,234,0.5)">
       <!-- Camera icon drawn inline so no font dependency -->
       <svg width="30" height="30" viewBox="0 0 24 24" fill="white">
         <path d="M12 15.2A3.2 3.2 0 1 0 12 8.8a3.2 3.2 0 0 0 0 6.4z"/>
@@ -169,7 +169,7 @@
   (touchend)="onPointerUp()">
   <div class="bg-white rounded-[20px] md:rounded-[25px] p-5 md:p-7 w-full max-w-[560px] shadow-2xl flex flex-col gap-4">
     <div class="text-center">
-      <h3 class="text-[#9333EA] font-fredoka font-bold text-[20px] md:text-[26px] tracking-[-0.4px]">Crop Your Photo</h3>
+      <h3 class="text-[#15803d] font-fredoka font-bold text-[20px] md:text-[26px] tracking-[-0.4px]">Crop Your Photo</h3>
       <p class="text-[#6B7280] font-fredoka text-[13px] md:text-[15px] mt-1">Drag the box to move · Drag the corner ◢ to resize</p>
     </div>
 

@@ -4,7 +4,7 @@
 
 /* Sidebar container with navbar gradient */
 .sidebar-container {
-  background: linear-gradient(180deg, #667DE8 0%, #754DA5 100%) !important;
+  background: linear-gradient(180deg, #166534 0%, #14532d 100%) !important;
   position: fixed;
   left: 0;
   z-index: 999; /* Lower than navbar (1001) but higher than content */

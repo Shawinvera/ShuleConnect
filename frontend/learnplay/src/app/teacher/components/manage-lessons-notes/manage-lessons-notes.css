@@ -58,7 +58,7 @@ select[formControlName="unit"]:valid {
 /* Option styling with multiple browser prefixes */
 select[formControlName="subject"] option:checked,
 select[formControlName="unit"] option:checked {
-  background-color: #9333EA !important;
+  background-color: #15803d !important;
   color: white !important;
 }
 
@@ -66,15 +66,15 @@ select[formControlName="subject"] option:hover,
 select[formControlName="unit"] option:hover,
 select[formControlName="subject"] option:focus,
 select[formControlName="unit"] option:focus {
-  background-color: #9333EA !important;
-  background: #9333EA !important;
+  background-color: #15803d !important;
+  background: #15803d !important;
   color: white !important;
 }
 
 /* Webkit specific styling */
 select[formControlName="subject"] option:hover:not(:disabled),
 select[formControlName="unit"] option:hover:not(:disabled) {
-  background-color: #9333EA !important;
-  background: linear-gradient(#9333EA, #9333EA) !important;
+  background-color: #15803d !important;
+  background: linear-gradient(#15803d, #15803d) !important;
   color: white !important;
 }

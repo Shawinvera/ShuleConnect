@@ -12,7 +12,7 @@
                     <img src="./assets/icons/logo.png" class="w-full h-full object-cover">
                 </div>
                 <div class="w-full flex flex-col gap-[2px] text-center">
-                    <span class="font-fredoka font-bold text-[26px] md:text-[38px] lg:text-[45px] leading-[30px] md:leading-[50px] lg:leading-[64px] tracking-[-0.4px] text-[#9333EA]">
+                    <span class="font-fredoka font-bold text-[26px] md:text-[38px] lg:text-[45px] leading-[30px] md:leading-[50px] lg:leading-[64px] tracking-[-0.4px] text-[#15803d]">
                         {{ isSignUp ? 'Admin Sign Up!' : 'Admin Sign In!' }}
                     </span>
                     <span class="font-fredoka font-normal text-[13px] md:text-[18px] lg:text-[20px] leading-[16px] md:leading-[32px] lg:leading-[39px] tracking-[-0.4px] text-[#374151]">
@@ -33,7 +33,7 @@
                     <button (click)="activeForm = 'phone'"
                         class="flex-1 h-[40px] md:h-[50px] font-fredoka font-semibold text-[14px] md:text-[18px] transition-colors"
                         [class.bg-gradient-to-r]="activeForm === 'phone'"
-                        [class.from-[#9333EA]]="activeForm === 'phone'"
+                        [class.from-[#15803d]]="activeForm === 'phone'"
                         [class.to-[#687AE4]]="activeForm === 'phone'"
                         [class.text-white]="activeForm === 'phone'"
                         [class.text-[#BBC2CD]]="activeForm !== 'phone'">
@@ -53,7 +53,7 @@
                 <div *ngIf="activeForm === 'email'" class="w-full flex flex-col gap-[6px] md:gap-[12px]">
                     <label class="font-fredoka text-[#374151] font-semibold text-[15px] md:text-[22px] lg:text-[25px] leading-[18px] tracking-[-0.4px]">Email</label>
                     <input type="email" [(ngModel)]="email" placeholder="your@email.com"
-                        class="w-full h-[44px] md:h-[70px] lg:h-[79px] px-[14px] md:px-[18px] lg:px-[20px] bg-white border-[2px] border-[#E5E7EB] rounded-[12px] md:rounded-[18px] lg:rounded-[20px] focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent font-fredoka font-medium text-[15px] md:text-[20px] lg:text-[23px] tracking-[-0.4px] text-[#374151] placeholder:text-[#BBC2CD]" />
+                        class="w-full h-[44px] md:h-[70px] lg:h-[79px] px-[14px] md:px-[18px] lg:px-[20px] bg-white border-[2px] border-[#E5E7EB] rounded-[12px] md:rounded-[18px] lg:rounded-[20px] focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent font-fredoka font-medium text-[15px] md:text-[20px] lg:text-[23px] tracking-[-0.4px] text-[#374151] placeholder:text-[#BBC2CD]" />
                 </div>
                 <!-- Phone field -->
                 <div *ngIf="activeForm === 'phone'" class="w-full flex flex-col gap-[6px] md:gap-[12px]">
@@ -64,9 +64,9 @@
                     <label class="font-fredoka text-[#374151] font-semibold text-[15px] md:text-[22px] lg:text-[25px] leading-[18px] tracking-[-0.4px]">Password</label>
                     <div class="relative w-full">
                         <input [type]="showPassword ? 'text' : 'password'" [(ngModel)]="password" placeholder="Enter password"
-                            class="w-full h-[44px] md:h-[70px] lg:h-[79px] px-[14px] pr-[42px] md:px-[18px] md:pr-[52px] lg:px-[20px] lg:pr-[56px] bg-white border-[2px] border-[#E5E7EB] rounded-[12px] md:rounded-[18px] lg:rounded-[20px] focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent font-fredoka font-medium text-[15px] md:text-[20px] lg:text-[23px] tracking-[-0.4px] text-[#374151] placeholder:text-[#BBC2CD]" />
+                            class="w-full h-[44px] md:h-[70px] lg:h-[79px] px-[14px] pr-[42px] md:px-[18px] md:pr-[52px] lg:px-[20px] lg:pr-[56px] bg-white border-[2px] border-[#E5E7EB] rounded-[12px] md:rounded-[18px] lg:rounded-[20px] focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent font-fredoka font-medium text-[15px] md:text-[20px] lg:text-[23px] tracking-[-0.4px] text-[#374151] placeholder:text-[#BBC2CD]" />
                         <button type="button" (click)="showPassword = !showPassword"
-                            class="absolute right-[12px] top-1/2 -translate-y-1/2 text-[#BBC2CD] hover:text-[#9333EA] transition-colors">
+                            class="absolute right-[12px] top-1/2 -translate-y-1/2 text-[#BBC2CD] hover:text-[#15803d] transition-colors">
                             <svg *ngIf="!showPassword" xmlns="http://www.w3.org/2000/svg" class="w-[18px] h-[18px] md:w-[22px] md:h-[22px]" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
                                 <path stroke-linecap="round" stroke-linejoin="round" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/>
                                 <path stroke-linecap="round" stroke-linejoin="round" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.477 0 8.268 2.943 9.542 7-1.274 4.057-5.065 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"/>
@@ -92,7 +92,7 @@
                     <button (click)="activeForm = 'phone'"
                         class="flex-1 h-[40px] md:h-[50px] font-fredoka font-semibold text-[14px] md:text-[18px] transition-colors"
                         [class.bg-gradient-to-r]="activeForm === 'phone'"
-                        [class.from-[#9333EA]]="activeForm === 'phone'"
+                        [class.from-[#15803d]]="activeForm === 'phone'"
                         [class.to-[#687AE4]]="activeForm === 'phone'"
                         [class.text-white]="activeForm === 'phone'"
                         [class.text-[#BBC2CD]]="activeForm !== 'phone'">
@@ -112,13 +112,13 @@
                 <div class="w-full flex flex-col gap-[4px] md:gap-[10px]">
                     <label class="font-fredoka text-[#374151] font-semibold text-[14px] md:text-[22px] lg:text-[25px] leading-[18px] tracking-[-0.4px]">Name</label>
                     <input [(ngModel)]="name" type="text" placeholder="Enter your name"
-                        class="w-full h-[42px] md:h-[70px] lg:h-[79px] px-[14px] md:px-[18px] lg:px-[20px] bg-white border-[2px] border-[#E5E7EB] rounded-[12px] md:rounded-[18px] lg:rounded-[20px] focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent font-fredoka font-medium text-[14px] md:text-[20px] lg:text-[23px] tracking-[-0.4px] text-[#374151] placeholder:text-[#BBC2CD]" />
+                        class="w-full h-[42px] md:h-[70px] lg:h-[79px] px-[14px] md:px-[18px] lg:px-[20px] bg-white border-[2px] border-[#E5E7EB] rounded-[12px] md:rounded-[18px] lg:rounded-[20px] focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent font-fredoka font-medium text-[14px] md:text-[20px] lg:text-[23px] tracking-[-0.4px] text-[#374151] placeholder:text-[#BBC2CD]" />
                 </div>
                 <!-- Email or Phone -->
                 <div *ngIf="activeForm === 'email'" class="w-full flex flex-col gap-[4px] md:gap-[10px]">
                     <label class="font-fredoka text-[#374151] font-semibold text-[14px] md:text-[22px] lg:text-[25px] leading-[18px] tracking-[-0.4px]">Email</label>
                     <input [(ngModel)]="email" type="email" placeholder="your@email.com"
-                        class="w-full h-[42px] md:h-[70px] lg:h-[79px] px-[14px] md:px-[18px] lg:px-[20px] bg-white border-[2px] border-[#E5E7EB] rounded-[12px] md:rounded-[18px] lg:rounded-[20px] focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent font-fredoka font-medium text-[14px] md:text-[20px] lg:text-[23px] tracking-[-0.4px] text-[#374151] placeholder:text-[#BBC2CD]" />
+                        class="w-full h-[42px] md:h-[70px] lg:h-[79px] px-[14px] md:px-[18px] lg:px-[20px] bg-white border-[2px] border-[#E5E7EB] rounded-[12px] md:rounded-[18px] lg:rounded-[20px] focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent font-fredoka font-medium text-[14px] md:text-[20px] lg:text-[23px] tracking-[-0.4px] text-[#374151] placeholder:text-[#BBC2CD]" />
                 </div>
                 <div *ngIf="activeForm === 'phone'" class="w-full flex flex-col gap-[4px] md:gap-[10px]">
                     <label class="font-fredoka text-[#374151] font-semibold text-[14px] md:text-[22px] lg:text-[25px] leading-[18px] tracking-[-0.4px]">Phone Number</label>
@@ -130,12 +130,12 @@
                     <div class="relative w-full">
                         <input [(ngModel)]="password" [type]="showPassword ? 'text' : 'password'" placeholder="Create a password"
                             (focus)="passwordFocused = true" (blur)="passwordFocused = false"
-                            class="w-full h-[42px] md:h-[70px] lg:h-[79px] px-[14px] pr-[42px] md:px-[18px] md:pr-[52px] lg:px-[20px] lg:pr-[56px] bg-white border-[2px] rounded-[12px] md:rounded-[18px] lg:rounded-[20px] focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent font-fredoka font-medium text-[14px] md:text-[20px] lg:text-[23px] tracking-[-0.4px] text-[#374151] placeholder:text-[#BBC2CD]"
+                            class="w-full h-[42px] md:h-[70px] lg:h-[79px] px-[14px] pr-[42px] md:px-[18px] md:pr-[52px] lg:px-[20px] lg:pr-[56px] bg-white border-[2px] rounded-[12px] md:rounded-[18px] lg:rounded-[20px] focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent font-fredoka font-medium text-[14px] md:text-[20px] lg:text-[23px] tracking-[-0.4px] text-[#374151] placeholder:text-[#BBC2CD]"
                             [class.border-green-400]="!passwordFocused && password.length > 0 && passwordValid"
                             [class.border-red-400]="!passwordFocused && password.length > 0 && !passwordValid"
                             [class.border-[#E5E7EB]]="password.length === 0" />
                         <button type="button" (click)="showPassword = !showPassword"
-                            class="absolute right-[12px] top-1/2 -translate-y-1/2 text-[#BBC2CD] hover:text-[#9333EA] transition-colors">
+                            class="absolute right-[12px] top-1/2 -translate-y-1/2 text-[#BBC2CD] hover:text-[#15803d] transition-colors">
                             <svg *ngIf="!showPassword" xmlns="http://www.w3.org/2000/svg" class="w-[18px] h-[18px] md:w-[22px] md:h-[22px]" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
                                 <path stroke-linecap="round" stroke-linejoin="round" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/>
                                 <path stroke-linecap="round" stroke-linejoin="round" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.477 0 8.268 2.943 9.542 7-1.274 4.057-5.065 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"/>
@@ -173,12 +173,12 @@
                     <label class="font-fredoka text-[#374151] font-semibold text-[14px] md:text-[22px] lg:text-[25px] leading-[18px] tracking-[-0.4px]">Confirm Password</label>
                     <div class="relative w-full">
                         <input [(ngModel)]="confirmPassword" [type]="showConfirmPassword ? 'text' : 'password'" placeholder="Repeat your password"
-                            class="w-full h-[42px] md:h-[70px] lg:h-[79px] px-[14px] pr-[42px] md:px-[18px] md:pr-[52px] lg:px-[20px] lg:pr-[56px] bg-white border-[2px] rounded-[12px] md:rounded-[18px] lg:rounded-[20px] focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent font-fredoka font-medium text-[14px] md:text-[20px] lg:text-[23px] tracking-[-0.4px] text-[#374151] placeholder:text-[#BBC2CD]"
+                            class="w-full h-[42px] md:h-[70px] lg:h-[79px] px-[14px] pr-[42px] md:px-[18px] md:pr-[52px] lg:px-[20px] lg:pr-[56px] bg-white border-[2px] rounded-[12px] md:rounded-[18px] lg:rounded-[20px] focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent font-fredoka font-medium text-[14px] md:text-[20px] lg:text-[23px] tracking-[-0.4px] text-[#374151] placeholder:text-[#BBC2CD]"
                             [class.border-red-400]="confirmPassword.length > 0 && !passwordsMatch"
                             [class.border-green-400]="passwordsMatch"
                             [class.border-[#E5E7EB]]="confirmPassword.length === 0" />
                         <button type="button" (click)="showConfirmPassword = !showConfirmPassword"
-                            class="absolute right-[12px] top-1/2 -translate-y-1/2 text-[#BBC2CD] hover:text-[#9333EA] transition-colors">
+                            class="absolute right-[12px] top-1/2 -translate-y-1/2 text-[#BBC2CD] hover:text-[#15803d] transition-colors">
                             <svg *ngIf="!showConfirmPassword" xmlns="http://www.w3.org/2000/svg" class="w-[18px] h-[18px] md:w-[22px] md:h-[22px]" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
                                 <path stroke-linecap="round" stroke-linejoin="round" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/>
                                 <path stroke-linecap="round" stroke-linejoin="round" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.477 0 8.268 2.943 9.542 7-1.274 4.057-5.065 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"/>
@@ -207,7 +207,7 @@
                 <span class="font-fredoka font-normal text-[13px] md:text-[18px] lg:text-[20px] leading-[16px] md:leading-[32px] lg:leading-[39px] tracking-[-0.4px] text-[#374151]">
                     {{ isSignUp ? 'Already have an account?' : "Don't have an account?" }}
                 </span>
-                <span class="font-fredoka font-semibold text-[13px] md:text-[18px] lg:text-[20px] leading-[16px] md:leading-[32px] lg:leading-[39px] tracking-[-0.4px] text-[#9333EA] cursor-pointer" (click)="toggleMode()">
+                <span class="font-fredoka font-semibold text-[13px] md:text-[18px] lg:text-[20px] leading-[16px] md:leading-[32px] lg:leading-[39px] tracking-[-0.4px] text-[#15803d] cursor-pointer" (click)="toggleMode()">
                     {{ isSignUp ? 'Sign in' : 'Sign up' }}
                 </span>
             </div>
