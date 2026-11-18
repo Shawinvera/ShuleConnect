@@ -45,7 +45,10 @@ export class SidebarComponent implements OnInit {
       url.includes('/courses/lessons') ||
       url.includes('/courses/exams') ||
       url.includes('/courses/subscription_plan') ||
-      url.includes('/courses/analytics')
+      url.includes('/courses/analytics') ||
+      url.includes('/courses/notifications') ||
+      url.includes('/courses/airtime-rewards') ||
+      url.includes('/courses/voice-broadcast')
     ) {
       this.currentPage = 'dashboard';
     } else {

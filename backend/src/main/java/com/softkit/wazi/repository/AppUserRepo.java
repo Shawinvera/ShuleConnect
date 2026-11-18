@@ -4,6 +4,7 @@ import com.softkit.wazi.entities.AppUser;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -56,5 +57,8 @@ public interface AppUserRepo extends JpaRepository<AppUser, String> {
             "u.passwordResetOtp = :passwordResetOtp, u.passwordResetToken=:passwordResetToken " +
             "WHERE u.username = :username")
     Long setPasswordResetDetails(String passwordResetOtp, String passwordResetToken, String username);
+
+    @Query("SELECT u FROM AppUser u WHERE u.role = :role AND u.phoneNumber IS NOT NULL AND u.activated = true")
+    List<AppUser> findActiveUsersByRole(@Param("role") String role);
 
 }

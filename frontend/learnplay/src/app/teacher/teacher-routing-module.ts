@@ -15,6 +15,9 @@ import { TopicDetailComponent } from './components/grade-structure/grade-detail/
 import { AnalyticsComponent } from './components/analytics/analytics';
 import { TeacherLayout } from './components/layout/teacher-layout';
 import { SubscriptionPlanComponent } from './components/subscription-plan/subscription-plan';
+import { SmsNotificationsComponent } from './components/sms-notifications/sms-notifications';
+import { AirtimeRewardsComponent } from './components/airtime-rewards/airtime-rewards';
+import { VoiceBroadcastComponent } from './components/voice-broadcast/voice-broadcast';
 
 const routes: Routes = [
   {
@@ -27,6 +30,9 @@ const routes: Routes = [
       { path: 'dashboard/:courseId', component: Dashboard },
       { path: 'analytics', component: AnalyticsComponent },
       { path: 'analytics/:courseId', component: AnalyticsComponent },
+      { path: 'notifications', component: SmsNotificationsComponent },
+      { path: 'airtime-rewards', component: AirtimeRewardsComponent },
+      { path: 'voice-broadcast', component: VoiceBroadcastComponent },
       { path: 'profile', component: Profile },
       { path: 'exams', component: ManageExamsQuizzes },
       { path: 'subscription_plan/:courseId', component: SubscriptionPlanComponent },

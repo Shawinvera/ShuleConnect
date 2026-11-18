@@ -1,0 +1,179 @@
+<div class="p-4 md:p-8 min-h-screen bg-gray-50">
+
+  <!-- Header -->
+  <div class="mb-6">
+    <div class="flex items-center gap-3 mb-1">
+      <div class="w-10 h-10 rounded-xl bg-green-700 flex items-center justify-center">
+        <svg xmlns="http://www.w3.org/2000/svg" class="w-6 h-6 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+          <path stroke-linecap="round" stroke-linejoin="round" d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9"/>
+        </svg>
+      </div>
+      <div>
+        <h1 class="font-[Fredoka] font-bold text-2xl md:text-3xl text-gray-800">SMS Notifications</h1>
+        <p class="font-[Fredoka] text-gray-500 text-sm md:text-base">Send SMS alerts via Africa's Talking</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- Success / Error messages -->
+  <div *ngIf="successMessage" class="mb-4 p-3 bg-green-50 border border-green-300 rounded-xl font-[Fredoka] text-green-700">
+    ✅ {{ successMessage }}
+  </div>
+  <div *ngIf="errorMessage" class="mb-4 p-3 bg-red-50 border border-red-300 rounded-xl font-[Fredoka] text-red-700">
+    ❌ {{ errorMessage }}
+  </div>
+
+  <!-- Quick Action Cards -->
+  <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-4 mb-8">
+
+    <!-- Daily Lessons -->
+    <div class="bg-white rounded-2xl p-5 shadow-sm border border-gray-100 hover:shadow-md transition-shadow cursor-pointer"
+         (click)="triggerDailyLessons()">
+      <div class="w-10 h-10 rounded-xl bg-green-100 flex items-center justify-center mb-3">
+        <span class="text-xl">📚</span>
+      </div>
+      <h3 class="font-[Fredoka] font-bold text-gray-800 text-lg">Daily Lessons</h3>
+      <p class="font-[Fredoka] text-gray-500 text-sm mt-1">Send today's lesson to learners, guardians & teachers</p>
+      <button class="mt-3 w-full py-2 bg-green-700 text-white rounded-xl font-[Fredoka] font-semibold text-sm hover:bg-green-800 transition-colors">
+        {{ isSending ? 'Sending...' : 'Send Now' }}
+      </button>
+    </div>
+
+    <!-- Reminders -->
+    <div class="bg-white rounded-2xl p-5 shadow-sm border border-gray-100 hover:shadow-md transition-shadow cursor-pointer"
+         (click)="triggerReminders()">
+      <div class="w-10 h-10 rounded-xl bg-orange-100 flex items-center justify-center mb-3">
+        <span class="text-xl">⏰</span>
+      </div>
+      <h3 class="font-[Fredoka] font-bold text-gray-800 text-lg">Deadline Reminders</h3>
+      <p class="font-[Fredoka] text-gray-500 text-sm mt-1">Send assignment & exam reminders to all learners</p>
+      <button class="mt-3 w-full py-2 bg-orange-500 text-white rounded-xl font-[Fredoka] font-semibold text-sm hover:bg-orange-600 transition-colors">
+        {{ isSending ? 'Sending...' : 'Trigger Now' }}
+      </button>
+    </div>
+
+    <!-- Notify Guardians -->
+    <div class="bg-white rounded-2xl p-5 shadow-sm border border-gray-100 hover:shadow-md transition-shadow cursor-pointer"
+         (click)="quickSend('guardians')">
+      <div class="w-10 h-10 rounded-xl bg-green-100 flex items-center justify-center mb-3">
+        <span class="text-xl">👨‍👩‍👧</span>
+      </div>
+      <h3 class="font-[Fredoka] font-bold text-gray-800 text-lg">Notify Guardians</h3>
+      <p class="font-[Fredoka] text-gray-500 text-sm mt-1">Send SMS to all parents & guardians</p>
+      <button class="mt-3 w-full py-2 bg-green-600 text-white rounded-xl font-[Fredoka] font-semibold text-sm hover:bg-green-700 transition-colors">
+        Compose
+      </button>
+    </div>
+
+    <!-- Notify All -->
+    <div class="bg-white rounded-2xl p-5 shadow-sm border border-gray-100 hover:shadow-md transition-shadow cursor-pointer"
+         (click)="quickSend('all')">
+      <div class="w-10 h-10 rounded-xl bg-purple-100 flex items-center justify-center mb-3">
+        <span class="text-xl">📢</span>
+      </div>
+      <h3 class="font-[Fredoka] font-bold text-gray-800 text-lg">Broadcast to All</h3>
+      <p class="font-[Fredoka] text-gray-500 text-sm mt-1">Learners + Guardians + Teachers</p>
+      <button class="mt-3 w-full py-2 bg-purple-600 text-white rounded-xl font-[Fredoka] font-semibold text-sm hover:bg-purple-700 transition-colors">
+        Broadcast
+      </button>
+    </div>
+
+    <!-- Voice Broadcast -->
+    <div class="bg-white rounded-2xl p-5 shadow-sm border border-gray-100 hover:shadow-md transition-shadow cursor-pointer"
+         [routerLink]="['/courses/voice-broadcast']">
+      <div class="w-10 h-10 rounded-xl bg-blue-100 flex items-center justify-center mb-3">
+        <span class="text-xl">📞</span>
+      </div>
+      <h3 class="font-[Fredoka] font-bold text-gray-800 text-lg">Voice Broadcast</h3>
+      <p class="font-[Fredoka] text-gray-500 text-sm mt-1">Send voice announcements to parents & staff</p>
+      <button class="mt-3 w-full py-2 bg-blue-600 text-white rounded-xl font-[Fredoka] font-semibold text-sm hover:bg-blue-700 transition-colors">
+        Go to Voice
+      </button>
+    </div>
+
+  </div>
+
+  <!-- Compose Section -->
+  <div class="bg-white rounded-2xl p-6 shadow-sm border border-gray-100 mb-8">
+    <h2 class="font-[Fredoka] font-bold text-xl text-gray-800 mb-4">Compose SMS</h2>
+
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
+      <!-- Recipients -->
+      <div>
+        <label class="font-[Fredoka] font-semibold text-gray-700 text-sm mb-1 block">Recipients</label>
+        <select [(ngModel)]="recipientType"
+          class="w-full border border-gray-200 rounded-xl px-3 py-2 font-[Fredoka] text-gray-700 focus:outline-none focus:ring-2 focus:ring-green-500">
+          <option value="learners">All Learners</option>
+          <option value="guardians">All Guardians / Parents</option>
+          <option value="teachers">All Teachers</option>
+          <option value="admins">All Admins</option>
+          <option value="all">Everyone (Learners + Guardians + Teachers)</option>
+          <option value="individual">Individual (by phone number)</option>
+        </select>
+      </div>
+
+      <!-- Individual phone -->
+      <div *ngIf="recipientType === 'individual'">
+        <label class="font-[Fredoka] font-semibold text-gray-700 text-sm mb-1 block">Phone Number</label>
+        <input [(ngModel)]="individualPhone" type="text" placeholder="+254711000000"
+          class="w-full border border-gray-200 rounded-xl px-3 py-2 font-[Fredoka] text-gray-700 focus:outline-none focus:ring-2 focus:ring-green-500"/>
+      </div>
+
+      <!-- Subject -->
+      <div [class.md:col-span-2]="recipientType !== 'individual'">
+        <label class="font-[Fredoka] font-semibold text-gray-700 text-sm mb-1 block">Subject (optional)</label>
+        <input [(ngModel)]="subject" type="text" placeholder="e.g. Staff Meeting"
+          class="w-full border border-gray-200 rounded-xl px-3 py-2 font-[Fredoka] text-gray-700 focus:outline-none focus:ring-2 focus:ring-green-500"/>
+      </div>
+    </div>
+
+    <!-- Message -->
+    <div class="mb-4">
+      <label class="font-[Fredoka] font-semibold text-gray-700 text-sm mb-1 block">Message</label>
+      <textarea [(ngModel)]="message" (ngModelChange)="onMessageChange()" rows="4"
+        placeholder="Type your SMS message here..."
+        maxlength="160"
+        class="w-full border border-gray-200 rounded-xl px-3 py-2 font-[Fredoka] text-gray-700 focus:outline-none focus:ring-2 focus:ring-green-500 resize-none">
+      </textarea>
+      <div class="flex justify-end mt-1">
+        <span class="font-[Fredoka] text-xs" [class.text-red-500]="charCount > 140" [class.text-gray-400]="charCount <= 140">
+          {{ charCount }}/160
+        </span>
+      </div>
+    </div>
+
+    <button (click)="send()" [disabled]="isSending || !message.trim()"
+      class="w-full md:w-auto px-8 py-3 bg-green-700 text-white rounded-xl font-[Fredoka] font-bold text-base hover:bg-green-800 transition-colors disabled:opacity-50 disabled:cursor-not-allowed flex items-center gap-2">
+      <svg *ngIf="!isSending" xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+        <path stroke-linecap="round" stroke-linejoin="round" d="M12 19l9 2-9-18-9 18 9-2zm0 0v-8"/>
+      </svg>
+      {{ isSending ? 'Sending...' : 'Send SMS' }}
+    </button>
+  </div>
+
+  <!-- Sent Log -->
+  <div *ngIf="logs.length > 0" class="bg-white rounded-2xl p-6 shadow-sm border border-gray-100">
+    <h2 class="font-[Fredoka] font-bold text-xl text-gray-800 mb-4">Recent Sent</h2>
+    <div class="overflow-x-auto">
+      <table class="w-full">
+        <thead>
+          <tr class="border-b border-gray-100">
+            <th class="text-left py-2 font-[Fredoka] font-semibold text-gray-500 text-sm">Time</th>
+            <th class="text-left py-2 font-[Fredoka] font-semibold text-gray-500 text-sm">Recipients</th>
+            <th class="text-left py-2 font-[Fredoka] font-semibold text-gray-500 text-sm">Message</th>
+            <th class="text-left py-2 font-[Fredoka] font-semibold text-gray-500 text-sm">Status</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let log of logs" class="border-b border-gray-50">
+            <td class="py-2 font-[Fredoka] text-gray-600 text-sm">{{ log.time }}</td>
+            <td class="py-2 font-[Fredoka] text-gray-800 text-sm font-semibold">{{ log.recipients }}</td>
+            <td class="py-2 font-[Fredoka] text-gray-600 text-sm">{{ log.message }}</td>
+            <td class="py-2 font-[Fredoka] text-green-600 text-sm font-semibold">{{ log.status }}</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+</div>

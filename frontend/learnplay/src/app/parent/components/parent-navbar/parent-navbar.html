@@ -29,6 +29,48 @@
       Welcome, {{ userName }}!
     </span>
 
+    <!-- Notification Bell -->
+    <div class="relative" (click)="$event.stopPropagation()">
+      <button (click)="toggleNotifications()"
+        class="relative bg-white bg-opacity-20 hover:bg-opacity-30 rounded-full w-[45px] h-[45px] md:w-[52px] md:h-[52px] flex items-center justify-center transition-all duration-200 hover:scale-105">
+        <svg xmlns="http://www.w3.org/2000/svg" class="w-[20px] h-[20px] md:w-[22px] md:h-[22px] text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+          <path stroke-linecap="round" stroke-linejoin="round" d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9"/>
+        </svg>
+        <span *ngIf="unreadCount > 0"
+          class="absolute -top-1 -right-1 bg-red-500 text-white text-[10px] font-bold rounded-full w-5 h-5 flex items-center justify-center">
+          {{ unreadCount > 9 ? '9+' : unreadCount }}
+        </span>
+      </button>
+
+      <!-- Notification Dropdown -->
+      <div *ngIf="notificationsOpen"
+        class="absolute right-0 top-[60px] w-[320px] bg-white rounded-2xl shadow-2xl z-[9999] overflow-hidden border border-gray-100">
+        <div class="flex items-center justify-between px-4 py-3 bg-green-700">
+          <span class="font-fredoka font-bold text-white text-lg">Notifications</span>
+          <button (click)="markAllRead()" class="font-fredoka text-green-200 text-sm hover:text-white">Mark all read</button>
+        </div>
+        <div class="max-h-[400px] overflow-y-auto">
+          <div *ngIf="notifications.length === 0" class="p-6 text-center">
+            <span class="text-4xl">🔔</span>
+            <p class="font-fredoka text-gray-500 mt-2">No notifications yet</p>
+          </div>
+          <div *ngFor="let n of notifications" (click)="markRead(n)"
+            class="flex gap-3 px-4 py-3 border-b border-gray-50 cursor-pointer hover:bg-gray-50 transition-colors"
+            [class.border-l-4]="!n.isRead" [class.border-l-green-500]="!n.isRead">
+            <div class="w-8 h-8 rounded-full bg-green-100 flex items-center justify-center flex-shrink-0 mt-1">
+              <span class="text-sm">{{ getNotifIcon(n.type) }}</span>
+            </div>
+            <div class="flex-1 min-w-0">
+              <p class="font-fredoka font-semibold text-gray-800 text-sm">{{ n.title }}</p>
+              <p class="font-fredoka text-gray-500 text-xs truncate">{{ n.message }}</p>
+              <p class="font-fredoka text-gray-400 text-xs mt-1">{{ getTimeAgo(n.createdAt) }}</p>
+            </div>
+            <div *ngIf="!n.isRead" class="w-2 h-2 bg-green-500 rounded-full mt-2 flex-shrink-0"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
     <!-- Role Switcher Chip — all screen sizes -->
     <div class="relative" (click)="$event.stopPropagation()">
       <!-- Mobile: static avatar only (not clickable) -->

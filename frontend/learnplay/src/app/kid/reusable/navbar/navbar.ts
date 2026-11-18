@@ -9,7 +9,9 @@ import { AnalyticsService } from '../../../services/analytics.service';
 import { AuthService } from '../../../services/auth.service';
 import { LearnersSummary } from '../../services/learners-summary/learners-summary';
 import { CameraStateService } from '../../../shared/services/camera-state.service';
-import { Subscription } from 'rxjs';
+import { HttpClient } from '@angular/common/http';
+import { Subscription, interval } from 'rxjs';
+import { environment } from '../../../../environments/environment';
 
 @Component({
   selector: 'app-navbar',
@@ -28,6 +30,12 @@ export class Navbar implements OnInit, OnDestroy {
   mobileMenuOpen = false;
   private cameraSub?: Subscription;
 
+  // Notifications
+  notificationsOpen = false;
+  notifications: any[] = [];
+  unreadCount = 0;
+  private notifPollSub?: Subscription;
+
   toggleSwitcherDropdown() {
     this.switcherOpen = !this.switcherOpen;
   }
@@ -43,6 +51,7 @@ export class Navbar implements OnInit, OnDestroy {
     private authService: AuthService,
     private summaryService: LearnersSummary,
     private cameraStateService: CameraStateService,
+    private http: HttpClient,
   ) {}
 
   ngOnInit(): void {
@@ -74,10 +83,15 @@ export class Navbar implements OnInit, OnDestroy {
 
     // Load initial points from summary
     this.refreshTotalPoints();
+
+    // Load notifications and poll every 30s
+    this.loadUnreadCount();
+    this.notifPollSub = interval(30000).subscribe(() => this.loadUnreadCount());
   }
 
   ngOnDestroy() {
     this.cameraSub?.unsubscribe();
+    this.notifPollSub?.unsubscribe();
   }
 
   getAvatarPath(learner: any): string {
@@ -282,5 +296,57 @@ export class Navbar implements OnInit, OnDestroy {
       learner_name: this.selectedLearner?.firstName
     });
   }
+
+  // ── Notifications ──────────────────────────────────────────────────────────
+  toggleNotifications() {
+    this.notificationsOpen = !this.notificationsOpen;
+    if (this.notificationsOpen) this.loadNotifications();
+  }
+
+  loadNotifications() {
+    this.http.get<any[]>(`${environment.apiUrl}/notifications/my`, { withCredentials: true })
+      .subscribe({ next: (data) => { this.notifications = data; }, error: () => {} });
+  }
+
+  loadUnreadCount() {
+    this.http.get<{ count: number }>(`${environment.apiUrl}/notifications/my/unread-count`, { withCredentials: true })
+      .subscribe({ next: (res) => { this.unreadCount = res.count; }, error: () => {} });
+  }
+
+  markRead(n: any) {
+    if (n.isRead) return;
+    this.http.post(`${environment.apiUrl}/notifications/mark-read/${n.id}`, {}, { withCredentials: true })
+      .subscribe({ next: () => { n.isRead = true; this.unreadCount = Math.max(0, this.unreadCount - 1); }, error: () => {} });
+  }
+
+  markAllRead() {
+    this.http.post(`${environment.apiUrl}/notifications/mark-all-read`, {}, { withCredentials: true })
+      .subscribe({ next: () => { this.notifications.forEach(n => n.isRead = true); this.unreadCount = 0; }, error: () => {} });
+  }
+
+  getNotifIcon(type: string): string {
+    switch (type) {
+      case 'LESSON': return '📚';
+      case 'REMINDER': return '⏰';
+      case 'REWARD': return '🏆';
+      case 'ANNOUNCEMENT': return '📢';
+      case 'SMS': return '💬';
+      default: return '🔔';
+    }
+  }
+
+  getTimeAgo(dateStr: string): string {
+    if (!dateStr) return '';
+    const now = new Date();
+    const date = new Date(dateStr);
+    const diff = Math.floor((now.getTime() - date.getTime()) / 1000);
+    if (diff < 60) return 'just now';
+    if (diff < 3600) return Math.floor(diff / 60) + 'm ago';
+    if (diff < 86400) return Math.floor(diff / 3600) + 'h ago';
+    return Math.floor(diff / 86400) + 'd ago';
+  }
+
+  @HostListener('document:click')
+  onDocumentClick() { this.notificationsOpen = false; }
 
 }

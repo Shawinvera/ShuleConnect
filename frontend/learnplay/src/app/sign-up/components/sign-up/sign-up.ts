@@ -118,7 +118,7 @@ export class SignUp {
     const username = usingPhone ? this.fullPhone : this.email.trim().toUpperCase();
     const userTimezone = Intl.DateTimeFormat().resolvedOptions().timeZone || 'UTC';
     const countryCode = Intl.DateTimeFormat().resolvedOptions().locale?.split('-')[1] || '';
-    const userData = {
+    const userData: any = {
       username,
       password: this.password,
       firstName: nameParts[0],
@@ -127,6 +127,11 @@ export class SignUp {
       userTimezone,
       countryCode,
     };
+
+    // For email signup, include phone number so OTP can be sent via AT SMS
+    if (!usingPhone && this.fullPhone) {
+      userData.phoneNumber = this.fullPhone;
+    }
 
     this.http.post(`${environment.apiUrl}/auth/registration`, userData).subscribe({
       next: (response: any) => {
