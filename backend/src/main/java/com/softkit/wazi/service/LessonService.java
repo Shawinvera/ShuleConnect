@@ -162,6 +162,12 @@ public class LessonService {
         update.set(lesson.duration, lessonDto.getDuration());
         update.set(lesson.trailer, lessonDto.getTrailer());
         update.set(lesson.points, lessonDto.getPoints());
+        update.set(lesson.hasAssignment, lessonDto.getHasAssignment());
+        update.set(lesson.assignmentTitle, lessonDto.getAssignmentTitle());
+        update.set(lesson.assignmentDeadline, lessonDto.getAssignmentDeadline());
+        update.set(lesson.hasExam, lessonDto.getHasExam());
+        update.set(lesson.examName, lessonDto.getExamName());
+        update.set(lesson.examDate, lessonDto.getExamDate());
         update.where(lesson.id.eq(lessonDto.getId()));
 
         long affectedRows = update.execute();

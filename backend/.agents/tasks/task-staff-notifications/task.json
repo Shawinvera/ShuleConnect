@@ -1,0 +1,7 @@
+{
+  "task_id": "task-staff-notifications",
+  "task_description": "Implement the Teacher & School Coordination SMS feature: a Spring Boot controller+service for broadcasting SMS to teachers/admins/all-staff/individuals via ATService, plus an Angular 20 Staff Notifications page (broadcast cards, compose form, history log) wired into the teacher sidebar and routing module.",
+  "status": "pending",
+  "feature_order": ["FEAT-001", "FEAT-002"],
+  "blocked_reason": null
+}

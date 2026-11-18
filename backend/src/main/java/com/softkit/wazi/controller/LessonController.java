@@ -1,9 +1,11 @@
 package com.softkit.wazi.controller;
 
+import com.softkit.wazi.component.ReminderScheduler;
 import com.softkit.wazi.model.*;
 import com.softkit.wazi.service.SubTopicService;
 import com.softkit.wazi.service.LessonService;
 import com.softkit.wazi.util.ResponseUtils;
+import jakarta.mail.MessagingException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -17,6 +19,7 @@ import java.util.List;
 @RequiredArgsConstructor
 public class LessonController {
     private final LessonService lessonService;
+    private final ReminderScheduler reminderScheduler;
 
     @PostMapping("")
     public ResponseEntity<?> createLesson(@RequestBody LessonDto subTopicDto) {
@@ -65,5 +68,17 @@ public class LessonController {
     ) {
         List<SubjectLessonDto> lessons= lessonService.lessonFetch(gradeSubjectId, learnerId);
         return  ResponseEntity.ok(lessons);
+    }
+
+    @PostMapping("/reminders/trigger")
+    public ResponseEntity<?> triggerReminders() throws MessagingException {
+        reminderScheduler.dailyReminders();
+        return ResponseEntity.ok("Reminders triggered");
+    }
+
+    @PostMapping("/daily/send")
+    public ResponseEntity<?> sendDailyLesson() throws MessagingException {
+        reminderScheduler.dailyReminders();
+        return ResponseEntity.ok("Daily lesson SMS dispatched");
     }
 }

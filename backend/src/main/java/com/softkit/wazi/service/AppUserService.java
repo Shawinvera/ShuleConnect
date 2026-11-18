@@ -85,11 +85,8 @@ public class AppUserService {
                     }
                     return ResponseUtils.badRequestErrorResponse("User is already having an account. Proceed to login");
                 }else {
-                    if (isEmail) {
-                        sendActivationEmail(appUser);
-                    }else{
-                        sendActivationOtp(appUser);
-                    }
+                    // Always use AT SMS for OTP — Brevo email disabled
+                    sendActivationOtp(appUser);
                     return ResponseUtils.entryCreatedResponse(appUser.getId(), "User");
                 }
             }
@@ -114,14 +111,17 @@ public class AppUserService {
             appUser.setActivated(false);
             appUser.setOtp(otp);
 
+            // Always set phone number on the entity if provided
+            if (appUserDto.getPhoneNumber() != null && !appUserDto.getPhoneNumber().isBlank()) {
+                appUser.setPhoneNumber(StringUtils.formatPhoneNumber(appUserDto.getPhoneNumber()));
+            }
+
             appUserRepo.save(appUser);
-            if (isEmail) {
-                sendActivationEmail(appUser);
-            }else{
-                //only send otp if in prod. This is to minimize cost
-                if(!isDev) {
-                    sendActivationOtp(appUser);
-                }
+            // Always send OTP via AT SMS — requires phoneNumber in registration body
+            if (!isDev) {
+                sendActivationOtp(appUser);
+            } else {
+                log.info("DEV mode - OTP for {} is: {}", username, appUser.getOtp());
             }
 
             return ResponseUtils.entryCreatedResponse(appUser.getId(), "User");
@@ -135,16 +135,22 @@ public class AppUserService {
     }
 
     private void sendActivationOtp(AppUser appUser) {
-        String message = "Your Wazi account activation OTP is: "+appUser.getOtp();
+        String message = "Your ShuleConnect account activation OTP is: " + appUser.getOtp();
         try {
-            atService.sendSms(appUser.getPhoneNumber(), message);
+            // Send via AT SMS if phone number is available
+            String phone = appUser.getPhoneNumber();
+            if (phone != null && !phone.isBlank()) {
+                atService.sendSms(phone, message);
+            } else {
+                log.warn("No phone number available for user {}, skipping OTP SMS", appUser.getUsername());
+            }
         } catch (MessagingException e) {
             log.error("Error sending Activation OTP with error {}", e.getMessage());
         }
     }
 
     private void sendPasswordReset(String phoneNumber, String otp) {
-        String message = "Your Wazi Password reset OTP is: "+otp;
+        String message = "Your ShuleConnect Password reset OTP is: " + otp;
         try {
             atService.sendSms(phoneNumber, message);
         } catch (MessagingException e) {

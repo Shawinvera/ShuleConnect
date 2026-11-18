@@ -1,0 +1,7 @@
+{
+  "task_id": "task-deadline-sms",
+  "task_description": "Add lesson deadline fields (assignment + exam), a scheduled SMS reminder via Africa's Talking, and manual trigger endpoints to ShuleConnect backend; show deadline badges on the Angular kid lesson card and add deadline inputs to the teacher lesson form.",
+  "status": "pending",
+  "feature_order": ["FEAT-001", "FEAT-002"],
+  "blocked_reason": null
+}

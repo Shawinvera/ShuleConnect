@@ -37,6 +37,12 @@ public class Lesson {
     private Double duration;
     private Boolean trailer;
     private Long points;
+    private Instant assignmentDeadline;
+    private String assignmentTitle;
+    private Instant examDate;
+    private String examName;
+    private Boolean hasAssignment;
+    private Boolean hasExam;
 
     @PrePersist
     protected void onCreate(){

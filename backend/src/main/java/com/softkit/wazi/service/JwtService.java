@@ -18,10 +18,10 @@ import java.util.function.Function;
 @Component
 @RequiredArgsConstructor
 public class JwtService {
-    @Value("${security.jwt.secret}")
+    @Value("${app.jwt.secret}")
     private String secret;
 
-    @Value("${security.jwt.access-expiration}")
+    @Value("${app.jwt.access-expiration}")
     private Long accessExpiration;
 
     public String generateAccessToken(UserDetailsExtended userDetails, String tokenId) {

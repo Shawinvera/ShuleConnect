@@ -1,0 +1,33 @@
+{
+  "id": "FEAT-002",
+  "type": "feat",
+  "description": "Frontend: extend LessonSummary interface with deadline fields, add assignment and exam deadline inputs to the teacher lesson form (manage-lessons-notes), and show deadline badges on the kid lesson card. FEAT-002 is independent of FEAT-001 at the TypeScript level (interface fields are optional), but should be implemented after FEAT-001 so the backend can return the new fields.",
+  "status": "pending",
+  "steps": [
+    "Step 1 — lesson.ts: in the `LessonSummary` interface, add after `locked?: boolean;`: `assignmentDeadline?: string; assignmentTitle?: string; examDate?: string; examName?: string; hasAssignment?: boolean; hasExam?: boolean;`. All fields are optional so existing code that creates LessonSummary objects is unaffected.",
+    "Step 2 — manage-lessons-notes.ts (component properties): add six properties after the `points` field: `hasAssignment: boolean = false; assignmentTitle: string = ''; assignmentDeadline: string = ''; hasExam: boolean = false; examName: string = ''; examDate: string = '';`. The types use string for datetime-local input binding; conversion to ISO string happens in saveLesson().",
+    "Step 3 — manage-lessons-notes.ts (saveLesson): extend the `lessonData` inline object literal with six new keys: `hasAssignment: this.hasAssignment, assignmentTitle: this.hasAssignment ? this.assignmentTitle : null, assignmentDeadline: this.hasAssignment && this.assignmentDeadline ? new Date(this.assignmentDeadline).toISOString() : null, hasExam: this.hasExam, examName: this.hasExam ? this.examName : null, examDate: this.hasExam && this.examDate ? new Date(this.examDate).toISOString() : null`.",
+    "Step 4 — manage-lessons-notes.ts (resetForm): add reset lines for all six properties after `this.noteContent = '';`: `this.hasAssignment = false; this.assignmentTitle = ''; this.assignmentDeadline = ''; this.hasExam = false; this.examName = ''; this.examDate = '';`.",
+    "Step 5 — manage-lessons-notes.ts (editLesson): after `this.noteContent = lesson.content || '';`, add: `this.hasAssignment = lesson.hasAssignment || false; this.assignmentTitle = lesson.assignmentTitle || ''; this.assignmentDeadline = lesson.assignmentDeadline ? new Date(lesson.assignmentDeadline).toISOString().slice(0, 16) : ''; this.hasExam = lesson.hasExam || false; this.examName = lesson.examName || ''; this.examDate = lesson.examDate ? new Date(lesson.examDate).toISOString().slice(0, 16) : '';`. Also add the same fields to the `originalLesson` object literal inside editLesson, and extend the `isLessonFormChanged` getter to include: `|| this.hasAssignment !== this.originalLesson.hasAssignment || this.assignmentTitle !== this.originalLesson.assignmentTitle || this.assignmentDeadline !== this.originalLesson.assignmentDeadline || this.hasExam !== this.originalLesson.hasExam || this.examName !== this.originalLesson.examName || this.examDate !== this.originalLesson.examDate`.",
+    "Step 6 — manage-lessons-notes.ts (loadLessons): in the `lessons.map(lesson => ({ ... }))` object, add: `hasAssignment: lesson.hasAssignment || false, assignmentTitle: lesson.assignmentTitle || '', assignmentDeadline: lesson.assignmentDeadline || null, hasExam: lesson.hasExam || false, examName: lesson.examName || '', examDate: lesson.examDate || null`.",
+    "Step 7 — manage-lessons-notes.html: add the assignment and exam toggle blocks inside the `<form>`, after the Points `<div class=\"pb-[40px]\">` block and before the yellow Lesson Notes card. Assignment block: a `<div class=\"pb-[40px]\">` containing a flex row with label 'Has Assignment?' + `[(ngModel)]=\"hasAssignment\" name=\"hasAssignment\"` checkbox, and a conditional `*ngIf=\"hasAssignment\"` panel styled `bg-green-50 border border-green-600 rounded-xl p-4` containing: (a) text input bound to `[(ngModel)]=\"assignmentTitle\" name=\"assignmentTitle\"` placeholder 'e.g. Chapter 3 Exercise', (b) `type=\"datetime-local\"` input bound to `[(ngModel)]=\"assignmentDeadline\" name=\"assignmentDeadline\"`. Exam block: same structure for `hasExam`/`examName`/`examDate`. Both blocks use Tailwind classes: label `text-green-700`, input borders `border-green-600`, bg `bg-green-50`, focus ring `focus:ring-green-500`. Match the font/size/padding of existing form fields (`font-fredoka font-semibold text-[20px]`, `h-[60px]`, `rounded-[20px]`, `px-[20px]`).",
+    "Step 8 — lesson-card.ts: add two helper methods to the `LessonCard` class: `isFuture(dateStr: string): boolean { return new Date(dateStr) > new Date(); }` and `formatDeadline(dateStr: string): string { return new Date(dateStr).toLocaleDateString('en-KE', { day: 'numeric', month: 'short', year: 'numeric', hour: '2-digit', minute: '2-digit' }); }`.",
+    "Step 9 — lesson-card.html: add a badge block inside the INFO SECTION div, after the hidden-md description comment block and before the `<!-- Footer Action -->` div: `<div class=\"flex flex-col gap-1 mt-1\"><span *ngIf=\"lesson.hasAssignment && lesson.assignmentDeadline && isFuture(lesson.assignmentDeadline)\" class=\"inline-flex items-center gap-1 bg-orange-100 text-orange-700 text-[11px] md:text-xs font-bold px-2 py-0.5 rounded-md\">📝 Due: {{ formatDeadline(lesson.assignmentDeadline) }}</span><span *ngIf=\"lesson.hasExam && lesson.examDate && isFuture(lesson.examDate)\" class=\"inline-flex items-center gap-1 bg-red-100 text-red-700 text-[11px] md:text-xs font-bold px-2 py-0.5 rounded-md\">📋 Exam: {{ formatDeadline(lesson.examDate) }}</span></div>`."
+  ],
+  "acceptance_criteria": [
+    "`ng build` from c:\\Users\\PC\\ShuleConnect\\frontend\\learnplay exits 0 with no TypeScript errors.",
+    "Teacher form renders 'Has Assignment?' checkbox; when checked, shows assignment title input and datetime-local deadline picker styled green.",
+    "Teacher form renders 'Has Exam?' checkbox; when checked, shows exam name and datetime-local exam date picker.",
+    "saveLesson() sends hasAssignment, assignmentTitle, assignmentDeadline (ISO string), hasExam, examName, examDate to the backend.",
+    "editLesson() repopulates all six deadline fields correctly from an existing lesson.",
+    "resetForm() clears all six fields back to defaults.",
+    "lesson-card.html shows an orange '📝 Due: ...' badge when hasAssignment=true and assignmentDeadline is in the future.",
+    "lesson-card.html shows a red '📋 Exam: ...' badge when hasExam=true and examDate is in the future.",
+    "No badge is shown when deadline/examDate is in the past or absent."
+  ],
+  "verification": [
+    "Run `ng build` from c:\\Users\\PC\\ShuleConnect\\frontend\\learnplay — expect exit 0 and no TypeScript compilation errors."
+  ],
+  "blocked_reason": null,
+  "findings": ""
+}

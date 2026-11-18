@@ -12,6 +12,7 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
+import java.time.Instant;
 import java.util.List;
 
 @Repository
@@ -108,4 +109,13 @@ public interface LessonRepo extends JpaRepository<Lesson, String> {
 
     @Query("SELECT l.points FROM Lesson l WHERE l.id = :lessonId")
     Long findLessonPointsByLessonId(String lessonId);
+
+    @Query("SELECT l FROM Lesson l WHERE l.hasAssignment = true AND l.assignmentDeadline BETWEEN :now AND :deadline")
+    List<Lesson> findUpcomingAssignments(@Param("now") Instant now, @Param("deadline") Instant deadline);
+
+    @Query("SELECT l FROM Lesson l WHERE l.hasExam = true AND l.examDate BETWEEN :now AND :examDate")
+    List<Lesson> findUpcomingExams(@Param("now") Instant now, @Param("examDate") Instant examDate);
+
+    @Query("SELECT l FROM Lesson l WHERE l.active = true ORDER BY l.createdAt DESC")
+    List<Lesson> findLatestActiveLesson(Pageable pageable);
 }

@@ -1,3 +1,7 @@
 /target/
 target/
 /.idea/
+
+# Environment secrets — never commit
+.env
+*.env

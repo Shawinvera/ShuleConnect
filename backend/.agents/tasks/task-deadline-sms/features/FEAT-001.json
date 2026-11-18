@@ -1,0 +1,29 @@
+{
+  "id": "FEAT-001",
+  "type": "feat",
+  "description": "Backend: add six deadline fields to Lesson entity + LessonDto, wire them through LessonService.updateLesson (QueryDSL JPAUpdateClause), add three JPQL repo queries to LessonRepo, add findAllLearnersWithPhones to LearnerRepo, create ReminderScheduler component with @Scheduled daily job, add @EnableScheduling to WaziApplication, and add two manual-trigger endpoints to LessonController.",
+  "status": "pending",
+  "steps": [
+    "Step 1 — Lesson.java: add six fields after `private Long points;`: `private Instant assignmentDeadline;`, `private String assignmentTitle;`, `private Instant examDate;`, `private String examName;`, `private Boolean hasAssignment;`, `private Boolean hasExam;`. No new annotations needed — Hibernate will add columns via ddl-auto=update.",
+    "Step 2 — LessonDto.java: add the same six fields (same types) after `private Boolean learnerCompleted;`. LessonMapper has ReportingPolicy.IGNORE so MapStruct auto-wires these; no mapper changes needed.",
+    "Step 3 — LessonService.java: in the `updateLesson` method, inside the JPAUpdateClause block after `update.set(lesson.points, lessonDto.getPoints());`, add: `update.set(lesson.hasAssignment, lessonDto.getHasAssignment()); update.set(lesson.assignmentTitle, lessonDto.getAssignmentTitle()); update.set(lesson.assignmentDeadline, lessonDto.getAssignmentDeadline()); update.set(lesson.hasExam, lessonDto.getHasExam()); update.set(lesson.examName, lessonDto.getExamName()); update.set(lesson.examDate, lessonDto.getExamDate());`. The createLesson path uses lessonMapper.toLessonEntity() which auto-maps — no change there.",
+    "Step 4 — LessonRepo.java: add three query methods. Import `java.time.Instant` (already present via existing Instant usage). Method 1: `@Query(\"SELECT l FROM Lesson l WHERE l.hasAssignment = true AND l.assignmentDeadline BETWEEN :now AND :deadline\") List<Lesson> findUpcomingAssignments(@Param(\"now\") Instant now, @Param(\"deadline\") Instant deadline);`. Method 2: `@Query(\"SELECT l FROM Lesson l WHERE l.hasExam = true AND l.examDate BETWEEN :now AND :examDate\") List<Lesson> findUpcomingExams(@Param(\"now\") Instant now, @Param(\"examDate\") Instant examDate);`. Method 3: `@Query(\"SELECT l FROM Lesson l WHERE l.active = true ORDER BY l.createdAt DESC\") List<Lesson> findLatestActiveLesson(Pageable pageable);`. Pageable import `org.springframework.data.domain.Pageable` is already in the file.",
+    "Step 5 — LearnerRepo.java: add `@Query(\"SELECT l FROM Learner l JOIN FETCH l.appUser WHERE l.appUser.phoneNumber IS NOT NULL\") List<Learner> findAllLearnersWithPhones();`. JOIN FETCH avoids N+1 on the LAZY appUser relationship.",
+    "Step 6 — Create ReminderScheduler.java at `src/main/java/com/softkit/wazi/component/ReminderScheduler.java`. Package: `com.softkit.wazi.component`. Annotations: `@Component @RequiredArgsConstructor @Slf4j`. Fields: `private final LessonRepo lessonRepo; private final LearnerRepo learnerRepo; private final ATService atService;`. Method signature: `@Scheduled(cron = \"0 0 8 * * *\", zone = \"Africa/Nairobi\") public void dailyReminders() throws MessagingException`. Body: (a) return early if `StringUtils.isDevMode()`; (b) get `Instant now = Instant.now()` and `List<Learner> learners = learnerRepo.findAllLearnersWithPhones()`; (c) find assignment lessons via `lessonRepo.findUpcomingAssignments(now, now.plus(24, ChronoUnit.HOURS))`, loop lessons×learners calling `atService.sendAssignmentReminder(phone, lesson.getAssignmentTitle(), lesson.getAssignmentDeadline())`; (d) find exam lessons via `lessonRepo.findUpcomingExams(now, now.plus(48, ChronoUnit.HOURS))`, same loop calling `atService.sendExamReminder`; (e) find latest active lesson via `lessonRepo.findLatestActiveLesson(PageRequest.of(0, 1))`, strip HTML tags with `replaceAll(\"<[^>]*>\", \"\")`, take first 100 chars, loop learners calling `atService.sendDailyLesson(phone, name, summary)`. Imports needed: `java.time.Instant`, `java.time.temporal.ChronoUnit`, `java.util.List`, `org.springframework.data.domain.PageRequest`, `org.springframework.scheduling.annotation.Scheduled`, `jakarta.mail.MessagingException`, all entity and repo imports.",
+    "Step 7 — WaziApplication.java: add `import org.springframework.scheduling.annotation.EnableScheduling;` and `@EnableScheduling` annotation directly below the existing `@EnableAsync`.",
+    "Step 8 — LessonController.java: add `private final ReminderScheduler reminderScheduler;` field (Lombok @RequiredArgsConstructor already on class will inject it). Add import `com.softkit.wazi.component.ReminderScheduler` and `jakarta.mail.MessagingException`. Add two endpoints: `@PostMapping(\"/reminders/trigger\") public ResponseEntity<?> triggerReminders() throws MessagingException { reminderScheduler.dailyReminders(); return ResponseEntity.ok(\"Reminders triggered\"); }` and `@PostMapping(\"/daily/send\") public ResponseEntity<?> sendDailyLesson() throws MessagingException { reminderScheduler.dailyReminders(); return ResponseEntity.ok(\"Daily lesson SMS dispatched\"); }`."
+  ],
+  "acceptance_criteria": [
+    "`.\\mvnw.cmd compile` from c:\\Users\\PC\\ShuleConnect\\backend exits 0 with BUILD SUCCESS.",
+    "Lesson entity class compiles with six new fields and no missing imports.",
+    "ReminderScheduler.java exists at the component package path and compiles without errors.",
+    "@EnableScheduling is present on WaziApplication class.",
+    "LessonController compiles with two new endpoints and ReminderScheduler injection.",
+    "No existing tests or endpoints are broken (compile-time guarantee)."
+  ],
+  "verification": [
+    "Run `.\\mvnw.cmd compile` from c:\\Users\\PC\\ShuleConnect\\backend — expect `BUILD SUCCESS` and exit code 0."
+  ],
+  "blocked_reason": null,
+  "findings": ""
+}

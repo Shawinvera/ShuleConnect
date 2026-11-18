@@ -1,0 +1,33 @@
+{
+  "project_type": "Spring Boot 3 / Java 17 backend (Maven) + Angular 20 standalone-component frontend",
+  "language": "Java 17 (backend), TypeScript / Angular 20 (frontend)",
+  "build_system": "Maven wrapper (mvnw.cmd) for backend; Angular CLI (ng) for frontend. Hibernate ddl-auto=update so new entity fields are column-added automatically on boot.",
+  "test_framework": "No unit tests exist in the codebase; compilation success is the verification gate.",
+  "build_command": "cd c:\\Users\\PC\\ShuleConnect\\backend && .\\mvnw.cmd compile   (backend)  |  cd c:\\Users\\PC\\ShuleConnect\\frontend\\learnplay && ng build  (frontend)",
+  "test_command": ".\\mvnw.cmd compile  (backend compile check only)",
+  "verification_instructions": "1. Run `.\\mvnw.cmd compile` from c:\\Users\\PC\\ShuleConnect\\backend — must exit 0 with BUILD SUCCESS. 2. Run `ng build` from c:\\Users\\PC\\ShuleConnect\\frontend\\learnplay — must exit 0 with no TypeScript errors.",
+  "snapshot_or_generated_files": "MapStruct generates LessonMapper implementation at compile time under target/generated-sources. No checked-in generated files.",
+  "environment_constraints": "Windows PowerShell shell. Backend runs on port 8112. Do NOT restart the running backend server. Africa's Talking sandbox credentials are in application.yaml: username=sandbox, api-key from AT_API_KEY env var. Dev mode guard: StringUtils.isDevMode() returns true when env SPRING_PROFILES_ACTIVE contains 'dev'.",
+  "contribution_requirements": "No AGENTS.md found. Follow existing code patterns: Lombok on entities, @Repository interfaces with JPQL @Query, @Service with @RequiredArgsConstructor @Slf4j, @RestController with @RequestMapping. Standalone Angular components with FormsModule [(ngModel)] two-way binding and Tailwind CSS classes.",
+  "key_patterns": "Entity fields: plain Java types, no extra JPA annotations for simple columns. ID: set in @PrePersist via UuidGenerator.generateEntityUuid('prefix'). DTOs: extend BaseDto (holds id), plain Lombok @Getter @Setter @AllArgsConstructor @NoArgsConstructor. MapStruct mapper has ReportingPolicy.IGNORE so new matching fields auto-map. updateLesson uses QueryDSL JPAUpdateClause — every field being updated needs an explicit update.set() call. ATService methods are @Async('asyncTaskExecutor') and each checks StringUtils.isDevMode() at top. Frontend: standalone components, CommonModule + FormsModule imported directly. lesson-card.html uses *ngIf directives. Teacher form binds individual component properties via [(ngModel)] and assembles a plain object in saveLesson().",
+  "relevant_files": [
+    "c:\\Users\\PC\\ShuleConnect\\backend\\src\\main\\java\\com\\softkit\\wazi\\entities\\Lesson.java",
+    "c:\\Users\\PC\\ShuleConnect\\backend\\src\\main\\java\\com\\softkit\\wazi\\model\\LessonDto.java",
+    "c:\\Users\\PC\\ShuleConnect\\backend\\src\\main\\java\\com\\softkit\\wazi\\service\\LessonService.java",
+    "c:\\Users\\PC\\ShuleConnect\\backend\\src\\main\\java\\com\\softkit\\wazi\\controller\\LessonController.java",
+    "c:\\Users\\PC\\ShuleConnect\\backend\\src\\main\\java\\com\\softkit\\wazi\\repository\\LessonRepo.java",
+    "c:\\Users\\PC\\ShuleConnect\\backend\\src\\main\\java\\com\\softkit\\wazi\\repository\\LearnerRepo.java",
+    "c:\\Users\\PC\\ShuleConnect\\backend\\src\\main\\java\\com\\softkit\\wazi\\service\\ATService.java",
+    "c:\\Users\\PC\\ShuleConnect\\backend\\src\\main\\java\\com\\softkit\\wazi\\WaziApplication.java",
+    "c:\\Users\\PC\\ShuleConnect\\backend\\src\\main\\java\\com\\softkit\\wazi\\entities\\Learner.java",
+    "c:\\Users\\PC\\ShuleConnect\\backend\\src\\main\\java\\com\\softkit\\wazi\\entities\\AppUser.java",
+    "c:\\Users\\PC\\ShuleConnect\\backend\\src\\main\\java\\com\\softkit\\wazi\\mapper\\LessonMapper.java",
+    "c:\\Users\\PC\\ShuleConnect\\backend\\src\\main\\java\\com\\softkit\\wazi\\util\\StringUtils.java",
+    "c:\\Users\\PC\\ShuleConnect\\frontend\\learnplay\\src\\app\\kid\\services\\lesson\\lesson.ts",
+    "c:\\Users\\PC\\ShuleConnect\\frontend\\learnplay\\src\\app\\kid\\reusable\\lesson-card\\lesson-card.ts",
+    "c:\\Users\\PC\\ShuleConnect\\frontend\\learnplay\\src\\app\\kid\\reusable\\lesson-card\\lesson-card.html",
+    "c:\\Users\\PC\\ShuleConnect\\frontend\\learnplay\\src\\app\\teacher\\components\\manage-lessons-notes\\manage-lessons-notes.ts",
+    "c:\\Users\\PC\\ShuleConnect\\frontend\\learnplay\\src\\app\\teacher\\components\\manage-lessons-notes\\manage-lessons-notes.html"
+  ],
+  "directory_structure": "backend/src/main/java/com/softkit/wazi/ — entities/ (JPA entities), model/ (DTOs), service/ (business logic), controller/ (REST endpoints), repository/ (Spring Data repos), mapper/ (MapStruct), component/ (scheduled tasks — NEW), util/ (helpers). frontend/learnplay/src/app/ — kid/ (learner-facing: components, services, reusable), teacher/ (teacher-facing: components, services), shared/ (notification, spinner, toast)."
+}

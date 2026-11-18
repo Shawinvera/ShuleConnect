@@ -5,6 +5,8 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.time.Instant;
+
 @Getter
 @Setter
 @AllArgsConstructor
@@ -20,4 +22,10 @@ public class LessonDto extends BaseDto {
     private Boolean trailer;
     private Long points;
     private Boolean learnerCompleted;
+    private Instant assignmentDeadline;
+    private String assignmentTitle;
+    private Instant examDate;
+    private String examName;
+    private Boolean hasAssignment;
+    private Boolean hasExam;
 }

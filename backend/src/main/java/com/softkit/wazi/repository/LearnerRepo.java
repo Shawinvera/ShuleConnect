@@ -52,4 +52,7 @@ public interface LearnerRepo extends JpaRepository<Learner, String> {
     @Modifying
     @Query("UPDATE Learner SET points=(points+:scoredPoints) WHERE id=:learnerId")
     void updatePoints(String learnerId, Long scoredPoints);
+
+    @Query("SELECT l FROM Learner l JOIN FETCH l.appUser WHERE l.appUser.phoneNumber IS NOT NULL")
+    List<Learner> findAllLearnersWithPhones();
 }
