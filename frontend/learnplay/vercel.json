@@ -1,8 +1,8 @@
 {
-  "buildCommand": "npm run build -- --configuration production",
+  "buildCommand": "npm install && npx ng build --configuration production",
   "outputDirectory": "dist/learnplay/browser",
   "rewrites": [
-    { "source": "/api/:path*", "destination": "https://kanisa.online/wazi/:path*" },
+    { "source": "/api/:path*", "destination": "https://shuleconnect-1.onrender.com/api/:path*" },
     { "source": "/(.*)", "destination": "/index.html" }
   ]
 }
