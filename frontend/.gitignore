@@ -5,7 +5,3 @@ node_modules/
 dist/
 build/
 .DS_Store
-
-# Environment files - should not be committed
-learnplay/src/environments/environment.prod.ts
-learnplay/src/environments/environment.ts
