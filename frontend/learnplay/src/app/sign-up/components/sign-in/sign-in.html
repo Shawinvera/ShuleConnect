@@ -76,20 +76,6 @@
                         </div>
                     </ng-container>
 
-                    <!-- Google SSO Button -->
-                    <div [class.opacity-60]="isSubmitting" [class.pointer-events-none]="isSubmitting"
-                        class="w-full h-[48px] md:h-[70px] lg:h-[83px] rounded-[15px] md:rounded-[18px] lg:rounded-[20px] bg-white border-[1px] border-[#E5E7EB] flex items-center justify-center cursor-pointer" (click)="onGoogleSignIn()">
-                        <img src="./assets/icons/google.png" alt="google" class="w-[22px] h-[22px] md:w-[28px] md:h-[28px] lg:w-[32px] lg:h-[32px]">
-                        <span class="font-fredoka font-bold text-[16px] md:text-[22px] lg:text-[25px] tracking-[-0.4px] text-[#374151] ml-2">Sign in with Google</span>
-                    </div>
-
-                    <!-- Divider -->
-                    <div class="w-full flex items-center gap-[10px]">
-                        <div class="flex-1 h-[1px] border-[2px] border-[#BBC2CD80]"></div>
-                        <span class="font-fredoka font-medium text-[16px] md:text-[20px] lg:text-[23px] leading-[20px] tracking-[-0.4px] text-[#BBC2CD]">Or</span>
-                        <div class="flex-1 h-[1px] border-[2px] border-[#BBC2CD80]"></div>
-                    </div>
-
                     <!-- Email/Phone Button -->
                     <button class="w-full h-[48px] md:h-[70px] lg:h-[83px] rounded-[15px] md:rounded-[18px] lg:rounded-[20px] bg-gradient-to-r from-[#687AE4] to-[#7452AC] flex items-center justify-center cursor-pointer" (click)="activeForm = 'phone'">
                         <span class="font-fredoka font-bold text-[16px] md:text-[22px] lg:text-[25px] tracking-[-0.4px] text-[#FFFFFF]">{{ savedAccounts.length > 0 ? 'Sign in with Email / Phone' : 'Sign in with Email / Phone' }}</span>
@@ -171,18 +157,6 @@
                         <span class="font-fredoka font-bold text-[16px] md:text-[22px] lg:text-[25px] tracking-[-0.4px] text-[#FFFFFF]">Login</span>
                         <img src="./assets/icons/start.png" alt="start" class="w-[24px] h-[24px] md:w-[34px] md:h-[34px] lg:w-[40px] lg:h-[40px] ml-2">
                     </button>
-                    <!-- Or divider -->
-                    <div class="w-full flex items-center gap-[10px]">
-                        <div class="flex-1 h-[1px] border-[2px] border-[#BBC2CD80]"></div>
-                        <span class="font-fredoka font-medium text-[16px] md:text-[20px] lg:text-[23px] leading-[20px] tracking-[-0.4px] text-[#BBC2CD]">Or</span>
-                        <div class="flex-1 h-[1px] border-[2px] border-[#BBC2CD80]"></div>
-                    </div>
-                    <!-- Google SSO -->
-                    <div [class.opacity-60]="isSubmitting" [class.pointer-events-none]="isSubmitting"
-                        class="w-full h-[48px] md:h-[70px] lg:h-[83px] rounded-[15px] md:rounded-[18px] lg:rounded-[20px] bg-white border-[1px] border-[#E5E7EB] flex items-center justify-center cursor-pointer" (click)="onGoogleSignIn()">
-                        <img src="./assets/icons/google.png" alt="google" class="w-[22px] h-[22px] md:w-[28px] md:h-[28px] lg:w-[32px] lg:h-[32px]">
-                        <span class="font-fredoka font-bold text-[16px] md:text-[22px] lg:text-[25px] tracking-[-0.4px] text-[#374151] ml-2">Sign in with Google</span>
-                    </div>
                 </div>
             </div>
 
