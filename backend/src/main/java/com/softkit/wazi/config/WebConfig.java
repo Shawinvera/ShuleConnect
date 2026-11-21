@@ -28,7 +28,10 @@ public class WebConfig implements WebMvcConfigurer {
                 "https://wazi.softkit.net",
                 "capacitor://localhost",
                 "capacitor://127.0.0.1",
-                "https://69f9a4d68419ebd5ddb100a9--jade-capybara-e69f44.netlify.app"
+                "https://69f9a4d68419ebd5ddb100a9--jade-capybara-e69f44.netlify.app",
+                "https://shule-connect-learnplay.vercel.app",
+                "https://*.vercel.app",
+                "https://*.onrender.com"
         ));
         configuration.setAllowedMethods(List.of("GET", "POST", "PUT", "DELETE", "PATCH", "OPTIONS"));
         configuration.setAllowedHeaders(List.of("*"));

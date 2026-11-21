@@ -40,7 +40,9 @@ public class CookieService {
         "https://69f9a4d68419ebd5ddb100a9--jade-capybara-e69f44.netlify.app", //netlify url
         "https://app.learnplay.com", // update to the app url
         "https://learnplay.app", // update to the app url
-        "https://wazi-ten.vercel.app" // vercel url
+        "https://wazi-ten.vercel.app", // vercel url
+        "https://shule-connect-learnplay.vercel.app", // ShuleConnect production
+        "https://shule-connect-learnplay-git-main-opadeshawinvera-8240s-projects.vercel.app" // Vercel preview
     );
 
     public void createLoginCookie(
