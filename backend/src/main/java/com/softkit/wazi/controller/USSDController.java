@@ -23,9 +23,9 @@ public class USSDController {
             produces = MediaType.TEXT_PLAIN_VALUE
     )
     public ResponseEntity<String> handleUssd(
-            @RequestParam String sessionId,
-            @RequestParam String serviceCode,
-            @RequestParam String phoneNumber,
+            @RequestParam(required = false, defaultValue = "") String sessionId,
+            @RequestParam(required = false, defaultValue = "") String serviceCode,
+            @RequestParam(required = false, defaultValue = "") String phoneNumber,
             @RequestParam(required = false, defaultValue = "") String text) {
 
         String response = ussdService.processUssd(sessionId, serviceCode, phoneNumber, text);
