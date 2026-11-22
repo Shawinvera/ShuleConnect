@@ -4,6 +4,7 @@ import com.softkit.wazi.entities.Lesson;
 import com.softkit.wazi.entities.SubTopic;
 import com.softkit.wazi.model.LearnerDto;
 import com.softkit.wazi.model.LessonTrackerDto;
+import com.softkit.wazi.model.LessonQuizLessonOptionDto;
 import com.softkit.wazi.model.SubjectLessonDto;
 import com.softkit.wazi.model.SubjectLessonTrailDto;
 import org.springframework.data.domain.Pageable;
@@ -17,6 +18,16 @@ import java.util.List;
 
 @Repository
 public interface LessonRepo extends JpaRepository<Lesson, String> {
+    @Query("SELECT new com.softkit.wazi.model.LessonQuizLessonOptionDto(" +
+            "l.id, l.name, s.name, t.name, st.name) " +
+            "FROM Lesson l " +
+            "JOIN l.subTopic st " +
+            "JOIN st.topic t " +
+            "JOIN t.gradeSubject gs " +
+            "JOIN gs.subject s " +
+            "ORDER BY s.name, t.orderIndex, st.orderIndex, l.orderIndex")
+    List<LessonQuizLessonOptionDto> findLessonQuizOptions();
+
     /**
      * find lessons by subTopicId
      */

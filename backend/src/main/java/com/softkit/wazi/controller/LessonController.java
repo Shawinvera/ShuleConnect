@@ -4,6 +4,7 @@ import com.softkit.wazi.component.ReminderScheduler;
 import com.softkit.wazi.model.*;
 import com.softkit.wazi.service.SubTopicService;
 import com.softkit.wazi.service.LessonService;
+import com.softkit.wazi.service.LessonQuizService;
 import com.softkit.wazi.util.ResponseUtils;
 import jakarta.mail.MessagingException;
 import jakarta.servlet.http.HttpServletRequest;
@@ -20,6 +21,7 @@ import java.util.List;
 public class LessonController {
     private final LessonService lessonService;
     private final ReminderScheduler reminderScheduler;
+    private final LessonQuizService lessonQuizService;
 
     @PostMapping("")
     public ResponseEntity<?> createLesson(@RequestBody LessonDto subTopicDto) {
@@ -56,6 +58,10 @@ public class LessonController {
             HttpServletRequest request,
             @RequestBody LessonTrackerDto lessonTrackerDto
             ) {
+        if (!lessonQuizService.mayCompleteLesson(lessonTrackerDto.getLessonId(), lessonTrackerDto.getLearnerId())) {
+            return ResponseEntity.status(409)
+                    .body(java.util.Map.of("message", "Submit the lesson quiz before marking this lesson complete."));
+        }
         LessonTrackerDto resp = lessonService.markLessonComplete(lessonTrackerDto);
 
         return  ResponseEntity.ok(resp);
