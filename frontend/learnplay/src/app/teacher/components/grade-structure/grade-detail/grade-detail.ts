@@ -78,6 +78,7 @@ export class GradeDetailComponent implements OnInit {
       console.log('Active GradeSubject ID:', this.gradeSubjectId);
 
       this.loadSubjectsOnly();
+      this.loadAssignedSubjects();
       this.loadGradeDetails();
       this.updateUrlWithGradeId();
     });
