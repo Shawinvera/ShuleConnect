@@ -70,6 +70,19 @@ public class LearnerService {
                     .build();
         }
         Learner learner = _learner.get();
+        // Defensive null check — learner may have no grade (e.g. created via USSD)
+        if (learner.getGrade() == null) {
+            log.warn("Learner {} has no grade assigned", learnerId);
+            return LearnerTrackerSummaryDto.builder()
+                    .learnerId(learnerId)
+                    .streak(0)
+                    .subjects(new ArrayList<>())
+                    .lessonCount(0)
+                    .lessonCompletedCount(0)
+                    .percentageCompleted(0)
+                    .points(learner.getPoints() != null ? learner.getPoints() : 0L)
+                    .build();
+        }
         String gradeId = learner.getGrade().getId();
         List<SubjectLessonTrailDto> subjectLessonDtos = lessonRepo.fetchLessonsByGrade(gradeId);
         List<LessonTrackerDto> tracking = lessonRepo.fetchLearnerLessonTrack(learnerId);
@@ -79,7 +92,9 @@ public class LearnerService {
                 .map(a -> getLocalDateFromInstantAndTimezone(a.getCompletedAt(), a.getUserTimezone()))
                 .collect(Collectors.toCollection(TreeSet::new));
 
-        String timeZone = RequestContext.getThreadData().getUserTimezone();
+        // Defensive null check — thread data may be null in some contexts
+        ThreadData threadData = RequestContext.getThreadData();
+        String timeZone = threadData != null ? threadData.getUserTimezone() : null;
         int streak = calculateCurrentStreak(uniqueDays, timeZone);
         long learnerPoints = 0L;
 

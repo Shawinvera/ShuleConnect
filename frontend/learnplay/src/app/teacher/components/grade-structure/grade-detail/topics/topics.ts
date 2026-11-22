@@ -135,8 +135,8 @@ export class TopicsComponent implements OnInit {
     } else {
       const actualGradeSubjectId = this.gradeSubjectId || localGet('selectedGradeSubjectId');
 
-      if (!actualGradeSubjectId || !actualGradeSubjectId.startsWith('gradesubject-')) {
-        this.toast.show('Invalid grade-subject ID. Please go back and select a subject again.', 'error');
+      if (!actualGradeSubjectId) {
+        this.toast.show('No subject selected. Please go back and select a subject again.', 'error');
         return;
       }
 
