@@ -61,6 +61,8 @@ export class UnitContent implements OnInit {
     title: 'Loading...',
     videoTitle: '',
     videoId: '',
+    videoUrl: '',
+    videoThumbnailUrl: 'assets/images/lesson-thumb.png',
     duration: 0,
   };
 
@@ -299,13 +301,18 @@ export class UnitContent implements OnInit {
     // If lesson was already completed before, go straight to revision mode
     this.isRevisionMode = lesson.learnerCompleted;
 
-    // 1. Extract Video ID (Interface will be hidden if this is empty)
-    const vId = this.extractYouTubeId(lesson.videoUrl);
+    const videoUrl = lesson.videoUrl?.trim() || '';
+    const vId = this.extractYouTubeId(videoUrl);
+    const directVideoUrl = vId ? '' : this.getDirectVideoUrl(videoUrl);
 
     this.contentData = {
       title: lesson.name,
       videoTitle: lesson.name,
       videoId: vId,
+      videoUrl: directVideoUrl,
+      videoThumbnailUrl:
+        lesson.thumbnailUrl ||
+        (vId ? `https://img.youtube.com/vi/${vId}/sddefault.jpg` : 'assets/images/lesson-thumb.png'),
       duration: lesson.duration,
     };
 
@@ -338,17 +345,50 @@ export class UnitContent implements OnInit {
     return `${minutesPart}:${secondsPart}`;
   }
 
+  get hasVideo(): boolean {
+    return !!(this.contentData.videoId || this.contentData.videoUrl);
+  }
+
   private extractYouTubeId(url: string): string {
     if (!url) return '';
-    const regExp = /^.*(youtu.be\/|v\/|u\/\w\/|embed\/|watch\?v=|\&v=)([^#\&\?]*).*/;
-    const match = url.match(regExp);
 
-    // Check if match exists and the ID group [2] is the correct YouTube ID length (11)
-    if (match && match[2] && match[2].length === 11) {
-      return match[2];
-    } else {
+    try {
+      const parsedUrl = new URL(url);
+      const hostname = parsedUrl.hostname.toLowerCase().replace(/^www\./, '');
+      let videoId = '';
+
+      if (hostname === 'youtu.be') {
+        videoId = parsedUrl.pathname.split('/').filter(Boolean)[0] || '';
+      } else if (
+        ['youtube.com', 'm.youtube.com', 'music.youtube.com', 'youtube-nocookie.com'].includes(hostname)
+      ) {
+        videoId =
+          parsedUrl.searchParams.get('v') ||
+          parsedUrl.pathname.match(/^\/(?:embed|shorts|live)\/([^/?]+)/)?.[1] ||
+          '';
+      }
+
+      return /^[\w-]{11}$/.test(videoId) ? videoId : '';
+    } catch {
       return '';
     }
+  }
+
+  private getDirectVideoUrl(url: string): string {
+    try {
+      const parsedUrl = new URL(url);
+      const supportedVideoFile = /\.(mp4|m4v|webm|ogv|ogg|mov)$/i.test(parsedUrl.pathname);
+      return ['https:', 'http:'].includes(parsedUrl.protocol) && supportedVideoFile
+        ? parsedUrl.href
+        : '';
+    } catch {
+      return '';
+    }
+  }
+
+  onVideoError(): void {
+    this.isVideoPlaying = false;
+    this.toast.show("Couldn't play this lesson video. Please try again later.", 'error');
   }
 
   markAsComplete() {
@@ -423,7 +463,7 @@ export class UnitContent implements OnInit {
           learner_id: this.learnerId,
           learner_name: learner?.firstName,
           time_spent_seconds: timeSpent,
-          has_video: !!this.contentData.videoId,
+          has_video: this.hasVideo,
           has_notes: this.hasNotes,
           subject_name: localStorage.getItem('currentSubjectName'),
           unit_name: localStorage.getItem('currentUnitName'),
