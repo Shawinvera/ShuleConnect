@@ -33,12 +33,12 @@ spring:
     database-platform: ${DB_DIALECT:org.hibernate.dialect.MySQLDialect}
     generate-ddl: true
     hibernate:
-      ddl-auto: create
+      ddl-auto: update
     show-sql: false
     properties:
       hibernate:
         format_sql: true
-        hbm2ddl.auto: create
+        hbm2ddl.auto: update
 
   security:
     oauth2:
