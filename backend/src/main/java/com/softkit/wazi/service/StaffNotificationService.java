@@ -120,6 +120,13 @@ public class StaffNotificationService {
                 .collect(Collectors.toList());
     }
 
+    public List<AppUserDto> getGuardians() {
+        return appUserRepo.findActiveUsersByRole("GUARDIAN")
+                .stream()
+                .map(this::toDto)
+                .collect(Collectors.toList());
+    }
+
     private AppUserDto toDto(AppUser user) {
         AppUserDto dto = new AppUserDto();
         dto.setId(user.getId());

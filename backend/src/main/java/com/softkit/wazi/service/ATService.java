@@ -191,6 +191,10 @@ public class ATService {
             log.info("DEV mode - skipping AT call");
             return;
         }
+        if (phoneNumbers == null || phoneNumbers.isEmpty()) {
+            log.warn("No phone numbers provided for voice broadcast");
+            return;
+        }
         for (String phone : phoneNumbers) {
             makeVoiceCall(phone, message);
         }

@@ -1,0 +1,24 @@
+HTTP/1.1 200 OK
+Date: Sat, 21 Nov 2026 12:27:24 GMT
+Content-Length: 0
+Connection: keep-alive
+access-control-allow-credentials: true
+access-control-allow-methods: GET,POST,PUT,DELETE,PATCH,OPTIONS
+access-control-allow-origin: https://shule-connect-learnplay.vercel.app
+access-control-max-age: 3600
+Cache-Control: no-cache, no-store, max-age=0, must-revalidate
+expires: 0
+pragma: no-cache
+rndr-id: 94f718b5-1264-41a1
+Server: cloudflare
+strict-transport-security: max-age=31536000 ; includeSubDomains
+vary: Origin
+vary: Access-Control-Request-Method
+vary: Access-Control-Request-Headers
+x-content-type-options: nosniff
+x-render-origin-server: Render
+x-xss-protection: 0
+cf-cache-status: DYNAMIC
+CF-RAY: a5dfb0306ff35e43-MBA
+alt-svc: h3=":443"; ma=86400
+

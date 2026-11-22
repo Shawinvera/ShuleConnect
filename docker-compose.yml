@@ -1,0 +1,67 @@
+version: '3.8'
+
+services:
+  mysql:
+    image: mysql:8.0
+    container_name: shuleconnect-db
+    environment:
+      MYSQL_ROOT_PASSWORD: '#Vera2003'
+      MYSQL_DATABASE: shuleconnect
+    ports:
+      - "3307:3306"
+    volumes:
+      - mysql_data:/var/lib/mysql
+    networks:
+      - shuleconnect-network
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost"]
+      timeout: 5s
+      retries: 10
+
+  backend:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    container_name: shuleconnect-backend
+    environment:
+      DB_URL: jdbc:mysql://mysql:3306/shuleconnect?useSSL=false&allowPublicKeyRetrieval=true&serverTimezone=Africa/Nairobi
+      DB_USERNAME: root
+      DB_PASSWORD: '#Vera2003'
+      GOOGLE_CLIENT_ID: ${GOOGLE_CLIENT_ID}
+      GOOGLE_CLIENT_SECRET: ${GOOGLE_CLIENT_SECRET}
+      AT_USERNAME: sandbox
+      AT_API_KEY: atsk_28ca8560495db350fbfb50dbb26d3ba612e17b38543fc39da75b377fb806eaa555f3be49
+      AT_API_URL: https://api.sandbox.africastalking.com/version1/messaging
+      AT_VOICE_URL: https://voice.africastalking.com/call
+      AT_AIRTIME_URL: https://api.sandbox.africastalking.com/version1/airtime/send
+      SPRING_PROFILES_ACTIVE: default
+    ports:
+      - "8112:8112"
+    depends_on:
+      mysql:
+        condition: service_healthy
+    networks:
+      - shuleconnect-network
+
+  frontend:
+    image: node:20-alpine
+    container_name: shuleconnect-frontend
+    working_dir: /app
+    command: sh -c "npm install && npm start"
+    environment:
+      API_URL: http://localhost:8112/api
+      GOOGLE_CLIENT_ID: ${GOOGLE_CLIENT_ID}
+    volumes:
+      - ./frontend/learnplay:/app
+      - /app/node_modules
+    ports:
+      - "4200:4200"
+    networks:
+      - shuleconnect-network
+
+networks:
+  shuleconnect-network:
+    driver: bridge
+
+volumes:
+  mysql_data:

@@ -76,4 +76,9 @@ public class StaffNotificationController {
     public ResponseEntity<List<AppUserDto>> getAdmins() {
         return ResponseEntity.ok(staffNotificationService.getAdmins());
     }
+
+    @GetMapping("/guardians")
+    public ResponseEntity<List<AppUserDto>> getGuardians() {
+        return ResponseEntity.ok(staffNotificationService.getGuardians());
+    }
 }

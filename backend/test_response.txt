@@ -1,0 +1,7 @@
+CON Welcome to ShuleConnect
+1. Register
+2. Enrol learner
+3. Take a quiz
+4. Check results
+5. Give feedback
+0. Exit
