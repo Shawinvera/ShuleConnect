@@ -28,13 +28,10 @@ public class NotificationController {
     }
 
     @GetMapping("/my/unread-count")
-    public ResponseEntity<CustomResponse> getUnreadCount() {
+    public ResponseEntity<Map<String, Long>> getUnreadCount() {
         String userId = RequestContext.getThreadData().getUserId();
         long count = notificationService.getUnreadCount(userId);
-        return ResponseEntity.ok(CustomResponse.builder()
-                .successful(true)
-                .data(Map.of("count", count))
-                .build());
+        return ResponseEntity.ok(Map.of("count", count));
     }
 
     @PostMapping("/mark-read/{id}")

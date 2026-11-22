@@ -61,6 +61,9 @@ public interface AppUserRepo extends JpaRepository<AppUser, String> {
     @Query("SELECT u FROM AppUser u WHERE u.role = :role AND u.phoneNumber IS NOT NULL AND u.activated = true")
     List<AppUser> findActiveUsersByRole(@Param("role") String role);
 
+    @Query("SELECT u FROM AppUser u WHERE u.phoneNumber IN :phoneNumbers AND u.activated = true")
+    List<AppUser> findActiveUsersByPhoneNumbers(@Param("phoneNumbers") List<String> phoneNumbers);
+
     Optional<AppUser> findByPhoneNumber(String phoneNumber);
 
 }

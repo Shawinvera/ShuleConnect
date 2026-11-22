@@ -106,6 +106,16 @@ public class StaffNotificationService {
         return total;
     }
 
+    public void saveVoiceBroadcastNotifications(List<String> phoneNumbers, String message) {
+        if (phoneNumbers == null || phoneNumbers.isEmpty()) {
+            return;
+        }
+
+        List<AppUser> recipients = appUserRepo.findActiveUsersByPhoneNumbers(phoneNumbers);
+        notificationService.saveNotificationsForUsers(
+                recipients, "Voice Announcement", message, "ANNOUNCEMENT");
+    }
+
     public List<AppUserDto> getTeachers() {
         return appUserRepo.findActiveUsersByRole("TEACHER")
                 .stream()

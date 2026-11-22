@@ -2,6 +2,7 @@ package com.softkit.wazi.controller;
 
 import com.softkit.wazi.model.VoiceBroadcastRequestDto;
 import com.softkit.wazi.service.ATService;
+import com.softkit.wazi.service.StaffNotificationService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.MediaType;
@@ -14,6 +15,7 @@ import org.springframework.web.bind.annotation.*;
 public class VoiceController {
 
     private final ATService atService;
+    private final StaffNotificationService staffNotificationService;
 
     /**
      * AfricasTalking Voice callback — AT calls this URL during/after a voice session.
@@ -51,6 +53,7 @@ public class VoiceController {
     @PostMapping("/voice/broadcast")
     public ResponseEntity<String> broadcast(@RequestBody VoiceBroadcastRequestDto dto) {
         atService.makeVoiceBroadcast(dto.getPhoneNumbers(), dto.getMessage());
+        staffNotificationService.saveVoiceBroadcastNotifications(dto.getPhoneNumbers(), dto.getMessage());
         int count = dto.getPhoneNumbers() != null ? dto.getPhoneNumbers().size() : 0;
         return ResponseEntity.ok("Broadcast initiated for " + count + " recipients.");
     }
