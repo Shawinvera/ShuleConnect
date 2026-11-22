@@ -64,7 +64,7 @@ export class VoiceBroadcastComponent {
       this.http.post(
         `${this.apiUrl}/voice/broadcast`,
         { phoneNumbers, message: this.message, language: this.language },
-        { withCredentials: true }
+        { withCredentials: true, responseType: 'text' as const }
       ).subscribe({
         next: () => {
           this.addLog(this.getRecipientLabel(), this.message, 'Sent ✅');

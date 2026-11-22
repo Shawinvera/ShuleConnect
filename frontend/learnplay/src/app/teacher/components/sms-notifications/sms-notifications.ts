@@ -85,14 +85,22 @@ export class SmsNotificationsComponent {
 
   triggerReminders() {
     this.isSending = true;
-    this.http.post(`${this.apiUrl}/lesson/reminders/trigger`, {}, { withCredentials: true }).subscribe({
+    this.errorMessage = '';
+    this.successMessage = '';
+    this.http.post(
+      `${this.apiUrl}/lesson/reminders/trigger`,
+      {},
+      { withCredentials: true, responseType: 'text' as const }
+    ).subscribe({
       next: () => {
         this.successMessage = 'Assignment & exam reminders sent!';
         this.addLog('All Learners', 'Assignment & Exam Reminders');
         this.isSending = false;
       },
-      error: () => {
-        this.errorMessage = 'Failed to trigger reminders.';
+      error: (err) => {
+        this.errorMessage = typeof err.error === 'string'
+          ? err.error
+          : err.error?.message || 'Failed to trigger reminders.';
         this.isSending = false;
       }
     });
