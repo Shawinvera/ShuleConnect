@@ -5,3 +5,7 @@ target/
 # Environment secrets — never commit
 .env
 *.env
+
+# Test output files
+*.txt
+!README*.txt

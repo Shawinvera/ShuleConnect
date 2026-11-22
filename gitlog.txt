@@ -1,5 +1,0 @@
-﻿6db638a fix: force Hibernate to create all tables (ddl-auto: create)
-03d620c feat: remove Google sign-in buttons and fix production env file replacement
-7e9d9eb feat: add health endpoint + make USSD params optional
-5166813 fix: enable CORS and cross-site cookies for production frontend
-318f46b fix: remove environment files from gitignore and commit them
