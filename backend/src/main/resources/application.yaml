@@ -28,9 +28,7 @@ spring:
     driver-class-name: ${DB_DRIVER:com.mysql.cj.jdbc.Driver}
     username: ${DB_USERNAME:root}
     password: ${DB_PASSWORD:#Vera2003}
-
   jpa:
-    database-platform: ${DB_DIALECT:org.hibernate.dialect.MySQLDialect}
     generate-ddl: true
     hibernate:
       ddl-auto: update
@@ -38,7 +36,6 @@ spring:
     properties:
       hibernate:
         format_sql: true
-        hbm2ddl.auto: update
 
   security:
     oauth2:
