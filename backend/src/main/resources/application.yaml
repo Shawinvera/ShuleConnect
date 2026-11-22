@@ -12,8 +12,8 @@ app:
     refresh-expiration: 604800000
 
 wazi:
-  frontend-dashboard-url: ${FRONTEND_DASHBOARD_URL:http://localhost:4200}
-  backend-base-url: ${BACKEND_BASE_URL:https://api.shuleconnect.com/api}
+  frontend-dashboard-url: ${FRONTEND_DASHBOARD_URL:https://shule-connect-learnplay.vercel.app}
+  backend-base-url: ${BACKEND_BASE_URL:https://shuleconnect-1.onrender.com/api}
 
 spring:
   application:
@@ -33,12 +33,12 @@ spring:
     database-platform: ${DB_DIALECT:org.hibernate.dialect.MySQLDialect}
     generate-ddl: true
     hibernate:
-      ddl-auto: update
+      ddl-auto: create
     show-sql: false
     properties:
       hibernate:
         format_sql: true
-        hbm2ddl.auto: update
+        hbm2ddl.auto: create
 
   security:
     oauth2:
@@ -104,7 +104,7 @@ africastalking:
   api-url: ${AT_API_URL:https://api.sandbox.africastalking.com/version1/messaging}
   ussd-service-code: ${AT_USSD_SERVICE_CODE:*384*4957#}
   voice-url: ${AT_VOICE_URL:https://voice.africastalking.com/call}
-  voice-callback-url: ${AT_VOICE_CALLBACK_URL:https://f521-197-248-81-241.ngrok-free.app/api/public/at/voice/callback}
+  voice-callback-url: ${AT_VOICE_CALLBACK_URL:https://shuleconnect-1.onrender.com/api/public/at/voice/callback}
   caller-id: ${AT_CALLER_ID:+254711082000}
   airtime-url: ${AT_AIRTIME_URL:https://api.sandbox.africastalking.com/version1/airtime/send}
   airtime-validation-url: ${AT_AIRTIME_VALIDATION_URL:https://f521-197-248-81-241.ngrok-free.app/api/public/at/airtime/validate}
