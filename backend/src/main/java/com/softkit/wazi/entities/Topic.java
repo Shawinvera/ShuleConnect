@@ -31,8 +31,7 @@ public class Topic {
     private String userTimezone;
     private String name;
     //description column that can hold large text such as article content
-    @Column(columnDefinition = "LONGTEXT")
-    @Lob
+    @Column(columnDefinition = "TEXT")
     private String description;
 
     @ManyToOne(fetch = FetchType.LAZY)

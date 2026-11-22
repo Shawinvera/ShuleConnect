@@ -22,7 +22,8 @@ public interface GradeSubjectRepo extends JpaRepository<GradeSubject, String> {
            "FROM GradeSubject gs " +
             "LEFT JOIN Topic t ON gs.id = t.gradeSubject.id " +
            "WHERE gs.grade.id= :gradeId AND gs.subject.active= true " +
-            "GROUP BY gs.id, gs.subject.name, gs.subject.description")
+            "GROUP BY gs.id, gs.subject.id, gs.subject.name, gs.subject.description, " +
+            "gs.subject.colour, gs.subject.iconName")
     List<GradeSubjectDetailsDto> findByGradeId(@Param("gradeId") String gradeId);
 
     @Query(

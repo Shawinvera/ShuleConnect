@@ -21,8 +21,7 @@ public class Lesson {
     private Instant createdAt;
     private String userTimezone;
     private String name;
-    @Column(columnDefinition = "LONGTEXT")
-    @Lob
+    @Column(columnDefinition = "TEXT")
     private String content;
     private String videoUrl;
     private Boolean active;

@@ -25,13 +25,12 @@ spring:
 
   datasource:
     url: ${DB_URL:jdbc:mysql://localhost:3306/shuleconnect?useSSL=false&allowPublicKeyRetrieval=true&serverTimezone=Africa/Nairobi}
-    driver-class-name: ${DB_DRIVER:com.mysql.cj.jdbc.Driver}
     username: ${DB_USERNAME:root}
     password: ${DB_PASSWORD:#Vera2003}
   jpa:
     generate-ddl: true
     hibernate:
-      ddl-auto: create
+      ddl-auto: update
     show-sql: false
     properties:
       hibernate:
