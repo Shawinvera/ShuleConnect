@@ -79,7 +79,7 @@ public class LearnerService {
                     .subjects(new ArrayList<>())
                     .lessonCount(0L)
                     .lessonCompletedCount(0L)
-                    .percentageCompleted(0)
+                    .percentageCompleted(0.0)
                     .points(learner.getPoints() != null ? learner.getPoints() : 0L)
                     .build();
         }
