@@ -1,6 +1,8 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { of } from 'rxjs';
 
 import { UnitContent } from './unit-content';
+import { LessonQuizService } from '../../../services/lesson-quiz.service';
 
 describe('UnitContent', () => {
   let component: UnitContent;
@@ -8,7 +10,20 @@ describe('UnitContent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [UnitContent]
+      imports: [UnitContent],
+      providers: [{
+        provide: LessonQuizService,
+        useValue: {
+          getForLesson: () => of(null),
+          submit: () => of({
+            score: 0,
+            questionCount: 0,
+            percentage: 0,
+            passed: false,
+            attemptCount: 1,
+          }),
+        },
+      }]
     })
     .compileComponents();
 

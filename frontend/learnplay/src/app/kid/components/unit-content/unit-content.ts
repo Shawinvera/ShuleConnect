@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { FormsModule } from '@angular/forms';
 import { MatIconModule } from '@angular/material/icon';
 import { MatButtonModule } from '@angular/material/button';
 import { Router, ActivatedRoute } from '@angular/router';
@@ -22,6 +23,11 @@ import { AnalyticsService } from '../../../services/analytics.service';
 import { LearnersSummary } from '../../services/learners-summary/learners-summary';
 import { LearnerService } from '../../services/learner/learner';
 import { LearningHistory } from '../../services/learning-history/learning-history';
+import {
+  LessonQuiz,
+  LessonQuizResult,
+  LessonQuizService,
+} from '../../../services/lesson-quiz.service';
 import { ChoosePlan } from '../../reusable/choose-plan/choose-plan';
 import { PaymentMethod, Plan } from '../../reusable/payment-method/payment-method';
 
@@ -29,6 +35,7 @@ import { PaymentMethod, Plan } from '../../reusable/payment-method/payment-metho
   selector: 'app-unit-content',
   imports: [
     CommonModule,
+    FormsModule,
     MatIconModule,
     MatButtonModule,
     CustomVideoPlayerComponent,
@@ -75,6 +82,14 @@ export class UnitContent implements OnInit {
   showSuccessModal = false;
   isSubmitting = false;
   lessonStartTime: number = 0;
+  lessonQuiz: LessonQuiz | null = null;
+  selectedQuizAnswers: Record<string, number> = {};
+  quizResult: LessonQuizResult | null = null;
+  quizLoading = false;
+  quizLoadError = false;
+  quizErrorMessage = '';
+  quizSubmitting = false;
+  hasSubmittedQuiz = false;
 
   constructor(
     private router: Router,
@@ -90,6 +105,7 @@ export class UnitContent implements OnInit {
     private summaryService: LearnersSummary, // <--- ADD THIS
     private learnerService: LearnerService,
     private historyService: LearningHistory,
+    private lessonQuizService: LessonQuizService,
   ) {}
 
   ngOnInit() {
@@ -315,6 +331,7 @@ export class UnitContent implements OnInit {
         (vId ? `https://img.youtube.com/vi/${vId}/sddefault.jpg` : 'assets/images/lesson-thumb.png'),
       duration: lesson.duration,
     };
+    this.loadLessonQuiz(lesson.id);
 
     // 2. Handle Lesson Notes (Interface will be hidden if hasNotes is false)
     const rawHtml = (lesson.content || '').trim();
@@ -347,6 +364,74 @@ export class UnitContent implements OnInit {
 
   get hasVideo(): boolean {
     return !!(this.contentData.videoId || this.contentData.videoUrl);
+  }
+
+  private loadLessonQuiz(lessonId: string): void {
+    this.lessonQuiz = null;
+    this.quizResult = null;
+    this.selectedQuizAnswers = {};
+    this.hasSubmittedQuiz = false;
+    this.quizLoadError = false;
+    this.quizErrorMessage = '';
+    this.quizLoading = true;
+
+    this.lessonQuizService.getForLesson(lessonId, this.learnerId).subscribe({
+      next: (quiz) => {
+        this.lessonQuiz = quiz;
+        this.quizLoading = false;
+        this.hasSubmittedQuiz = (quiz?.attemptCount || 0) > 0;
+        if (quiz?.latestPercentage !== null && quiz?.latestPercentage !== undefined) {
+          this.quizResult = {
+            score: quiz.latestScore || 0,
+            questionCount: quiz.questions.length,
+            percentage: quiz.latestPercentage,
+            passed: quiz.latestPercentage >= 70,
+            attemptCount: quiz.attemptCount,
+          };
+        }
+      },
+      error: (error) => {
+        this.quizLoading = false;
+        this.quizLoadError = true;
+        this.quizErrorMessage = error.error?.message || 'Could not load this lesson quiz.';
+      },
+    });
+  }
+
+  retryLessonQuiz(): void {
+    if (this.currentLessonId) {
+      this.loadLessonQuiz(this.currentLessonId);
+    }
+  }
+
+  submitLessonQuiz(): void {
+    if (!this.lessonQuiz || this.quizSubmitting) return;
+    if (this.lessonQuiz.questions.some((question) => this.selectedQuizAnswers[question.id] === undefined)) {
+      this.quizErrorMessage = 'Answer every question before submitting.';
+      return;
+    }
+
+    this.quizSubmitting = true;
+    this.quizErrorMessage = '';
+    this.lessonQuizService
+      .submit(this.lessonQuiz.id, this.learnerId, this.selectedQuizAnswers)
+      .subscribe({
+        next: (result) => {
+          this.quizResult = result;
+          this.hasSubmittedQuiz = true;
+          this.lessonQuiz = {
+            ...this.lessonQuiz!,
+            attemptCount: result.attemptCount,
+            latestScore: result.score,
+            latestPercentage: result.percentage,
+          };
+          this.quizSubmitting = false;
+        },
+        error: (error) => {
+          this.quizErrorMessage = error.error?.message || 'Could not submit the quiz. Please try again.';
+          this.quizSubmitting = false;
+        },
+      });
   }
 
   private extractYouTubeId(url: string): string {
@@ -393,6 +478,14 @@ export class UnitContent implements OnInit {
 
   markAsComplete() {
     if (this.isSubmitting || this.isRevisionMode) return;
+    if (this.quizLoading || this.quizLoadError) {
+      this.toast.show('Wait for the lesson quiz to load before completing this lesson.', 'warning');
+      return;
+    }
+    if (this.lessonQuiz && !this.hasSubmittedQuiz) {
+      this.toast.show('Submit the lesson quiz before marking this lesson complete.', 'warning');
+      return;
+    }
     this.isSubmitting = true;
 
     const timeSpent = Math.round((Date.now() - this.lessonStartTime) / 1000);
