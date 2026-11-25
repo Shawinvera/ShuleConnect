@@ -13,6 +13,8 @@ import { ToastNotificationComponent } from '../../../shared/components/toast-not
 import { Capacitor } from '@capacitor/core';
 import { GoogleAuth } from '@codetrix-studio/capacitor-google-auth';
 import { UserRoleService } from '../../services/user-role.service';
+import { ParentApiService } from '../../../parent/services/parent-api.service';
+import { LearnerService } from '../../../kid/services/learner/learner';
 
 @Component({
   selector: 'app-sign-in',
@@ -138,6 +140,56 @@ export class SignIn implements OnInit, OnDestroy {
     return account.type === 'email' ? account.username.toLowerCase() : account.username;
   }
 
+  private openLearnerDashboard(userId: string | null) {
+    if (!userId) {
+      this.router.navigate(['/parent/select-learner']);
+      return;
+    }
+
+    this.parentApiService.fetchLearnersByUserId(userId).subscribe({
+      next: (learners) => {
+        localStorage.setItem('learners', JSON.stringify(learners));
+
+        const storedLearnerId = this.getStoredLearnerId();
+        const learner = learners.find((item) => item.id === storedLearnerId)
+          ?? (learners.length === 1 ? learners[0] : null);
+
+        if (learner) {
+          this.learnerService.updateSelectedLearner(learner);
+          localStorage.setItem('kidNavGuidePending', 'true');
+          this.router.navigate(['/kid']);
+        } else if (learners.length === 0) {
+          localStorage.removeItem('selectedLearner');
+          this.router.navigate(['/parent/add-child'], {
+            queryParams: { firstLearner: 'true' },
+          });
+        } else {
+          localStorage.removeItem('selectedLearner');
+          this.router.navigate(['/parent/select-learner']);
+        }
+      },
+      error: (error) => {
+        console.error('Failed to load learners for the learner dashboard:', error);
+        localStorage.removeItem('learners');
+        localStorage.removeItem('selectedLearner');
+        this.router.navigate(['/parent/select-learner']);
+      },
+    });
+  }
+
+  private getStoredLearnerId(): string | null {
+    const storedLearner = localStorage.getItem('selectedLearner');
+    if (!storedLearner) return null;
+
+    try {
+      return JSON.parse(storedLearner)?.id ?? null;
+    } catch (error) {
+      console.error('Failed to read the stored learner selection:', error);
+      localStorage.removeItem('selectedLearner');
+      return null;
+    }
+  }
+
   onPhoneChange(val: string) {
     this.fullPhone = val;
   }
@@ -149,6 +201,8 @@ export class SignIn implements OnInit, OnDestroy {
     private posthogService: PosthogService,
     private analyticsService: AnalyticsService,
     private userRoleService: UserRoleService,
+    private parentApiService: ParentApiService,
+    private learnerService: LearnerService,
     public toast: ToastService,
   ) {
     this.loadSavedAccounts();
@@ -215,11 +269,13 @@ export class SignIn implements OnInit, OnDestroy {
         const fullName = firstName && lastName ? `${firstName} ${lastName}`.trim() : firstName || undefined;
         // Only save password if user opted to save it
         this.saveAccount(username, type, this.savePassword ? this.password : undefined, fullName);
-        const destination = this.userRoleService.getRole() === 'kid'
-          ? ['/parent/select-learner']
-          : ['/parent'];
+        const selectedRole = this.userRoleService.getRole();
         this.userRoleService.clearRole();
-        this.router.navigate(destination);
+        if (selectedRole === 'kid') {
+          this.openLearnerDashboard(response?.id || this.userDataService.getUserId());
+        } else {
+          this.router.navigate(['/parent']);
+        }
       },
       error: (error) => {
         // Track login failure with detailed error info
