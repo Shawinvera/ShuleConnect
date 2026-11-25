@@ -7,6 +7,11 @@ import { environment } from '../../../../environments/environment';
 export interface LessonTrackerDto {
   learnerId: string;
   lessonId: string;
+  id?: string;
+  completedAt?: string;
+  points?: number;
+  airtimeRewardQueued?: boolean;
+  alreadyCompleted?: boolean;
 }
 
 @Injectable({
@@ -17,7 +22,7 @@ export class MarkCompletedService {
 
   constructor(private http: HttpClient) {}
 
-  public markAsComplete(payload: LessonTrackerDto): Observable<any> {
-    return this.http.post<any>(`${this.endpoint}/markComplete`, payload);
+  public markAsComplete(payload: LessonTrackerDto): Observable<LessonTrackerDto> {
+    return this.http.post<LessonTrackerDto>(`${this.endpoint}/markComplete`, payload);
   }
 }

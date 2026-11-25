@@ -465,23 +465,17 @@
             <p
               class="font-fredoka font-normal text-xl md:text-[24px] text-[#374151] mb-8 flex items-center justify-center gap-2"
             >
-              Awesome work! You earned
-
-              <!-- Loading Spinner for Points -->
-              <ng-container *ngIf="isLoadingPoints">
-                <span
-                  class="inline-block animate-spin rounded-full h-5 w-5 border-2 border-[#CA8A04] border-t-transparent"
-                ></span>
+              <ng-container *ngIf="airtimeRewardQueued; else airtimeNotQueued">
+                Awesome work! KES {{ airtimeAmount }} airtime is being processed to your linked account.
               </ng-container>
-
-              <!-- Awarded Points from History -->
-              <ng-container *ngIf="!isLoadingPoints">
-                <span class="font-bold text-[#CA8A04] animate-pop-in"
-                  >+{{ awardedPoints }} point{{ awardedPoints !== 1 ? 's' : '' }}</span
-                >
-              </ng-container>
-
-              ⭐
+              <ng-template #airtimeNotQueued>
+                <ng-container *ngIf="lessonWasAlreadyCompleted; else airtimeUnavailable">
+                  This lesson was already completed. Airtime is sent only once per lesson.
+                </ng-container>
+                <ng-template #airtimeUnavailable>
+                  Awesome work! No airtime reward was queued. Check that the linked account has a phone number and this lesson has a positive reward value.
+                </ng-template>
+              </ng-template>
             </p>
 
             <div class="flex flex-col gap-4">

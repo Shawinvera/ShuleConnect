@@ -22,7 +22,6 @@ import { PosthogService } from '../../../services/posthog.service';
 import { AnalyticsService } from '../../../services/analytics.service';
 import { LearnersSummary } from '../../services/learners-summary/learners-summary';
 import { LearnerService } from '../../services/learner/learner';
-import { LearningHistory } from '../../services/learning-history/learning-history';
 import {
   LessonQuiz,
   LessonQuizResult,
@@ -59,8 +58,9 @@ export class UnitContent implements OnInit {
   allLessons: LessonSummary[] = [];
   currentIndex: number = 0;
   hasNotes: boolean = false;
-  awardedPoints: number = 0;
-  isLoadingPoints: boolean = false;
+  airtimeAmount: number = 0;
+  airtimeRewardQueued = false;
+  lessonWasAlreadyCompleted = false;
   showPaymentNoticeModal = false;
   isNotesExpanded: boolean = false;
   // Data Holder
@@ -104,7 +104,6 @@ export class UnitContent implements OnInit {
     private analyticsService: AnalyticsService,
     private summaryService: LearnersSummary, // <--- ADD THIS
     private learnerService: LearnerService,
-    private historyService: LearningHistory,
     private lessonQuizService: LessonQuizService,
   ) {}
 
@@ -503,20 +502,9 @@ export class UnitContent implements OnInit {
         this.allLessons[this.currentIndex].learnerCompleted = true;
         this.isLessonComplete = true;
         this.showSuccessModal = true;
-
-        this.isLoadingPoints = true;
-        this.historyService.getHistory(this.learnerId).subscribe({
-          next: (history) => {
-            // Find the history item for the lesson we just finished
-            const latestEntry = history.find((h) => h.lessonId === this.currentLessonId);
-            this.awardedPoints = latestEntry ? latestEntry.points : 0;
-            this.isLoadingPoints = false;
-          },
-          error: (err) => {
-            console.error('Failed to fetch points from history', err);
-            this.isLoadingPoints = false;
-          },
-        });
+        this.airtimeAmount = response.points ?? 0;
+        this.airtimeRewardQueued = response.airtimeRewardQueued === true;
+        this.lessonWasAlreadyCompleted = response.alreadyCompleted === true;
 
         // 2. REFRESH LEARNER SUMMARY / POINTS
         this.summaryService.getLearnerLessonSummary(this.learnerId).subscribe({

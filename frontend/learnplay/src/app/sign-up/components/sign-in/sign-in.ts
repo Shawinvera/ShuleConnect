@@ -12,6 +12,7 @@ import { ToastService } from '../../../shared/services/toast.service';
 import { ToastNotificationComponent } from '../../../shared/components/toast-notification/toast-notification';
 import { Capacitor } from '@capacitor/core';
 import { GoogleAuth } from '@codetrix-studio/capacitor-google-auth';
+import { UserRoleService } from '../../services/user-role.service';
 
 @Component({
   selector: 'app-sign-in',
@@ -147,6 +148,7 @@ export class SignIn implements OnInit, OnDestroy {
     private userDataService: UserDataService,
     private posthogService: PosthogService,
     private analyticsService: AnalyticsService,
+    private userRoleService: UserRoleService,
     public toast: ToastService,
   ) {
     this.loadSavedAccounts();
@@ -213,7 +215,11 @@ export class SignIn implements OnInit, OnDestroy {
         const fullName = firstName && lastName ? `${firstName} ${lastName}`.trim() : firstName || undefined;
         // Only save password if user opted to save it
         this.saveAccount(username, type, this.savePassword ? this.password : undefined, fullName);
-        this.router.navigate(['/parent']);
+        const destination = this.userRoleService.getRole() === 'kid'
+          ? ['/parent/select-learner']
+          : ['/parent'];
+        this.userRoleService.clearRole();
+        this.router.navigate(destination);
       },
       error: (error) => {
         // Track login failure with detailed error info

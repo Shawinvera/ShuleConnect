@@ -2,7 +2,6 @@ import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { LandingPage } from './components/landing-page/landing-page';
 import { WhoAreYouComponent } from './components/who-are-you/who-are-you';
-import { authGuard } from '../guards/auth.guard';
 
 const routes: Routes = [
   {
@@ -11,9 +10,7 @@ const routes: Routes = [
   },
   {
     path: 'who-are-you',
-    component: WhoAreYouComponent,
-    canActivate: [authGuard],
-    data: { role: 'GUARDIAN' }
+    component: WhoAreYouComponent
   }
 ];
 
